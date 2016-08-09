@@ -11,19 +11,19 @@
 	reset_hair()
 	return 1
 
-/mob/living/carbon/human/proc/change_gender(var/gender, var/update_dna = 1)
+/mob/living/carbon/human/proc/change_gender(var/new_gender, var/update_dna = 1)
 	var/obj/item/organ/external/head/H = organs_by_name["head"]
-	if(src.gender == gender)
+	if(gender == new_gender)
 		return
 
-	src.gender = gender
+	gender = new_gender
 
 	var/datum/sprite_accessory/hair/current_hair = hair_styles_list[H.h_style]
-	if(current_hair.gender != NEUTER && current_hair.gender != src.gender)
+	if(current_hair.gender != NEUTER && current_hair.gender != gender)
 		reset_head_hair()
 
 	var/datum/sprite_accessory/hair/current_fhair = facial_hair_styles_list[H.f_style]
-	if(current_fhair.gender != NEUTER && current_fhair.gender != src.gender)
+	if(current_fhair.gender != NEUTER && current_fhair.gender != gender)
 		reset_facial_hair()
 
 	if(update_dna)
@@ -104,12 +104,12 @@
 
 /mob/living/carbon/human/proc/change_body_accessory(var/body_accessory_style)
 	var/found
-	if(!body_accessory_style || (src.body_accessory && src.body_accessory.name == body_accessory_style))
+	if(!body_accessory_style || (body_accessory && body_accessory.name == body_accessory_style))
 		return
 
 	for(var/B in body_accessory_by_name)
 		if(B == body_accessory_style)
-			src.body_accessory = body_accessory_by_name[body_accessory_style]
+			body_accessory = body_accessory_by_name[body_accessory_style]
 			found = 1
 
 	if(!found)
