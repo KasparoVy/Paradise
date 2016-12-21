@@ -1263,7 +1263,7 @@ var/global/list/damage_icon_parts = list()
 			tailw_s.Blend(tail_marking_icon, ICON_OVERLAY)
 		if(species.bodyflags & TAIL_OVERLAPPED) // If the player has a species whose tail is overlapped by limbs... (having a non-tail body accessory like the snake body will override this)
 			var/icon/under = new/icon("icon" = 'icons/effects/species.dmi', "icon_state" = "[species.name]_tail_delay") // Gives the underlimbs layer SEW direction icons since it's overlayed by limbs and just about everything else anyway.
-			var/icon/over = under // Creates a blank icon, and copies tailw_s' north direction sprite into it before passing that to the tail layer that overlays uniforms and such.
+			var/icon/over = new/icon("icon" = 'icons/effects/species.dmi', "icon_state" = "[species.name]_tail_delay") // Creates a blank icon, and copies tailw_s' north direction sprite into it before passing that to the tail layer that overlays uniforms and such.
 			over.Insert(new/icon(tailw_s, dir=NORTH), dir=NORTH)
 			under.Insert(new/icon(tailw_s, dir=SOUTH), dir=SOUTH)
 			under.Insert(new/icon(tailw_s, dir=EAST), dir=EAST)
