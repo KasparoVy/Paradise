@@ -355,7 +355,6 @@
 		eyes_s.Blend(rgb(r_eyes, g_eyes, b_eyes), ICON_ADD)
 		face_s.Blend(eyes_s, ICON_OVERLAY)
 
-
 	var/datum/sprite_accessory/hair_style = hair_styles_list[h_style]
 	if(hair_style)
 		var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
@@ -925,7 +924,7 @@
 						clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel"), ICON_OVERLAY)
 
 	if(disabilities & NEARSIGHTED)
-		preview_icon.Blend(new /icon('icons/mob/eyes.dmi', "glasses"), ICON_OVERLAY)
+		face_s.Blend(new /icon('icons/mob/eyes.dmi', "glasses"), ICON_OVERLAY)
 
 	// Observers get tourist outfit.
 	if(for_observer)

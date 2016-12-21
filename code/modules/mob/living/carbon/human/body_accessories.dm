@@ -57,6 +57,7 @@ var/global/list/body_accessory_by_species = list("None" = null)
 	var/pixel_y_offset = 0
 
 	var/list/allowed_species = list()
+	var/own_delay = null //The name of the icon state in body_accessory.dm should be the accessory's icon_state as defined in the datum suffixed with _delay. [icon_state]_delay
 
 /datum/body_accessory/proc/try_restrictions(var/mob/living/carbon/human/H)
 	return 1
@@ -139,3 +140,11 @@ var/global/list/body_accessory_by_species = list("None" = null)
 	icon_state = "vulptail6"
 	animated_icon_state = "vulptail6_a"
 	allowed_species = list("Vulpkanin")
+
+//Unathi
+/datum/body_accessory/tail/unathi_1
+	name = "Unathi Alt 1 (Smooth)"
+	icon_state = "unatail1"
+	animated_icon_state = "unatail1_a"
+	allowed_species = list("Unathi")
+	own_delay = 1
