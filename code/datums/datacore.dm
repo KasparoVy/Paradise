@@ -127,7 +127,7 @@
 
 
 proc/get_id_photo(var/mob/living/carbon/human/H)
-	var/icon/preview_icon = null
+	var/icon/preview_icon = new/icon("icon" = 'icons/effects/species.dmi', "icon_state" = "blank")
 	var/obj/item/organ/external/head/head_organ = H.get_organ("head")
 	var/obj/item/organ/internal/eyes/eyes_organ = H.get_int_organ(/obj/item/organ/internal/eyes)
 
@@ -135,49 +135,33 @@ proc/get_id_photo(var/mob/living/carbon/human/H)
 	if(H.gender == FEMALE)
 		g = "f"
 
+	//Tail
+	var/icon/tail = null
+	if(H.body_accessory && istype(H.body_accessory, /datum/body_accessory/tail))
+		tail = new/icon("icon" = H.body_accessory.icon, "icon_state" = H.body_accessory.icon_state)
+	else if(H.species.tail && (H.species.bodyflags & HAS_TAIL))
+		tail = new/icon("icon" = 'icons/effects/species.dmi', "icon_state" = "[H.species.tail]_s")
+	if(H.species.bodyflags & HAS_SKIN_COLOR)
+		tail.Blend(rgb(H.r_skin, H.g_skin, H.b_skin), H.body_accessory ? H.body_accessory.blend_mode : ICON_ADD)
+	preview_icon.Blend(tail, ICON_OVERLAY)
+
 	var/icon/icobase = H.species.icobase
 
-	preview_icon = new /icon(icobase, "torso_[g]")
-	var/icon/temp
-	temp = new /icon(icobase, "groin_[g]")
-	preview_icon.Blend(temp, ICON_OVERLAY)
+	preview_icon.Blend(new/icon(icobase, "torso_[g]"), ICON_OVERLAY)
+	preview_icon.Blend(new/icon(icobase, "groin_[g]"), ICON_OVERLAY)
 	var/head = "head"
 	if(head_organ.alt_head && head_organ.species.bodyflags & HAS_ALT_HEADS)
 		var/datum/sprite_accessory/alt_heads/alternate_head = alt_heads_list[head_organ.alt_head]
 		if(alternate_head.icon_state)
 			head = alternate_head.icon_state
-	temp = new /icon(icobase, "[head]_[g]")
-	preview_icon.Blend(temp, ICON_OVERLAY)
-
-	//Tail
-	if(H.body_accessory && istype(H.body_accessory, /datum/body_accessory/tail))
-		temp = new/icon("icon" = H.body_accessory.icon, "icon_state" = H.body_accessory.icon_state)
-		preview_icon.Blend(temp, ICON_OVERLAY)
-	else if(H.species.tail && H.species.bodyflags & HAS_TAIL)
-		temp = new/icon("icon" = 'icons/effects/species.dmi', "icon_state" = "[H.species.tail]_s")
-		preview_icon.Blend(temp, ICON_OVERLAY)
+	preview_icon.Blend(new/icon(icobase, "[head]_[g]"), ICON_OVERLAY)
 
 	for(var/obj/item/organ/external/E in H.organs)
-		preview_icon.Blend(E.get_icon(), ICON_OVERLAY)
-
-	// Skin tone
-	if(H.species.bodyflags & HAS_SKIN_TONE)
-		if(H.s_tone >= 0)
-			preview_icon.Blend(rgb(H.s_tone, H.s_tone, H.s_tone), ICON_ADD)
-		else
-			preview_icon.Blend(rgb(-H.s_tone,  -H.s_tone,  -H.s_tone), ICON_SUBTRACT)
-/* Commented out due to broken-ness, see below comment
-	// Skin color
-	if(H.species.flags & HAS_SKIN_TONE)
-		if(!H.species || H.species.flags & HAS_SKIN_COLOR)
-			preview_icon.Blend(rgb(H.r_skin, H.g_skin, H.b_skin), ICON_ADD)
-*/
-	// Proper Skin color - Fix, you can't have HAS_SKIN_TONE *and* HAS_SKIN_COLOR
-	if(H.species.bodyflags & HAS_SKIN_COLOR)
-		preview_icon.Blend(rgb(H.r_skin, H.g_skin, H.b_skin), ICON_ADD)
+		preview_icon.Blend(E.get_icon(), ICON_OVERLAY) /*get_icon() returns icons with skin tone and skin colour already applied, so we won't need to handle it a second time here.
+															That results in a body that's far too bright.*/
 
 	//Tail Markings
-	var/icon/t_marking_s
+	var/icon/t_marking_s = null
 	if(H.species.bodyflags & HAS_TAIL_MARKINGS)
 		var/tail_marking = H.m_styles["tail"]
 		var/datum/sprite_accessory/tail_marking_style = marking_styles_list[tail_marking]
@@ -398,7 +382,7 @@ proc/get_id_photo(var/mob/living/carbon/human/H)
 		preview_icon.Blend(clothes_s, ICON_OVERLAY)
 	//Bus body accessories that go over clothes.
 	if(H.body_accessory && istype(H.body_accessory, /datum/body_accessory/body))
-		temp = new/icon("icon" = H.body_accessory.icon, "icon_state" = H.body_accessory.icon_state)
+		var/icon/temp = new/icon("icon" = H.body_accessory.icon, "icon_state" = H.body_accessory.icon_state)
 		if(H.body_accessory.pixel_x_offset)
 			temp.Shift(EAST, H.body_accessory.pixel_x_offset)
 		if(H.body_accessory.pixel_y_offset)
