@@ -581,7 +581,29 @@
 
 /datum/sprite_accessory/hair/unathi/una_horns
 	name = "Unathi Horns"
-	icon_state = "soghun_horns"
+	icon_state = "unathi_horns"
+
+/datum/sprite_accessory/hair/unathi/una_horns_big
+	name = "Unathi Big Horns"
+	icon_state = "unathi_bighorns"
+
+/datum/sprite_accessory/hair/unathi/una_horns_ram2
+	name = "Unathi Ram Horns 2"
+	icon_state = "unathi_ramhorns2"
+
+/datum/sprite_accessory/hair/unathi/una_horns_small
+	name = "Unathi Small Horns"
+	icon_state = "unathi_smallhorns"
+
+/datum/sprite_accessory/hair/unathi/una_side_frills
+	name = "Unathi Side Frills"
+	icon_state = "unathi_sidefrills"
+	secondary_theme = "webbing"
+
+/datum/sprite_accessory/hair/unathi/una_frills_dorsal
+	name = "Dorsal Frills"
+	icon_state = "facial_dorsalfrills"
+	secondary_theme = "webbing"
 
 /datum/sprite_accessory/hair/skrell
 	species_allowed = list("Skrell")
@@ -1003,6 +1025,10 @@
 	name = "Tajara Goatee"
 	icon_state = "facial_goatee"
 
+/datum/sprite_accessory/facial_hair/tajara/taj_goatee_faded
+	name = "Tajara Faded Goatee"
+	icon_state = "facial_goatee_faded"
+
 /datum/sprite_accessory/facial_hair/tajara/taj_smallstache
 	name = "Tajara Smallstache"
 	icon_state = "facial_smallstache"
@@ -1074,38 +1100,56 @@
 
 /datum/sprite_accessory/facial_hair/unathi/una_spines_long
 	name = "Long Spines"
-	icon_state = "soghun_longspines"
+	icon_state = "unathi_longspines"
 
 /datum/sprite_accessory/facial_hair/unathi/una_spines_short
 	name = "Short Spines"
-	icon_state = "soghun_shortspines"
+	icon_state = "unathi_shortspines"
 
 /datum/sprite_accessory/facial_hair/unathi/una_frills_aquatic
 	name = "Aquatic Frills"
-	icon_state = "soghun_aquaticfrills"
+	icon_state = "unathi_aquaticfrills"
 
 /datum/sprite_accessory/facial_hair/unathi/una_frills_long
 	name = "Long Frills"
-	icon_state = "soghun_longfrills"
+	icon_state = "unathi_longfrills"
 
 /datum/sprite_accessory/facial_hair/unathi/una_frills_short
 	name = "Short Frills"
-	icon_state = "soghun_shortfrills"
+	icon_state = "unathi_shortfrills"
 
 /datum/sprite_accessory/facial_hair/unathi/una_frills_webbed_aquatic
 	name = "Aquatic Webbed Frills"
-	icon_state = "soghun_aquaticfrills"
+	icon_state = "unathi_aquaticfrills"
 	secondary_theme = "webbing"
 
 /datum/sprite_accessory/facial_hair/unathi/una_frills_webbed_long
 	name = "Long Webbed Frills"
-	icon_state = "soghun_longfrills"
+	icon_state = "unathi_longfrills"
 	secondary_theme = "webbing"
 
 /datum/sprite_accessory/facial_hair/unathi/una_frills_webbed_short
 	name = "Short Webbed Frills"
-	icon_state = "soghun_shortfrills"
+	icon_state = "unathi_shortfrills"
 	secondary_theme = "webbing"
+
+/datum/sprite_accessory/facial_hair/unathi/una_frills_dorsal
+	over_hair = null
+	name = "Dorsal Frills"
+	icon_state = "facial_dorsalfrills"
+	secondary_theme = "webbing"
+
+/datum/sprite_accessory/facial_hair/unathi/una_chin_horns
+	name = "Chin Horns"
+	icon_state = "facial_chinhorns"
+
+/datum/sprite_accessory/facial_hair/unathi/una_horn_adorns
+	name = "Horn Adorns"
+	icon_state = "facial_hornadorns"
+
+/datum/sprite_accessory/facial_hair/unathi/una_spikes
+	name = "Spikes"
+	icon_state = "facial_spikes"
 
 //skin styles - WIP
 //going to have to re-integrate this with surgery
@@ -1668,6 +1712,36 @@
 	name = "Ram"
 	icon_state = "horns_ram"
 
+/datum/sprite_accessory/head_accessory/unathi/ram2
+	icon = 'icons/mob/human_face.dmi'
+	name = "Ram 2"
+	icon_state = "unathi_ramhorns2"
+
+/datum/sprite_accessory/head_accessory/unathi/big_horns
+	icon = 'icons/mob/human_face.dmi'
+	name = "Big Horns"
+	icon_state = "unathi_bighorns"
+
+/datum/sprite_accessory/head_accessory/unathi/small_horns
+	icon = 'icons/mob/human_face.dmi'
+	name = "Small Horns"
+	icon_state = "unathi_smallhorns"
+
+/datum/sprite_accessory/head_accessory/unathi/chin_horns
+	icon = 'icons/mob/human_face.dmi'
+	name = "Chin Horns"
+	icon_state = "facial_chinhorns"
+
+/datum/sprite_accessory/head_accessory/unathi/horn_adorns
+	icon = 'icons/mob/human_face.dmi'
+	name = "Horn Adorns"
+	icon_state = "facial_hornadorns"
+
+/datum/sprite_accessory/head_accessory/unathi/spikes
+	icon = 'icons/mob/human_face.dmi'
+	name = "Spikes"
+	icon_state = "facial_spikes"
+
 /datum/sprite_accessory/head_accessory/tajara
 	species_allowed = list("Tajaran")
 
@@ -1885,6 +1959,11 @@
 /datum/sprite_accessory/body_markings/head/tajara/tiger_face_taj
 	name = "Tajaran Tiger Head and Face"
 	icon_state = "markings_face_tiger_taj"
+
+/datum/sprite_accessory/head_accessory/tajara/taj_ears
+	icon = 'icons/mob/human_face.dmi'
+	name = "Tajaran Ears"
+	icon_state = "ears_plain"
 
 /datum/sprite_accessory/body_markings/head/tajara/outears_taj
 	name = "Tajaran Outer Ears"
@@ -2147,6 +2226,14 @@
 	name = "Vulpkanin Bushy Straight Tail Black Fade White Tip"
 	tails_allowed = list("Vulpkanin Alt 5 (Straight Bushy)")
 	icon_state = "markings_vulptail6_silverf"
+
+/datum/sprite_accessory/body_markings/tail/unathi
+	species_allowed = list("Unathi")
+
+/datum/sprite_accessory/body_markings/tail/unathi/una_tiger_tail
+	name = "Unathi Tiger Tail"
+	tails_allowed = list("Unathi Alt 1 (Smooth)")
+	icon_state = "markings_unatail1_tiger"
 
 /* ALT HEADS */
 

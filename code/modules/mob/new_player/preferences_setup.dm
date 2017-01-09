@@ -231,6 +231,7 @@
 	var/g = "m"
 	if(gender == FEMALE)	g = "f"
 
+	preview_icon = new/icon("icon" = 'icons/effects/species.dmi', "icon_state" = "blank")
 	var/icon/icobase
 	var/datum/species/current_species = all_species[species]
 
@@ -252,10 +253,54 @@
 	else
 		icobase = 'icons/mob/human_races/r_human.dmi'
 
+	//Tail
+	var/icon/body_accessory_icon = null
+	var/icon/tail_markings_icon = null
+	if(current_species && (current_species.bodyflags & HAS_TAIL))
+		var/tail_icon
+		var/tail_icon_state
+		var/tail_shift_x
+		var/tail_shift_y
+
+		if(body_accessory)
+			var/datum/body_accessory/accessory = body_accessory_by_name[body_accessory]
+			tail_icon = accessory.icon
+			tail_icon_state = accessory.icon_state
+			if(accessory.pixel_x_offset)
+				tail_shift_x = accessory.pixel_x_offset
+			if(accessory.pixel_y_offset)
+				tail_shift_y = accessory.pixel_y_offset
+			if(!istype(accessory, /datum/body_accessory/tail))
+				body_accessory_icon = new/icon("icon" = 'icons/mob/body_accessory.dmi', "icon_state" = "accessory_none_s")
+		else
+			tail_icon = "icons/effects/species.dmi"
+			if(coloured_tail)
+				tail_icon_state = "[coloured_tail]_s"
+			else
+				tail_icon_state = "[current_species.tail]_s"
+
+		var/icon/temp = new/icon("icon" = tail_icon, "icon_state" = tail_icon_state)
+		if(tail_shift_x)
+			temp.Shift(EAST, tail_shift_x)
+		if(tail_shift_y)
+			temp.Shift(NORTH, tail_shift_y)
+
+		if(current_species && (current_species.bodyflags & HAS_TAIL_MARKINGS))
+			var/tail_marking = m_styles["tail"]
+			var/datum/sprite_accessory/tail_marking_style = marking_styles_list[tail_marking]
+			if(tail_marking_style && tail_marking_style.species_allowed && (!body_accessory || (body_accessory && (body_accessory in tail_marking_style.tails_allowed))))
+				tail_markings_icon = new/icon("icon" = tail_marking_style.icon, "icon_state" = "[tail_marking_style.icon_state]_s")
+				tail_markings_icon.Blend(m_colours["tail"], ICON_ADD)
+
+		if(body_accessory_icon)
+			body_accessory_icon.Blend(temp, ICON_OVERLAY)
+		else
+			preview_icon.Blend(temp, ICON_OVERLAY)
+
 	var/fat=""
 	if(disabilities & DISABILITY_FLAG_FAT && current_species.flags & CAN_BE_FAT)
 		fat="_fat"
-	preview_icon = new /icon(icobase, "torso_[g][fat]")
+	preview_icon.Blend(new /icon(icobase, "torso_[g][fat]"), ICON_OVERLAY)
 	preview_icon.Blend(new /icon(icobase, "groin_[g]"), ICON_OVERLAY)
 	var/head = "head"
 	if(alt_head && current_species.bodyflags & HAS_ALT_HEADS)
@@ -287,50 +332,6 @@
 		else
 			preview_icon.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
 
-	//Tail
-	if(current_species && (current_species.bodyflags & HAS_TAIL))
-		var/tail_icon
-		var/tail_icon_state
-		var/tail_shift_x
-		var/tail_shift_y
-		var/blend_mode = ICON_ADD
-
-		if(body_accessory)
-			var/datum/body_accessory/accessory = body_accessory_by_name[body_accessory]
-			tail_icon = accessory.icon
-			tail_icon_state = accessory.icon_state
-			if(accessory.blend_mode)
-				blend_mode = accessory.blend_mode
-			if(accessory.pixel_x_offset)
-				tail_shift_x = accessory.pixel_x_offset
-			if(accessory.pixel_y_offset)
-				tail_shift_y = accessory.pixel_y_offset
-		else
-			tail_icon = "icons/effects/species.dmi"
-			if(coloured_tail)
-				tail_icon_state = "[coloured_tail]_s"
-			else
-				tail_icon_state = "[current_species.tail]_s"
-
-		var/icon/temp = new/icon("icon" = tail_icon, "icon_state" = tail_icon_state)
-		if(tail_shift_x)
-			temp.Shift(EAST, tail_shift_x)
-		if(tail_shift_y)
-			temp.Shift(NORTH, tail_shift_y)
-
-		if(current_species && (current_species.bodyflags & HAS_SKIN_COLOR))
-			temp.Blend(rgb(r_skin, g_skin, b_skin), blend_mode)
-
-		if(current_species && (current_species.bodyflags & HAS_TAIL_MARKINGS))
-			var/tail_marking = m_styles["tail"]
-			var/datum/sprite_accessory/tail_marking_style = marking_styles_list[tail_marking]
-			if(tail_marking_style && tail_marking_style.species_allowed)
-				var/icon/t_marking_s = new/icon("icon" = tail_marking_style.icon, "icon_state" = "[tail_marking_style.icon_state]_s")
-				t_marking_s.Blend(m_colours["tail"], ICON_ADD)
-				temp.Blend(t_marking_s, ICON_OVERLAY)
-
-		preview_icon.Blend(temp, ICON_OVERLAY)
-
 	//Markings
 	if(current_species && ((current_species.bodyflags & HAS_HEAD_MARKINGS) || (current_species.bodyflags & HAS_BODY_MARKINGS)))
 		if(current_species.bodyflags & HAS_BODY_MARKINGS) //Body markings.
@@ -348,13 +349,14 @@
 				h_marking_s.Blend(m_colours["head"], ICON_ADD)
 				preview_icon.Blend(h_marking_s, ICON_OVERLAY)
 
+	if(tail_markings_icon)
+		preview_icon.Blend(tail_markings_icon, ICON_OVERLAY)
 
 	var/icon/face_s = new/icon("icon" = 'icons/mob/human_face.dmi', "icon_state" = "bald_s")
 	if(!(current_species.bodyflags & NO_EYES))
 		var/icon/eyes_s = new/icon("icon" = 'icons/mob/human_face.dmi', "icon_state" = current_species ? current_species.eyes : "eyes_s")
 		eyes_s.Blend(rgb(r_eyes, g_eyes, b_eyes), ICON_ADD)
 		face_s.Blend(eyes_s, ICON_OVERLAY)
-
 
 	var/datum/sprite_accessory/hair_style = hair_styles_list[h_style]
 	if(hair_style)
@@ -925,7 +927,7 @@
 						clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel"), ICON_OVERLAY)
 
 	if(disabilities & NEARSIGHTED)
-		preview_icon.Blend(new /icon('icons/mob/eyes.dmi', "glasses"), ICON_OVERLAY)
+		face_s.Blend(new /icon('icons/mob/eyes.dmi', "glasses"), ICON_OVERLAY)
 
 	// Observers get tourist outfit.
 	if(for_observer)
@@ -944,6 +946,14 @@
 		preview_icon.Blend(socks_s, ICON_OVERLAY)
 	if(clothes_s)
 		preview_icon.Blend(clothes_s, ICON_OVERLAY)
+
+	// Non-tail body accessory
+	if(body_accessory_icon)
+		if(current_species && (current_species.bodyflags & HAS_SKIN_COLOR))
+			var/datum/body_accessory/accessory = body_accessory_by_name[body_accessory]
+			body_accessory_icon.Blend(rgb(r_skin, g_skin, b_skin), accessory.blend_mode)
+		preview_icon.Blend(body_accessory_icon, ICON_OVERLAY)
+
 	preview_icon.Blend(face_s, ICON_OVERLAY)
 	preview_icon_front = new(preview_icon, dir = SOUTH)
 	preview_icon_side = new(preview_icon, dir = WEST)

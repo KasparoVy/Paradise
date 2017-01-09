@@ -311,7 +311,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 				dat += "<b>Body Markings:</b> "
 				dat += "<a href='?_src_=prefs;preference=m_style_body;task=input'>[m_styles["body"]]</a>"
 				dat += "<a href='?_src_=prefs;preference=m_body_colour;task=input'>Color</a> [color_square(color2R(m_colours["body"]), color2G(m_colours["body"]), color2B(m_colours["body"]))]<br>"
-			if(species in list("Vox", "Vulpkanin")) //Species with tail markings.
+			if(species in list("Vox", "Vulpkanin", "Unathi")) //Species with tail markings.
 				dat += "<b>Tail Markings:</b> "
 				dat += "<a href='?_src_=prefs;preference=m_style_tail;task=input'>[m_styles["tail"]]</a>"
 				dat += "<a href='?_src_=prefs;preference=m_tail_colour;task=input'>Color</a> [color_square(color2R(m_colours["tail"]), color2G(m_colours["tail"]), color2B(m_colours["tail"]))]<br>"
@@ -1204,10 +1204,10 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 					if(species in list("Human", "Unathi", "Grey", "Vulpkanin", "Tajaran", "Skrell", "Vox", "Drask")) //Species with body markings.
 						m_colours["body"] = rgb(rand(0,255), rand(0,255), rand(0,255))
 				if("m_style_tail")
-					if(species in list("Vox", "Vulpkanin")) //Species with tail markings.
+					if(species in list("Vox", "Vulpkanin", "Unathi")) //Species with tail markings.
 						m_styles["tail"] = random_marking_style("tail", species, null, body_accessory)
 				if("m_tail_colour")
-					if(species in list("Vox", "Vulpkanin")) //Species with tail markings.
+					if(species in list("Vox", "Vulpkanin", "Unathi")) //Species with tail markings.
 						m_colours["tail"] = rgb(rand(0,255), rand(0,255), rand(0,255))
 				if("underwear")
 					underwear = random_underwear(gender, species)
@@ -1299,7 +1299,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							m_styles["body"] = "None"
 							m_colours["body"] = "#000000"
 
-						if(species in list("Vox", "Vulpkanin")) //Species with tail markings.
+						if(species in list("Vox", "Vulpkanin", "Unathi")) //Species with tail markings.
 							m_styles["tail"] = random_marking_style("tail", species, null, body_accessory)
 						else
 							m_styles["tail"] = "None"
@@ -1532,7 +1532,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							m_colours["body"] = new_markings
 
 				if("m_style_tail")
-					if(species in list("Vox", "Vulpkanin")) //Species with tail markings.
+					if(species in list("Vox", "Vulpkanin", "Unathi")) //Species with tail markings.
 						var/list/valid_markings = list()
 						valid_markings["None"] = marking_styles_list["None"]
 						for(var/markingstyle in marking_styles_list)
@@ -1555,7 +1555,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							m_styles["tail"] = new_marking_style
 
 				if("m_tail_colour")
-					if(species in list("Vox", "Vulpkanin")) //Species with tail markings.
+					if(species in list("Vox", "Vulpkanin", "Unathi")) //Species with tail markings.
 						var/input = "Choose the colour of your your character's tail markings:"
 						var/new_markings = input(user, input, "Character Preference", m_colours["tail"]) as color|null
 						if(new_markings)
