@@ -37,6 +37,14 @@
 	name = "vox breath mask"
 	icon_state = "voxmask"
 	item_state = "voxmask"
+	flags = AIRTIGHT|EAT_THROUGH
 	permeability_coefficient = 0.01
 	species_restricted = list("Vox")
+	actions_types = list()
+
+/obj/item/clothing/mask/breath/plasmaman
+	desc = "A breath mask designed specifically for operation with a Plasmaman suit and helmet."
+	name = "plasmaman breath mask"
+	flags = AIRTIGHT|EAT_THROUGH
+	permeability_coefficient = 0.01
 	actions_types = list()
