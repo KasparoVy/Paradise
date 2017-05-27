@@ -167,6 +167,11 @@
 		if((tail_marks > 0) && (tail_marks <= marking_styles_list.len))
 			H.m_styles["tail"] = marking_styles_list[tail_marks]
 
+		var/list/screams = H.generate_valid_scream_voices()
+		var/scream_num = dna.GetUIValueRange(DNA_UI_SCREAM_VOICE, screams.len)
+		if((scream_num > 0) && (scream_num <= screams.len))
+			H.scream_voice = screams[scream_num]
+
 		H.regenerate_icons()
 
 		return 1

@@ -11,6 +11,7 @@
 	reset_hair()
 	if(species.bodyflags & HAS_MARKINGS)
 		reset_markings()
+	reset_scream_voice()
 
 	return 1
 
@@ -28,6 +29,8 @@
 	var/datum/sprite_accessory/hair/current_fhair = facial_hair_styles_list[H.f_style]
 	if(current_fhair.gender != NEUTER && current_fhair.gender != gender)
 		reset_facial_hair()
+
+	reset_scream_voice()
 
 	if(update_dna)
 		update_dna()
@@ -144,6 +147,10 @@
 		update_inv_wear_mask()
 	return 1
 
+/mob/living/carbon/human/proc/change_scream_voice(var/scream)
+	scream_voice = scream
+	return 1
+
 /mob/living/carbon/human/proc/reset_hair()
 	reset_head_hair()
 	reset_facial_hair()
@@ -209,6 +216,15 @@
 		//this shouldn't happen
 		H.ha_style = "None"
 	update_head_accessory()
+
+/mob/living/carbon/human/proc/reset_scream_voice()
+	var/list/valid_scream_voices = generate_valid_scream_voices()
+	if(valid_scream_voices.len)
+		scream_voice = pick(valid_scream_voices)
+	else
+		//this shouldn't happen
+		scream_voice = "Default Male"
+	update_dna()
 
 /mob/living/carbon/human/proc/change_eye_color(var/red, var/green, var/blue, update_dna = 1)
 	// Update the main DNA datum, then sync the change across the organs
@@ -489,3 +505,11 @@
 		valid_alt_heads += alternate_head
 
 	return valid_alt_heads
+
+/mob/living/carbon/human/proc/generate_valid_scream_voices(var/length_only)
+	var/list/valid_scream_voices = list()
+	valid_scream_voices = (gender==FEMALE ? species.female_scream_sounds.Copy() : species.male_scream_sounds.Copy())
+	if(length_only)
+		return valid_scream_voices.len
+
+	return valid_scream_voices

@@ -56,7 +56,8 @@
 #define DNA_UI_HEAD_MARK_STYLE	36
 #define DNA_UI_BODY_MARK_STYLE	37
 #define DNA_UI_TAIL_MARK_STYLE	38
-#define DNA_UI_LENGTH		38 // Update this when you add something, or you WILL break shit.
+#define DNA_UI_SCREAM_VOICE	39
+#define DNA_UI_LENGTH		39 // Update this when you add something, or you WILL break shit.
 
 #define DNA_SE_LENGTH 55 // Was STRUCDNASIZE, size 27. 15 new blocks added = 42, plus room to grow.
 
@@ -151,6 +152,11 @@ var/global/list/bad_blocks[0]
 	// Markings
 	if(!character.m_styles)
 		character.m_styles = DEFAULT_MARKING_STYLES
+	// *scream
+	var/list/screams = character.generate_valid_scream_voices()
+	if(!character.scream_voice || !(character.scream_voice in screams))
+		character.reset_scream_voice()
+	var/scream = screams.Find(character.scream_voice)
 
 	var/head_marks	= marking_styles_list.Find(character.m_styles["head"])
 	var/body_marks	= marking_styles_list.Find(character.m_styles["body"])
@@ -182,11 +188,12 @@ var/global/list/bad_blocks[0]
 	else
 		SetUIState(DNA_UI_GENDER, pick(0,1), 1)
 
+	SetUIValueRange(DNA_UI_SCREAM_VOICE,	scream,			screams.len,	1)
+
 	/*SetUIValueRange(DNA_UI_BACC_STYLE,	bodyacc,	facial_hair_styles_list.len,	1)*/
 	SetUIValueRange(DNA_UI_HEAD_MARK_STYLE,	head_marks,		marking_styles_list.len,		1)
 	SetUIValueRange(DNA_UI_BODY_MARK_STYLE,	body_marks,		marking_styles_list.len,		1)
 	SetUIValueRange(DNA_UI_TAIL_MARK_STYLE,	tail_marks,		marking_styles_list.len,		1)
-
 
 	UpdateUI()
 

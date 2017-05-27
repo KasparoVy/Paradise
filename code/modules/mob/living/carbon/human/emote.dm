@@ -37,17 +37,17 @@
 			if(species.name == "Drask")		//Only Drask can make whale noises
 				on_CD = handle_emote_CD()			//proc located in code\modules\mob\emote.dm
 			else
-				return				
+				return
 		if("howl", "howls")
-			if (species.name == "Vulpkanin")		//Only Vulpkanin can howl
+			if(species.name == "Vulpkanin")		//Only Vulpkanin can howl
 				on_CD = handle_emote_CD(100)
 			else
 				return
 		if("growl", "growls")
-			if (species.name == "Vulpkanin")		//Only Vulpkanin can growl
+			if(species.name == "Vulpkanin")		//Only Vulpkanin can growl
 				on_CD = handle_emote_CD()
 			else
-				return				
+				return
 		if("squish", "squishes")
 			var/found_slime_bodypart = 0
 
@@ -101,7 +101,7 @@
 		if("me")									//OKAY SO RANT TIME, THIS FUCKING HAS TO BE HERE OR A SHITLOAD OF THINGS BREAK
 			return custom_emote(m_type, message)	//DO YOU KNOW WHY SHIT BREAKS? BECAUSE SO MUCH OLDCODE CALLS mob.emote("me",1,"whatever_the_fuck_it_wants_to_emote")
 													//WHO THE FUCK THOUGHT THAT WAS A GOOD FUCKING IDEA!?!?
-													
+
 		if("howl", "howls")
 			var/M = handle_emote_param(param) //Check to see if the param is valid (mob with the param name is in view).
 			message = "<B>[src]</B> howls[M ? " at [M]" : ""]!"
@@ -113,7 +113,7 @@
 			message = "<B>[src]</B> growls[M ? " at [M]" : ""]."
 			playsound(loc, "growls", 80, 0)
 			m_type = 2
-			
+
 		if("ping", "pings")
 			var/M = handle_emote_param(param)
 
@@ -733,11 +733,7 @@
 				if(!muzzled)
 					message = "<B>[src]</B> [species.scream_verb][M ? " at [M]" : ""]!"
 					m_type = 2
-					if(gender == FEMALE)
-						playsound(loc, "[species.female_scream_sound]", 80, 1, 0, pitch = get_age_pitch())
-					else
-						playsound(loc, "[species.male_scream_sound]", 80, 1, 0, pitch = get_age_pitch()) //default to male screams if no gender is present.
-
+					playsound(loc, get_scream_sound(), 80, 1, 0, pitch = get_age_pitch()) //defaults to male screams if no gender is present.
 				else
 					message = "<B>[src]</B> makes a very loud noise[M ? " at [M]" : ""]."
 					m_type = 2

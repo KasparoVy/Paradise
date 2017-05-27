@@ -172,3 +172,16 @@
         </div>
     </div>
 {{/if}}
+
+{{if data.change_scream_voice}}
+    <div class="item">
+        <div class="itemLabelNarrow">
+            Scream Voices:
+        </div>
+        <div class="itemContentWide">
+            {{for data.scream_voices}}
+                {{:helper.link(value.screamvoice, null, { 'scream_voice' : value.screamvoice}, null, data.scream_voice == value.screamvoice ? 'selected' : null)}}
+            {{/for}}
+        </div>
+    </div>
+{{/if}}

@@ -305,8 +305,8 @@
 
 	reagent_tag = PROCESS_ORG
 	scream_verb = "shrieks"
-	male_scream_sound = 'sound/voice/shriek1.ogg'
-	female_scream_sound = 'sound/voice/shriek1.ogg'
+	male_scream_sounds = list("Shriek" = 'sound/voice/shriek1.ogg')
+	female_scream_sounds = list("Shriek" = 'sound/voice/shriek1.ogg')
 	male_cough_sounds = list('sound/voice/shriekcough.ogg')
 	female_cough_sounds = list('sound/voice/shriekcough.ogg')
 	male_sneeze_sound = 'sound/voice/shrieksneeze.ogg'
@@ -918,8 +918,8 @@
 	can_revive_by_healing = 1
 	has_gender = FALSE
 	reagent_tag = PROCESS_SYN
-	male_scream_sound = 'sound/goonstation/voice/robot_scream.ogg'
-	female_scream_sound = 'sound/goonstation/voice/robot_scream.ogg'
+	male_scream_sounds = list("Synthesized Scream" = 'sound/goonstation/voice/robot_scream.ogg')
+	female_scream_sounds = list("Synthesized Scream" = 'sound/goonstation/voice/robot_scream.ogg')
 	male_cough_sounds = list('sound/effects/mob_effects/m_machine_cougha.ogg','sound/effects/mob_effects/m_machine_coughb.ogg', 'sound/effects/mob_effects/m_machine_coughc.ogg')
 	female_cough_sounds = list('sound/effects/mob_effects/f_machine_cougha.ogg','sound/effects/mob_effects/f_machine_coughb.ogg')
 	male_sneeze_sound = 'sound/effects/mob_effects/machine_sneeze.ogg'
@@ -982,8 +982,8 @@
 
 	speech_sounds = list('sound/voice/DraskTalk.ogg')
 	speech_chance = 20
-	male_scream_sound = 'sound/voice/DraskTalk2.ogg'
-	female_scream_sound = 'sound/voice/DraskTalk2.ogg'
+	male_scream_sounds = list('sound/voice/DraskTalk2.ogg')
+	female_scream_sounds = list('sound/voice/DraskTalk2.ogg')
 	male_cough_sounds = null      //whale cough when
 	female_cough_sounds = null
 	male_sneeze_sound = null

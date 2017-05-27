@@ -12,6 +12,7 @@
 	var/list/valid_tail_marking_styles = list()
 	var/list/valid_body_accessories = list()
 	var/list/valid_alt_head_styles = list()
+	var/list/valid_scream_voices = list()
 
 	var/check_whitelist
 	var/list/whitelist
@@ -207,6 +208,12 @@
 				head_organ = owner.get_organ("head") //Update the head with the new information.
 				cut_and_generate_data()
 				return 1
+	if(href_list["scream_voice"])
+		if(can_change(APPEARANCE_SCREAM_VOICE) && (href_list["scream_voice"] in valid_scream_voices))
+			if(owner.change_scream_voice(href_list["scream_voice"]))
+				update_dna()
+				cut_and_generate_data()
+				return 1
 
 	return 0
 
@@ -302,6 +309,14 @@
 		data["alt_head_styles"] = alt_head_styles
 		data["alt_head_style"] = head_organ.alt_head
 
+	data["change_scream_voice"] = can_change(APPEARANCE_SCREAM_VOICE)
+	if(data["change_scream_voice"])
+		var/scream_voices[0]
+		for(var/scream in valid_scream_voices)
+			scream_voices[++scream_voices.len] = list("screamvoice" = scream)
+		data["scream_voices"] = scream_voices
+		data["scream_voice"] = owner.scream_voice
+
 	data["change_head_accessory_color"] = can_change_head_accessory()
 	data["change_hair_color"] = can_change(APPEARANCE_HAIR_COLOR)
 	data["change_secondary_hair_color"] = can_change(APPEARANCE_SECONDARY_HAIR_COLOR)
@@ -367,6 +382,7 @@
 	valid_tail_marking_styles.Cut()
 	valid_body_accessories.Cut()
 	valid_alt_head_styles.Cut()
+	valid_scream_voices.Cut()
 	generate_data()
 
 /datum/nano_module/appearance_changer/proc/generate_data()
@@ -389,3 +405,5 @@
 		valid_body_accessories = owner.generate_valid_body_accessories()
 	if(!valid_alt_head_styles.len)
 		valid_alt_head_styles = owner.generate_valid_alt_heads()
+	if(!valid_scream_voices.len)
+		valid_scream_voices = owner.generate_valid_scream_voices()

@@ -52,6 +52,8 @@ var/global/default_martial_art = new/datum/martial_art
 
 	var/special_voice = "" // For changing our voice. Used by a symptom.
 
+	var/scream_voice = "Male Default"
+
 	var/last_dam = -1	//Used for determining if we need to process all organs or just some or even none.
 	var/list/bad_external_organs = list()// organs we check until they are good.
 

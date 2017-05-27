@@ -129,10 +129,24 @@
 	var/list/speech_sounds                   // A list of sounds to potentially play when speaking.
 	var/list/speech_chance                   // The likelihood of a speech sound playing.
 	var/scream_verb = "screams"
-	var/male_scream_sound = 'sound/goonstation/voice/male_scream.ogg'
-	var/female_scream_sound = 'sound/goonstation/voice/female_scream.ogg'
-	var/male_cough_sounds = list('sound/effects/mob_effects/m_cougha.ogg','sound/effects/mob_effects/m_coughb.ogg', 'sound/effects/mob_effects/m_coughc.ogg')
-	var/female_cough_sounds = list('sound/effects/mob_effects/f_cougha.ogg','sound/effects/mob_effects/f_coughb.ogg')
+	var/list/male_scream_sounds = list(
+		"Male Default" = 'sound/effects/mob_effects/malescream1.ogg',
+		"Male alt. 1" = 'sound/effects/mob_effects/malescream2.ogg',
+		"Male alt. 2" = 'sound/effects/mob_effects/malescream3.ogg',
+		"Male alt. 3" = 'sound/effects/mob_effects/malescream4.ogg',
+		"Male alt. 4" = 'sound/effects/mob_effects/malescream5.ogg',
+		"Male alt. 5" = 'sound/effects/mob_effects/malescream6.ogg'
+		)
+	var/list/female_scream_sounds = list(
+		"Female Default" = 'sound/effects/mob_effects/femalescream1.ogg',
+		"Female alt. 1" = 'sound/effects/mob_effects/femalescream2.ogg',
+		"Female alt. 2" = 'sound/effects/mob_effects/femalescream3.ogg',
+		"Female alt. 3" = 'sound/effects/mob_effects/femalescream4.ogg',
+		"Female alt. 4" = 'sound/effects/mob_effects/femalescream5.ogg',
+		"Female alt. 5" = 'sound/effects/mob_effects/femalescream6.ogg'
+		)
+	var/list/male_cough_sounds = list('sound/effects/mob_effects/m_cougha.ogg','sound/effects/mob_effects/m_coughb.ogg', 'sound/effects/mob_effects/m_coughc.ogg')
+	var/list/female_cough_sounds = list('sound/effects/mob_effects/f_cougha.ogg','sound/effects/mob_effects/f_coughb.ogg')
 	var/male_sneeze_sound = 'sound/effects/mob_effects/sneeze.ogg'
 	var/female_sneeze_sound = 'sound/effects/mob_effects/f_sneeze.ogg'
 

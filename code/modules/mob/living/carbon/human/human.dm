@@ -1922,6 +1922,27 @@
 /mob/living/carbon/human/proc/get_age_pitch()
 	return 1.0 + 0.5*(30 - age)/80
 
+/mob/living/carbon/human/proc/get_scream_sound()  /*Gets the scream sound file for the mob's scream voice.
+													If the mob's species is invalid, pick the default scream voice appropriate to the mob's gender for the Human species.
+													If the mob's scream voice isn't found in their species' gender scream list, reset their scream voice.*/
+	var/datum/species/S = species //Fault tolerance.
+	if(!istype(S))
+		S = all_species["Human"]
+
+	var/scream_sound = pick(S.male_scream_sounds)
+	if(gender == FEMALE)
+		if(!(scream_voice in S.female_scream_sounds))
+			reset_scream_voice()
+			return S.female_scream_sounds["Default Female"]
+		scream_sound = S.female_scream_sounds[scream_voice]
+	else
+		if(!(scream_voice in S.male_scream_sounds))
+			reset_scream_voice()
+			return S.male_scream_sounds["Default Male"]
+		scream_sound = S.male_scream_sounds[scream_voice]
+
+	return scream_sound
+
 /mob/living/carbon/human/get_access()
 	. = ..()
 

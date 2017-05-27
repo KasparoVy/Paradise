@@ -26,7 +26,14 @@
 	dietflags = DIET_OMNI
 	reagent_tag = PROCESS_ORG
 	blood_color = "#FF5AFF"
-	female_scream_sound = 'sound/goonstation/voice/male_scream.ogg'
+	female_scream_sounds = list(
+		1 = 'sound/effects/mob_effects/malescream1.ogg',
+		2 = 'sound/effects/mob_effects/malescream2.ogg',
+		3 = 'sound/effects/mob_effects/malescream3.ogg',
+		4 = 'sound/effects/mob_effects/malescream4.ogg',
+		5 = 'sound/effects/mob_effects/malescream5.ogg',
+		6 = 'sound/effects/mob_effects/malescream6.ogg'
+		)
 	female_cough_sounds = list('sound/effects/mob_effects/m_cougha.ogg','sound/effects/mob_effects/m_coughb.ogg', 'sound/effects/mob_effects/m_coughc.ogg')
 	female_sneeze_sound = 'sound/effects/mob_effects/sneeze.ogg' //Abductors always scream like guys
 

@@ -149,6 +149,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 	var/alt_head = "None"				//Alt head style.
 	var/species = "Human"
 	var/language = "None"				//Secondary language
+	var/scream = "Default Male"				//Scream voice, see applicable species datums.
 	var/autohiss_mode = AUTOHISS_OFF	//Species autohiss level. OFF, BASIC, FULL.
 
 	var/body_accessory = null
@@ -300,6 +301,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 			dat += "<b>Secondary Language:</b> <a href='?_src_=prefs;preference=language;task=input'>[language]</a><br>"
 			if(S.autohiss_basic_map)
 				dat += "<b>Auto-accent:</b> <a href='?_src_=prefs;preference=autohiss_mode;task=input'>[autohiss_mode == AUTOHISS_FULL ? "Full" : (autohiss_mode == AUTOHISS_BASIC ? "Basic" : "Off")]</a><br>"
+			dat += "<b>Scream Voice:</b> <a href='?_src_=prefs;preference=scream;task=input'>[scream]</a><br>"
 			dat += "<b>Blood Type:</b> <a href='?_src_=prefs;preference=b_type;task=input'>[b_type]</a><br>"
 			if(S.bodyflags & (HAS_SKIN_TONE|HAS_ICON_SKIN_TONE))
 				dat += "<b>Skin Tone:</b> <a href='?_src_=prefs;preference=s_tone;task=input'>[S.bodyflags & HAS_ICON_SKIN_TONE ? "[s_tone]" : "[-s_tone + 35]/220"]</a><br>"
@@ -1335,6 +1337,11 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							m_styles["tail"] = "None"
 							m_colours["tail"] = "#000000"
 
+						if(gender == FEMALE) //Randomize their scream.
+							scream = pick(NS.female_scream_sounds)
+						else
+							scream = pick(NS.male_scream_sounds)
+
 						// Don't wear another species' underwear!
 						var/datum/sprite_accessory/SA = underwear_list[underwear]
 						if(!SA || !(species in SA.species_allowed))
@@ -1404,6 +1411,18 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 					var/new_metadata = input(user, "Enter any information you'd like others to see, such as Roleplay-preferences:", "Game Preference" , metadata)  as message|null
 					if(new_metadata)
 						metadata = sanitize(copytext(new_metadata,1,MAX_MESSAGE_LEN))
+
+				if("scream")
+					var/list/scream_options = gender==FEMALE ? S.female_scream_sounds : S.male_scream_sounds
+					if(scream_options.len > 1)
+						var/new_scream = input(user, "Choose your character's scream:", "Character Preference") as null|anything in scream_options
+						if(new_scream)
+							scream = new_scream
+
+							var/test_scream = input(user, "Would you like to hear it?", "Character Preference") as null|anything in list("Yes", "No")
+							if(test_scream && test_scream == "Yes")
+								var/screamsound = (gender == FEMALE ? S.female_scream_sounds[scream] : S.male_scream_sounds[scream])
+								user << sound(screamsound, repeat = 0, wait = 0, volume = 80, channel = 2) //Play them an example of the scream sound. It won't be pitch-shifted by their age like it would be in game.
 
 				if("b_type")
 					var/new_b_type = input(user, "Choose your character's blood-type:", "Character Preference") as null|anything in list( "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" )
@@ -2110,6 +2129,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 
 	character.change_gender(gender)
 	character.age = age
+	character.scream_voice = gender == FEMALE ? S.female_scream_sounds[scream] : S.male_scream_sounds[scream]
 	character.b_type = b_type
 
 	//Head-specific

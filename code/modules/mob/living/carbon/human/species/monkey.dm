@@ -20,8 +20,8 @@
 	death_message = "lets out a faint chimper as it collapses and stops moving..."
 
 	scream_verb = "screeches"
-	male_scream_sound = 'sound/goonstation/voice/monkey_scream.ogg'
-	female_scream_sound = 'sound/goonstation/voice/monkey_scream.ogg'
+	male_scream_sounds = list("Chimp" = 'sound/goonstation/voice/monkey_scream.ogg')
+	female_scream_sounds = list("Chimp" = 'sound/goonstation/voice/monkey_scream.ogg')
 
 	tail = "chimptail"
 	bodyflags = HAS_TAIL

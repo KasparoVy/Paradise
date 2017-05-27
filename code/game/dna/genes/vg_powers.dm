@@ -45,6 +45,12 @@
 		else
 			M.change_gender(FEMALE)
 
+	// scream
+	var/list/valid_screams = M.generate_valid_scream_voices()
+	var/new_scream = input("Please select scream_voice", "Character Generation", M.scream_voice) as null|anything in valid_screams
+	if(new_scream)
+		M.change_scream_voice(new_scream)
+
 	var/eyes_red = 0
 	var/eyes_green = 0
 	var/eyes_blue = 0
@@ -179,6 +185,7 @@
 			M.change_skin_color(color2R(new_body_colour), color2G(new_body_colour), color2B(new_body_colour))
 
 	M.update_dna()
+	M.UpdateAppearance()
 
 	M.visible_message("<span class='notice'>[src] morphs and changes [M.get_visible_gender() == MALE ? "his" : M.get_visible_gender() == FEMALE ? "her" : "their"] appearance!</span>", "<span class='notice'>You change your appearance!</span>", "<span class='warning'>Oh, god!  What the hell was that?  It sounded like flesh getting squished and bone ground into a different shape!</span>")
 

@@ -175,7 +175,6 @@ proc/random_body_accessory(species = "Vulpkanin")
 	return body_accessory
 
 proc/random_name(gender, species = "Human")
-
 	var/datum/species/current_species
 	if(species)
 		current_species = all_species[species]
