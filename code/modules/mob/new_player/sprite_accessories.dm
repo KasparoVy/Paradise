@@ -566,7 +566,7 @@
 	name = "Unathi Side Frills"
 	icon_state = "unathi_sidefrills"
 	secondary_theme = "webbing"
-	
+
 /datum/sprite_accessory/hair/unathi/una_cobra_hood
     icon = 'icons/mob/human_face.dmi'
     name = "Unathi Cobra Hood"
@@ -1989,7 +1989,7 @@
 	icon = 'icons/mob/body_accessory.dmi'
 	species_allowed = list("Unathi", "Tajaran", "Vulpkanin", "Machine", "Vox", "Kidan")
 	icon_state = "accessory_none"
-	marking_location = "body"
+	var/body_parts = list()
 
 /datum/sprite_accessory/body_markings/none
 	name = "None"
@@ -2000,6 +2000,7 @@
 	name = "Tiger Body"
 	species_allowed = list("Unathi", "Tajaran", "Vulpkanin")
 	icon_state = "markings_tiger"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/kidan
 	species_allowed = list("Kidan")
@@ -2007,6 +2008,7 @@
 /datum/sprite_accessory/body_markings/kidan/outline_kid
 	name = "Kidan Outline"
 	icon_state = "markings_outline_kid"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/unathi
 	species_allowed = list("Unathi")
@@ -2014,18 +2016,22 @@
 /datum/sprite_accessory/body_markings/unathi/stripe_una
 	name = "Unathi Stripe"
 	icon_state = "markings_stripe_una"
+	body_parts = list("chest", "groin")
 
 /datum/sprite_accessory/body_markings/unathi/belly_narrow_una
 	name = "Unathi Belly"
 	icon_state = "markings_belly_narrow_una"
+	body_parts = list("chest", "groin")
 
 /datum/sprite_accessory/body_markings/unathi/banded_una
 	name = "Unathi Banded"
 	icon_state = "markings_banded_una"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/unathi/points_una
 	name = "Unathi Points"
 	icon_state = "markings_points_una"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tajara
 	species_allowed = list("Tajaran")
@@ -2033,22 +2039,27 @@
 /datum/sprite_accessory/body_markings/tajara/belly_flat_taj
 	name = "Tajaran Belly"
 	icon_state = "markings_belly_flat_taj"
+	body_parts = list("chest", "groin")
 
 /datum/sprite_accessory/body_markings/tajara/belly_crest_taj
 	name = "Tajaran Chest Crest"
 	icon_state = "markings_belly_crest_taj"
+	body_parts = list("chest")
 
 /datum/sprite_accessory/body_markings/tajara/belly_full_taj
 	name = "Tajaran Belly 2"
 	icon_state = "markings_belly_full_taj"
+	body_parts = list("l_leg", "r_leg", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tajara/points_taj
 	name = "Tajaran Points"
 	icon_state = "markings_points_taj"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand")
 
 /datum/sprite_accessory/body_markings/tajara/patchy_taj
 	name = "Tajaran Patches"
 	icon_state = "markings_patch_taj"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/vulpkanin
 	species_allowed = list("Vulpkanin")
@@ -2056,34 +2067,42 @@
 /datum/sprite_accessory/body_markings/vulpkanin/belly_fox_vulp
 	name = "Vulpkanin Belly"
 	icon_state = "markings_belly_fox_vulp"
+	body_parts = list("l_leg", "r_leg", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/vulpkanin/belly_full_vulp
 	name = "Vulpkanin Belly 2"
 	icon_state = "markings_belly_full_vulp"
+	body_parts = list("chest", "groin")
 
 /datum/sprite_accessory/body_markings/vulpkanin/belly_crest_vulp
 	name = "Vulpkanin Belly Crest"
 	icon_state = "markings_belly_crest_vulp"
+	body_parts = list("chest", "groin")
 
 /datum/sprite_accessory/body_markings/vulpkanin/points_fade_vulp
 	name = "Vulpkanin Points"
 	icon_state = "markings_points_fade_vulp"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand")
 
 /datum/sprite_accessory/body_markings/vulpkanin/points_fade_belly_vulp
 	name = "Vulpkanin Points and Belly"
 	icon_state = "markings_points_fade_belly_vulp"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/vulpkanin/points_fade_belly_alt_vulp
 	name = "Vulpkanin Points and Belly Alt."
 	icon_state = "markings_points_fade_belly_alt_vulp"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/vulpkanin/points_sharp_vulp
 	name = "Vulpkanin Points 2"
 	icon_state = "markings_points_sharp_vulp"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand")
 
 /datum/sprite_accessory/body_markings/vulpkanin/points_crest_vulp
 	name = "Vulpkanin Points and Crest"
 	icon_state = "markings_points_crest_vulp"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/drask
 	species_allowed = list("Drask")
@@ -2091,9 +2110,10 @@
 /datum/sprite_accessory/body_markings/drask/arm_spines_drask
 	name = "Drask Arm Spines"
 	icon_state = "markings_armspines_drask"
+	body_parts = list("l_arm", "r_arm")
 
 /datum/sprite_accessory/body_markings/head
-	marking_location = "head"
+	body_parts = list("head")
 	species_allowed = list()
 
 /datum/sprite_accessory/body_markings/head/kidan
@@ -2268,23 +2288,28 @@
 	name = "Elliot Circuit Tattoo"
 	icon_state = "campbell_tattoo"
 	species_allowed = null
+	body_parts = list("r_arm")
 
 /datum/sprite_accessory/body_markings/tattoo/tiger_body
 	name = "Tiger-stripe Tattoo"
 	species_allowed = list("Human", "Unathi", "Vulpkanin", "Tajaran", "Skrell")
 	icon_state = "markings_tiger"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tattoo/heart
 	name = "Heart Tattoo"
 	icon_state = "markings_tattoo_heart"
+	body_parts = list("r_arm")
 
 /datum/sprite_accessory/body_markings/tattoo/hive
 	name = "Hive Tattoo"
 	icon_state = "markings_tattoo_hive"
+	body_parts = list("l_arm", "r_arm", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tattoo/nightling
 	name = "Nightling Tattoo"
 	icon_state = "markings_tattoo_nightling"
+	body_parts = list("l_arm", "r_arm", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tattoo/grey
 	species_allowed = list("Grey")
@@ -2292,18 +2317,22 @@
 /datum/sprite_accessory/body_markings/tattoo/grey/heart_grey
 	name = "Grey Heart Tattoo"
 	icon_state = "markings_tattoo_heart_grey"
+	body_parts = list("r_arm")
 
 /datum/sprite_accessory/body_markings/tattoo/grey/hive_grey
 	name = "Grey Hive Tattoo"
 	icon_state = "markings_tattoo_hive_grey"
+	body_parts = list("l_arm", "r_arm", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tattoo/grey/nightling_grey
 	name = "Grey Nightling Tattoo"
 	icon_state = "markings_tattoo_nightling_grey"
+	body_parts = list("l_arm", "r_arm", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tattoo/grey/tiger_body_grey
 	name = "Grey Tiger-stripe Tattoo"
 	icon_state = "markings_tattoo_tiger_grey"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tattoo/vox
 	species_allowed = list("Vox")
@@ -2311,18 +2340,22 @@
 /datum/sprite_accessory/body_markings/tattoo/vox/heart_vox
 	name = "Vox Heart Tattoo"
 	icon_state = "markings_tattoo_heart_vox"
+	body_parts = list("r_arm")
 
 /datum/sprite_accessory/body_markings/tattoo/vox/hive_vox
 	name = "Vox Hive Tattoo"
 	icon_state = "markings_tattoo_hive_vox"
+	body_parts = list("l_arm", "r_arm", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tattoo/vox/nightling_vox
 	name = "Vox Nightling Tattoo"
 	icon_state = "markings_tattoo_nightling_vox"
+	body_parts = list("l_arm", "r_arm", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tattoo/vox/tiger_body_vox
 	name = "Vox Tiger-stripe Tattoo"
 	icon_state = "markings_tattoo_tiger_vox"
+	body_parts = list("l_foot", "r_foot", "l_leg", "r_leg", "l_arm", "r_arm", "l_hand", "r_hand", "chest", "groin")
 
 /datum/sprite_accessory/body_markings/tail
 	species_allowed = list()

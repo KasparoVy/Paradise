@@ -120,14 +120,23 @@ var/global/list/limb_icon_cache = list()
 		overlays |= lip_icon
 		mob_icon.Blend(lip_icon, ICON_OVERLAY)
 
-	var/head_marking = owner.m_styles["head"]
+	//Head markings, duplicated (sadly) below.
+	for(var/M in markings)
+		var/datum/sprite_accessory/marking/mark_style = markings[M]["datum"]
+		var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[limb_name]")
+		mark_s.Blend(markings[M]["color"], ICON_ADD)
+		overlays |= mark_s
+		mob_icon.Blend(mark_s, ICON_OVERLAY)
+		//icon_cache_key += "[M][markings[M]["color"]]"
+
+	/*var/head_marking = owner.m_styles["head"]
 	if(head_marking && head_marking != "None")
 		var/datum/sprite_accessory/head_marking_style = marking_styles_list[head_marking]
 		if(head_marking_style && head_marking_style.species_allowed && (species.name in head_marking_style.species_allowed) && head_marking_style.marking_location == "head")
 			var/icon/h_marking_s = new/icon("icon" = head_marking_style.icon, "icon_state" = "[head_marking_style.icon_state]_s")
 			if(head_marking_style.do_colouration)
 				h_marking_s.Blend(owner.m_colours["head"], ICON_ADD)
-			overlays |= h_marking_s
+			overlays |= h_marking_s*/
 
 	if(ha_style)
 		var/datum/sprite_accessory/head_accessory_style = head_accessory_styles_list[ha_style]

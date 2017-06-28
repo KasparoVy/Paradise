@@ -252,6 +252,9 @@ var/global/list/damage_icon_parts = list()
 			if(part.s_tone)
 				icon_key += "[part.s_tone]"
 
+			for(var/M in part.markings) //Apply markings with their hexcolour.
+				icon_key += "[M][part.markings[M]["color"]]"
+
 	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0]"
 
 	var/icon/base_icon

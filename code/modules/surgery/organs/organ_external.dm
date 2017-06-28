@@ -26,6 +26,7 @@
 	var/burn_dam = 0
 	var/max_size = 0
 	var/icon/mob_icon
+	var/list/markings = list() //Markings that will be applied to the limb during icon generation.
 	var/gendered_icon = 0
 	var/limb_name
 	var/disfigured = 0
