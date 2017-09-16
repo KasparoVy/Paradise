@@ -106,6 +106,8 @@
 	if(species)
 		species.handle_death(src)
 
+	stop_tail_wagging()
+
 	callHook("death", list(src, gibbed))
 
 	if(ishuman(LAssailant))
@@ -139,7 +141,7 @@
 
 /mob/living/carbon/human/proc/makeSkeleton()
 	var/obj/item/organ/external/head/H = get_organ("head")
-	if(SKELETON in src.mutations)	return
+	if(SKELETON in mutations)	return
 
 	if(istype(H))
 		if(H.f_style)
@@ -148,9 +150,7 @@
 			H.h_style = initial(H.h_style)
 		if(H.ha_style)
 			H.ha_style = initial(H.ha_style)
-		if(H.alt_head)
-			H.alt_head = initial(H.alt_head)
-			H.handle_alt_icon()
+
 	m_styles = DEFAULT_MARKING_STYLES
 	update_fhair(0)
 	update_hair(0)

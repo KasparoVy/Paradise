@@ -50,6 +50,42 @@
 	parent_organ = "chest"
 	amputation_point = "lumbar"
 	gendered_icon = 1
+	//convertable_children = list(/obj/item/organ/external/tail) //Robotic tails? LQ-84i ftw
+
+/obj/item/organ/external/tail
+	name = "tail"
+	limb_name = "tail"
+	icon_name = "tail"
+	max_damage = 35
+	min_broken_damage = 20
+	w_class = WEIGHT_CLASS_NORMAL
+	body_part = LOWER_TORSO
+	parent_organ = "groin"
+	amputation_point = "pelvis"
+	var/wagging = FALSE
+
+/obj/item/organ/external/tail/toggle_wagging()
+	if(!wagging)
+		var/icon_file = get_icon_state()
+		var/icon/tail_file = new(icon_file[1])
+		if("[icon_name]_w" in tail_file.IconStates) //Safety for tails that don't have wagging icons.
+			wagging = TRUE
+			icon_name = "[icon_name]_w"
+			return TRUE
+	else
+		wagging = FALSE
+		icon_name = replacetext(icon_name, "_w", "", -2)
+		return TRUE
+
+	if(owner)
+		owner.update_body(1, 1) //Update the body and force limb icon regeneration to update with the new icon.
+	else
+
+
+/obj/item/organ/external/tail/remove()
+	if(wagging)
+		toggle_wagging()
+	..()
 
 /obj/item/organ/external/arm
 	limb_name = "l_arm"
@@ -166,7 +202,6 @@
 	gendered_icon = 1
 	encased = "skull"
 	var/can_intake_reagents = 1
-	var/alt_head = "None"
 
 	//Hair colour and style
 	var/r_hair = 0
@@ -228,17 +263,6 @@
 				disfigure("brute")
 		if(burn_dam > 40)
 			disfigure("burn")
-
-/obj/item/organ/external/head/proc/handle_alt_icon()
-	if(alt_head && alt_heads_list[alt_head])
-		var/datum/sprite_accessory/alt_heads/alternate_head = alt_heads_list[alt_head]
-		if(alternate_head.icon_state)
-			icon_name = alternate_head.icon_state
-		else //If alternate_head.icon_state doesn't exist, that means alternate_head is "None", so default icon_name back to "head".
-			icon_name = initial(icon_name)
-	else //If alt_head is null, set it to "None" and default icon_name for sanity.
-		alt_head = initial(alt_head)
-		icon_name = initial(icon_name)
 
 /obj/item/organ/external/head/set_dna(datum/dna/new_dna)
 	..()

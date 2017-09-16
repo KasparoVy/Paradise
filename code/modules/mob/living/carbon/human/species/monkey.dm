@@ -23,8 +23,6 @@
 	male_scream_sound = 'sound/goonstation/voice/monkey_scream.ogg'
 	female_scream_sound = 'sound/goonstation/voice/monkey_scream.ogg'
 
-	tail = "chimptail"
-	bodyflags = HAS_TAIL
 	reagent_tag = PROCESS_ORG
 	//Has standard darksight of 2.
 
@@ -34,6 +32,21 @@
 	total_health = 75
 	brute_mod = 1.5
 	burn_mod = 1.5
+
+	has_limbs = list(
+		"chest"		= list("path" = /obj/item/organ/external/chest),
+		"groin"		= list("path" = /obj/item/organ/external/groin),
+		"head"		= list("path" = /obj/item/organ/external/head),
+		"l_arm"		= list("path" = /obj/item/organ/external/arm),
+		"r_arm"		= list("path" = /obj/item/organ/external/arm/right),
+		"l_leg"		= list("path" = /obj/item/organ/external/leg),
+		"r_leg"		= list("path" = /obj/item/organ/external/leg/right),
+		"l_hand"	= list("path" = /obj/item/organ/external/hand),
+		"r_hand"	= list("path" = /obj/item/organ/external/hand/right),
+		"l_foot"	= list("path" = /obj/item/organ/external/foot),
+		"r_foot"	= list("path" = /obj/item/organ/external/foot/right),
+		"tail"		= list("path" = /obj/item/organ/external/tail)
+		)
 
 /datum/species/monkey/handle_npc(var/mob/living/carbon/human/H)
 	if(H.stat != CONSCIOUS)
@@ -104,7 +117,6 @@
 	default_language = "Farwa"
 	flesh_color = "#AFA59E"
 	base_color = "#000000"
-	tail = "farwatail"
 	reagent_tag = PROCESS_ORG
 	has_organ = list(
 		"heart" =    /obj/item/organ/internal/heart,
@@ -128,7 +140,6 @@
 	default_language = "Wolpin"
 	flesh_color = "#966464"
 	base_color = "#000000"
-	tail = "wolpintail"
 	reagent_tag = PROCESS_ORG
 	has_organ = list(
 		"heart" =    /obj/item/organ/internal/heart,
@@ -153,7 +164,19 @@
 	flesh_color = "#8CD7A3"
 	blood_color = "#1D2CBF"
 	reagent_tag = PROCESS_ORG
-	tail = null
+	has_limbs = list(
+		"chest"		= list("path" = /obj/item/organ/external/chest),
+		"groin"		= list("path" = /obj/item/organ/external/groin),
+		"head"		= list("path" = /obj/item/organ/external/head),
+		"l_arm"		= list("path" = /obj/item/organ/external/arm),
+		"r_arm"		= list("path" = /obj/item/organ/external/arm/right),
+		"l_leg"		= list("path" = /obj/item/organ/external/leg),
+		"r_leg"		= list("path" = /obj/item/organ/external/leg/right),
+		"l_hand"	= list("path" = /obj/item/organ/external/hand),
+		"r_hand"	= list("path" = /obj/item/organ/external/hand/right),
+		"l_foot"	= list("path" = /obj/item/organ/external/foot),
+		"r_foot"	= list("path" = /obj/item/organ/external/foot/right)
+		)
 
 /datum/species/monkey/unathi
 	name = "Stok"
@@ -162,11 +185,8 @@
 	icobase = 'icons/mob/human_races/monkeys/r_stok.dmi'
 	deform = 'icons/mob/human_races/monkeys/r_stok.dmi'
 
-	tail = "stoktail"
 	greater_form = "Unathi"
 	default_language = "Stok"
 	flesh_color = "#34AF10"
 	base_color = "#000000"
 	reagent_tag = PROCESS_ORG
-
-	bodyflags = HAS_TAIL

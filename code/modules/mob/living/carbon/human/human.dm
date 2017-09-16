@@ -2054,3 +2054,14 @@ mob/living/carbon/human/get_taste_sensitivity()
 		return species.taste_sensitivity
 	else
 		return 1
+
+/mob/living/carbon/human/proc/stop_tail_wagging()
+	var/obj/item/organ/external/tail = get_organ("tail")
+	if(tail && tail.wagging)
+		return tail.toggle_wagging()
+
+/mob/living/carbon/human/proc/start_tail_wagging()
+	var/obj/item/organ/external/tail = get_organ("tail")
+	if(tail && !tail.wagging)
+		tail.toggle_wagging()
+		return tail.toggle_wagging()

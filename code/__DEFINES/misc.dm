@@ -209,39 +209,39 @@
 
 //Human Overlays Indexes/////////
 #define MUTANTRACE_LAYER		1
-#define TAIL_UNDERLIMBS_LAYER	2	//Tail split-rendering.
-#define LIMBS_LAYER				3
-#define MARKINGS_LAYER			4
-#define UNDERWEAR_LAYER			5
-#define MUTATIONS_LAYER			6
-#define DAMAGE_LAYER			7
-#define UNIFORM_LAYER			8
-#define ID_LAYER				9
-#define SHOES_LAYER				10
-#define GLOVES_LAYER			11
-#define EARS_LAYER				12
-#define SUIT_LAYER				13
-#define BELT_LAYER				14	//Possible make this an overlay of somethign required to wear a belt?
-#define SUIT_STORE_LAYER		15
-#define BACK_LAYER				16
-#define HEAD_ACCESSORY_LAYER	17
-#define FHAIR_LAYER				18
-#define GLASSES_LAYER			19
-#define HAIR_LAYER				20	//TODO: make part of head layer?
-#define HEAD_ACC_OVER_LAYER		21	//Select-layer rendering.
-#define FHAIR_OVER_LAYER		22	//Select-layer rendering.
-#define GLASSES_OVER_LAYER		23	//Select-layer rendering.
-#define TAIL_LAYER				24	//bs12 specific. this hack is probably gonna come back to haunt me
-#define FACEMASK_LAYER			25
-#define HEAD_LAYER				26
-#define COLLAR_LAYER			27
-#define HANDCUFF_LAYER			28
-#define LEGCUFF_LAYER			29
-#define L_HAND_LAYER			30
-#define R_HAND_LAYER			31
-#define TARGETED_LAYER			32	//BS12: Layer for the target overlay from weapon targeting system
-#define FIRE_LAYER				33	//If you're on fire
-#define TOTAL_LAYERS			33
+//#define UNDERLIMBS_LAYER		2	//Tail split-rendering.
+#define LIMBS_LAYER				2
+#define MARKINGS_LAYER			3
+#define UNDERWEAR_LAYER			4
+#define MUTATIONS_LAYER			5
+#define DAMAGE_LAYER			6
+#define UNIFORM_LAYER			7
+#define ID_LAYER				8
+#define SHOES_LAYER				9
+#define GLOVES_LAYER			10
+#define EARS_LAYER				11
+#define SUIT_LAYER				12
+#define BELT_LAYER				13	//Possible make this an overlay of somethign required to wear a belt?
+#define SUIT_STORE_LAYER		14
+#define BACK_LAYER				15
+#define HEAD_ACCESSORY_LAYER	16
+#define FHAIR_LAYER				17
+#define GLASSES_LAYER			18
+#define HAIR_LAYER				19	//TODO: make part of head layer?
+#define HEAD_ACC_OVER_LAYER		20	//Select-layer rendering.
+#define FHAIR_OVER_LAYER		21	//Select-layer rendering.
+#define GLASSES_OVER_LAYER		22	//Select-layer rendering.
+#define BODY_ACCESSORY_LAYER	23	//bs12 specific. this hack is probably gonna come back to haunt me
+#define FACEMASK_LAYER			24
+#define HEAD_LAYER				25
+#define COLLAR_LAYER			26
+#define HANDCUFF_LAYER			27
+#define LEGCUFF_LAYER			28
+#define L_HAND_LAYER			29
+#define R_HAND_LAYER			30
+#define TARGETED_LAYER			31	//BS12: Layer for the target overlay from weapon targeting system
+#define FIRE_LAYER				32	//If you're on fire
+#define TOTAL_LAYERS			32
 
 ///Access Region Codes///
 #define REGION_ALL			0

@@ -24,7 +24,7 @@ var/global/list/socks_list = list()		//stores /datum/sprite_accessory/socks inde
 var/global/list/socks_m = list()	 //stores only socks name
 var/global/list/socks_f = list()	 //stores only socks name
 	//Alt Heads
-var/global/list/alt_heads_list = list()	//stores /datum/sprite_accessory/alt_heads indexed by name
+var/global/list/alt_limb_icons_list = list()	//stores /datum/sprite_accessory/alt_limb_icons indexed by name
 
 var/static/list/scarySounds = list('sound/weapons/thudswoosh.ogg','sound/weapons/Taser.ogg','sound/weapons/armbomb.ogg','sound/voice/hiss1.ogg','sound/voice/hiss2.ogg', \
 'sound/voice/hiss3.ogg','sound/voice/hiss4.ogg','sound/voice/hiss5.ogg','sound/voice/hiss6.ogg','sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg', \

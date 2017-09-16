@@ -4,7 +4,6 @@
 	icobase = 'icons/mob/human_races/r_wryn.dmi'
 	deform = 'icons/mob/human_races/r_wryn.dmi'
 	language = "Wryn Hivemind"
-	tail = "wryntail"
 	unarmed_type = /datum/unarmed_attack/punch/weak
 	punchdamagelow = 0
 	punchdamagehigh = 1

@@ -39,12 +39,12 @@
 			else
 				return
 		if("howl", "howls")
-			if (species.name == "Vulpkanin")		//Only Vulpkanin can howl
+			if(species.name == "Vulpkanin")		//Only Vulpkanin can howl
 				on_CD = handle_emote_CD(100)
 			else
 				return
 		if("growl", "growls")
-			if (species.name == "Vulpkanin")		//Only Vulpkanin can growl
+			if(species.name == "Vulpkanin")		//Only Vulpkanin can growl
 				on_CD = handle_emote_CD()
 			else
 				return
@@ -192,25 +192,30 @@
 			m_type = 2
 
 		if("wag", "wags")
-			if(body_accessory)
-				if(body_accessory.try_restrictions(src))
-					message = "<B>[src]</B> starts wagging \his tail."
-					start_tail_wagging(1)
+			var/obj/item/organ/external/tail = get_organ("tail")
+			if(tail)
+				var/tail_fail = null
+				if(tail.status & ORGAN_CUT_AWAY|ORGAN_DEAD)
+					tail_fail = "you can't wag what you can't feel"
+				if(tail.status & ORGAN_BROKEN|ORGAN_DESTROYED|ORGAN_MUTATED)
+					tail_fail = "it much too painful an ordeal"
+				if(tail.status & ORGAN_SPLINTED)
+					tail_fail = "yourself unable to move it"
+				if(tail_fail)
+					to_chat(user, "You try to wag your tail but find [tail_fail].")
+					return
 
-			else if(species.bodyflags & TAIL_WAGGING)
-				if(!wear_suit || !(wear_suit.flags_inv & HIDETAIL) && !istype(wear_suit, /obj/item/clothing/suit/space))
+				if(!wear_suit || !(wear_suit.flags_inv & HIDETAIL) && !istype(wear_suit, /obj/item/clothing/suit/space) && start_tail_wagging())
 					message = "<B>[src]</B> starts wagging \his tail."
-					start_tail_wagging(1)
 				else
 					return
-			else
-				return
-			m_type = 1
+
+				m_type = 1
 
 		if("swag", "swags")
-			if(species.bodyflags & TAIL_WAGGING || body_accessory)
+			var/obj/item/organ/external/tail = get_organ("tail")
+			if(tail && stop_tail_wagging())
 				message = "<B>[src]</B> stops wagging \his tail."
-				stop_tail_wagging(1)
 			else
 				return
 			m_type = 1

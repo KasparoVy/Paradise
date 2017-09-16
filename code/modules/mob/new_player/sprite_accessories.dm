@@ -45,8 +45,7 @@
 	// Restrict some styles to specific species
 	var/list/species_allowed = list("Human", "Slime People")
 	var/list/models_allowed = list() //Specifies which, if any, hairstyles or markings can be accessed by which prosthetics. Should equal the manufacturing company name in robolimbs.dm.
-	var/list/heads_allowed = null //Specifies which, if any, alt heads a head marking, hairstyle or facial hair style is compatible with.
-	var/list/tails_allowed = null //Specifies which, if any, tails a tail marking is compatible with.
+	var/list/alt_limbs_allowed = null //Specifies which, if any, alt limb a sprite accessory is compatible with.
 	var/marking_location //Specifies which bodypart a body marking is located on.
 	var/secondary_theme = null //If exists, there's a secondary colour to that hair style and the secondary theme's icon state's suffix is equal to this.
 	var/no_sec_colour = null //If exists, prohibit the colouration of the secondary theme.
@@ -2207,7 +2206,7 @@
 /datum/sprite_accessory/body_markings/head/unathi/tiger_head_una
 	name = "Unathi Tiger Head"
 	icon_state = "markings_head_tiger_una"
-	heads_allowed = list("All")
+	alt_limbs_allowed = list("All")
 
 /datum/sprite_accessory/body_markings/head/unathi/tiger_face_una
 	name = "Unathi Tiger Head and Face"
@@ -2220,12 +2219,12 @@
 /datum/sprite_accessory/body_markings/head/unathi/snout_lower_una_round
 	name = "Unathi Lower Round Snout"
 	icon_state = "markings_face_snout_lower_una"
-	heads_allowed = list("All")
+	alt_limbs_allowed = list("All")
 
 /datum/sprite_accessory/body_markings/head/unathi/banded_una //Companion marking for Unathi Banded.
 	name = "Unathi Banded Head"
 	icon_state = "markings_face_banded_una"
-	heads_allowed = list("All")
+	alt_limbs_allowed = list("All")
 
 /datum/sprite_accessory/body_markings/head/unathi/snout_narrow_una //Companion marking for Unathi Narrow Belly.
 	name = "Unathi Snout 2"
@@ -2236,7 +2235,7 @@
 	icon_state = "markings_face_points_una"
 
 /datum/sprite_accessory/body_markings/head/unathi/sharp
-	heads_allowed = list("Unathi Sharp Snout")
+	alt_limbs_allowed = list("Unathi Sharp Snout")
 
 /datum/sprite_accessory/body_markings/head/unathi/sharp/tiger_face_una_sharp
 	name = "Unathi Sharp Tiger Head and Face"
@@ -2361,7 +2360,7 @@
 	species_allowed = list()
 	icon_state = "accessory_none"
 	marking_location = "tail"
-	tails_allowed = null
+	alt_limbs_allowed = null
 
 /datum/sprite_accessory/body_markings/tail/vox
 	species_allowed = list("Vox")
@@ -2391,42 +2390,102 @@
 
 /datum/sprite_accessory/body_markings/tail/vulpkanin/vulp_bushy_fluff
 	name = "Vulpkanin Bushy Tail Fluff"
-	tails_allowed = list("Vulpkanin Alt 1 (Bushy)")
+	alt_limbs_allowed = list("Bushy Vulpkanin Tail")
 	icon_state = "markings_vulptail2_fluff"
 
 /datum/sprite_accessory/body_markings/tail/vulpkanin/vulp_short_tip
 	name = "Vulpkanin Short Tail Tip"
-	tails_allowed = list("Vulpkanin Alt 4 (Short)")
+	alt_limbs_allowed = list("Short Vulpkanin Tail")
 	icon_state = "markings_vulptail5_tip"
 
 /datum/sprite_accessory/body_markings/tail/vulpkanin/vulp_hybrid_tip
 	name = "Vulpkanin Bushy Straight Tail Tip"
-	tails_allowed = list("Vulpkanin Alt 5 (Straight Bushy)")
+	alt_limbs_allowed = list("Bushy Straight Vulpkanin Tail")
 	icon_state = "markings_vulptail6_tip"
 
 /datum/sprite_accessory/body_markings/tail/vulpkanin/vulp_hybrid_fade
 	name = "Vulpkanin Bushy Straight Tail Fade"
-	tails_allowed = list("Vulpkanin Alt 5 (Straight Bushy)")
+	alt_limbs_allowed = list("Bushy Straight Vulpkanin Tail")
 	icon_state = "markings_vulptail6_fade"
 
 /datum/sprite_accessory/body_markings/tail/vulpkanin/vulp_hybrid_silverf
 	name = "Vulpkanin Bushy Straight Tail Black Fade White Tip"
-	tails_allowed = list("Vulpkanin Alt 5 (Straight Bushy)")
+	alt_limbs_allowed = list("Bushy Straight Vulpkanin Tail")
 	icon_state = "markings_vulptail6_silverf"
 
 /* ALT HEADS */
 
-/datum/sprite_accessory/alt_heads
+/datum/sprite_accessory/alt_limb_icons
+	limb_name = null
 	icon = null
 	icon_state = null
+	var/animated_icon_state = null
 	species_allowed = null
 	var/suffix = null
 
-/datum/sprite_accessory/alt_heads/none
+/datum/sprite_accessory/alt_limb_icons/proc/get_animated_icon_state() //return animated if it has it, return static if it does not.
+	return (animated_icon_state ? animated_icon_state : icon_state)
+
+/datum/sprite_accessory/alt_limb_icons/heads
+	limb_name = "head"
+
+/datum/sprite_accessory/alt_limb_icons/heads/none
 	name = "None"
 
-/datum/sprite_accessory/alt_heads/una_sharp_snout
-	name = "Unathi Sharp Snout"
+/datum/sprite_accessory/alt_limb_icons/heads/unathi
 	species_allowed = list("Unathi")
+
+/datum/sprite_accessory/alt_limb_icons/heads/unathi/sharp_snout
+	name = "Unathi Sharp Snout"
 	icon_state = "head_sharp"
 	suffix = "sharp"
+
+/* ALT TAILS */
+
+/datum/sprite_accessory/alt_limb_icons/tails
+	limb_name = "tail"
+
+/datum/sprite_accessory/alt_limb_icons/tails/none
+	name = "None"
+
+/datum/sprite_accessory/alt_limb_icons/tails/tajaran
+	species_allowed = list("Tajaran")
+
+/datum/sprite_accessory/alt_limb_icons/tails/tajaran/wingler
+	name = "Striped Tajaran Tail"
+	icon_state = "tail_wingler"
+	animated_icon_state = "tail_wingler_w"
+	suffix = "wingler"
+
+/datum/sprite_accessory/alt_limb_icons/tails/vulpkanin
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/alt_limb_icons/tails/vulpkanin/bushy
+	name = "Bushy Vulpkanin Tail"
+	icon_state = "tail_bushy"
+	animated_icon_state = "tail_bushy_w"
+	suffix = "bushy"
+
+/datum/sprite_accessory/alt_limb_icons/tails/vulpkanin/straight
+	name = "Straight Vulpkanin Tail"
+	icon_state = "tail_straight"
+	animated_icon_state = "tail_straight_w"
+	suffix = "straight"
+
+/datum/sprite_accessory/alt_limb_icons/tails/vulpkanin/bushy_straight
+	name = "Bushy Straight Vulpkanin Tail"
+	icon_state = "tail_bushy_straight"
+	animated_icon_state = "tail_bushy_straight_w"
+	suffix = "bushy_straight"
+
+/datum/sprite_accessory/alt_limb_icons/tails/vulpkanin/tiny
+	name = "Tiny Vulpkanin Tail"
+	icon_state = "tail_tiny"
+	animated_icon_state = "tail_tiny_w"
+	suffix = "tiny"
+
+/datum/sprite_accessory/alt_limb_icons/tails/vulpkanin/short
+	name = "Short Vulpkanin Tail"
+	icon_state = "tail_short"
+	animated_icon_state = "tail_short_w"
+	suffix = "short"

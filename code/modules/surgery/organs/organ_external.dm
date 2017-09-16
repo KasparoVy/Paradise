@@ -20,6 +20,7 @@
 
 	var/icobase = 'icons/mob/human_races/r_human.dmi'		// Normal icon set.
 	var/deform = 'icons/mob/human_races/r_def_human.dmi'	// Mutated icon set.
+	var/alt_icon = null
 
 	var/damage_state = "00"
 	var/brute_dam = 0
@@ -754,3 +755,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 		var/obj/item/organ/external/L = X
 		for(var/obj/item/I in L.embedded_objects)
 			return 1
+
+/obj/item/organ/external/proc/handle_alt_icon() //All external limbs can have alt_icon processing so long as it doesn't inferfere with anything.
+	var/datum/sprite_accessory/alt_limb_icons/alternate_icon = alt_icons_list[alt_icon]
+	if(!(robotic && status & (ORGAN_ROBOTIC|ORGAN_ASSISTED)) && alt_icon && alternate_icon)
+		//If alternate_icon.icon_state doesn't exist, that means alternate_icon is "None", so default icon_name back to "icon".
+		icon_name = alternate_icon.icon_state ? alternate_icon.icon_state : initial(icon_name)
+	else //If alt_icon is null or the limb is mechanical, set it to "None" and default icon_name for sanity.
+		alt_icon = initial(alt_icon)
+		icon_name = initial(icon_name)
