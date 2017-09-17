@@ -73,4 +73,3 @@ var/global/default_martial_art = new/datum/martial_art
 	var/fire_sprite = "Standing"
 
 	var/datum/body_accessory/body_accessory = null
-	var/tail // Name of tail image in species effects icon file.

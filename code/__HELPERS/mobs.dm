@@ -119,7 +119,7 @@ proc/random_head_accessory(species = "Human")
 
 	return ha_style
 
-proc/random_marking_style(var/location = "body", species = "Human", var/datum/robolimb/robohead, var/body_accessory, var/alt_head)
+proc/random_marking_style(var/location = "body", species = "Human", var/datum/robolimb/robohead = all_robolimbs["Morpheus Cyberkinetics"], var/body_accessory, var/alt_limb_icon)
 	var/m_style = "None"
 	var/list/valid_markings = list()
 	for(var/marking in marking_styles_list)
@@ -131,26 +131,18 @@ proc/random_marking_style(var/location = "body", species = "Human", var/datum/ro
 			continue
 		if(!(species in S.species_allowed)) //If the user's head is not of a species the marking style allows, skip it. Otherwise, add it to the list.
 			continue
-		if(location == "tail")
-			if(!body_accessory)
-				if(S.tails_allowed)
-					continue
-			else
-				if(!S.tails_allowed || !(body_accessory in S.tails_allowed))
-					continue
-		if(location == "head")
-			var/datum/sprite_accessory/body_markings/head/M = marking_styles_list[S.name]
-			if(species == "Machine")//If the user is a species that can have a robotic head...
-				if(!robohead)
-					robohead = all_robolimbs["Morpheus Cyberkinetics"]
-				if(!(S.models_allowed && (robohead.company in S.models_allowed))) //Make sure they don't get markings incompatible with their head.
-					continue
-			else if(alt_head && alt_head != "None") //If the user's got an alt head, validate markings for that head.
-				if(!("All" in M.heads_allowed) && !(alt_head in M.heads_allowed))
-					continue
-			else
-				if(M.heads_allowed && !("All" in M.heads_allowed))
-					continue
+		if(location == "head" && species == "Machine")//If the user is a species that can have a robotic head...
+			if(!robohead)
+				robohead = all_robolimbs["Morpheus Cyberkinetics"]
+			if(!(S.models_allowed && (robohead.company in S.models_allowed))) //Make sure they don't get markings incompatible with their head.
+				continue
+
+		if(alt_limb_icon && alt_limb_icon != "None") //If the user's got an alt head, validate markings for that head.
+			if(!("All" in S.alt_limbs_allowed) && !(alt_limb_icon in S.alt_limbs_allowed))
+				continue
+		else
+			if(S.alt_limbs_allowed && !("All" in S.alt_limbs_allowed))
+				continue
 		valid_markings += marking
 
 	if(valid_markings.len)

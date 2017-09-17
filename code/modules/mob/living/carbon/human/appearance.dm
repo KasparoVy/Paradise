@@ -74,29 +74,19 @@
 	if(marking.name != "None" && marking.marking_location != location)
 		return
 
-	var/obj/item/organ/external/head/head_organ = get_organ("head")
-	if(location == "head")
-		if(!head_organ)
+	var/obj/item/organ/external/E = (location && location in list("head", "tail")) ? location : null
+
+	if(location != "body" && !E)
+		return
+
+	var/datum/sprite_accessory/body_markings/M = marking_styles_list[marking_style]
+	if(E.alt_icon && E.alt_icon != "None")
+		if(marking.name != "None" && (!M.alt_limbs_allowed || (!("All" in M.alt_limbs_allowed) && !(E.alt_icon in M.alt_limbs_allowed))))
 			return
-
-		if(head_organ.alt_icon && head_organ.alt_icon != "None")
-			var/datum/sprite_accessory/body_markings/head/H = marking_styles_list[marking_style]
-			if(marking.name != "None" && (!H.heads_allowed || (!("All" in H.heads_allowed) && !(head_organ.alt_icon in H.heads_allowed))))
-				return
-		else
-			if(!head_organ.alt_icon || head_organ.alt_icon == "None")
-				head_organ.alt_icon = "None"
-				var/datum/sprite_accessory/body_markings/head/H = marking_styles_list[marking_style]
-				if(H.heads_allowed && !("All" in H.heads_allowed))
-					return
-
-	if(location == "tail" && marking.name != "None")
-		var/datum/sprite_accessory/body_markings/tail/tail_marking = marking_styles_list[marking_style]
-		if(!body_accessory)
-			if(tail_marking.tails_allowed)
-				return
-		else
-			if(!tail_marking.tails_allowed || !(body_accessory.name in tail_marking.tails_allowed))
+	else
+		if(!E.alt_icon || E.alt_icon == "None")
+			E.alt_icon = "None"
+			if(M.alt_limbs_allowed && !("All" in M.alt_limbs_allowed))
 				return
 
 	m_styles[location] = marking_style
@@ -128,7 +118,7 @@
 	if(!(alternate_icon || limb))
 		return
 	var/obj/item/organ/external/E = get_organ(limb)
-	if(!E || E.alt_icon == alternate_icon || (E.status & ORGAN_ROBOT) || (!(species.bodyflags & HAS_ALT_LIMBS) && alternate_icon != "None") || !(alternate_icon in alt_limb_icons_list))
+	if(!E || E.alt_icon == alternate_icon || (E.status & ORGAN_ROBOT) || !(alternate_icon in alt_limb_icons_list))
 		return
 
 	E.alt_icon = alternate_icon
@@ -305,7 +295,7 @@
 	m_colours[location] = colour
 
 	if(location == "tail")
-		update_tail_layer()
+		update_body(1, 1)
 	else
 		update_markings()
 	return 1
@@ -428,12 +418,9 @@
 
 /mob/living/carbon/human/proc/generate_valid_markings(var/location = "body")
 	var/list/valid_markings = new()
-	var/obj/item/organ/external/head/H = location == "head" ? get_organ(location) : null
-	if(!H && location == "head")
-		return //No head, no head markings.
-	var/obj/item/organ/external/tail/T = location == "tail" ? get_organ(location) : null
-	if(!T && location == "tail")
-		return //No tail, no tail markings.
+	var/obj/item/organ/external/E = (location in list("head", "tail")) ? get_organ(location) : null
+	if(!E && location != "body")
+		return
 
 	for(var/marking in marking_styles_list)
 		var/datum/sprite_accessory/body_markings/S = marking_styles_list[marking]
@@ -444,25 +431,21 @@
 			continue
 		if(!(species.name in S.species_allowed)) //If the user is not of a species the marking style allows, skip it. Otherwise, add it to the list.
 			continue
-		if(location == "tail")
-			if(T.alt_icon  && T.alt_icon != "None") //If the user's got an alt icon, validate markings for it.
-				if(!T.alt_icon in S.alt_limbs_allowed)
-					continue
-			else
-				if(S.alt_limbs_allowed && !("All" in S.alt_limbs_allowed)) //If the user doesn't have an alt icon, check if the marking will allow it.
-					continue
-		if(location == "head")
-			var/datum/sprite_accessory/body_markings/head/M = marking_styles_list[S.name]
-			if(H.species.bodyflags & ALL_RPARTS)//If the user is a species that can have a robotic head...
+
+		var/obj/item/organ/external/head/H = E
+		if(location == "head" && istype(H))
+			if(H.species.bodyflags & ALL_RPARTS) //If the user is a species that can have a robotic head...
 				var/datum/robolimb/robohead = all_robolimbs[H.model]
 				if(!(S.models_allowed && (robohead.company in S.models_allowed))) //Make sure they don't get markings incompatible with their head.
 					continue
-			else if(H.alt_icon && H.alt_icon != "None")
-				if(!M.alt_limbs_allowed || (!("All" in M.alt_limbs_allowed) && !(H.alt_icon in M.alt_limbs_allowed)))
-					continue
-			else
-				if(M.alt_limbs_allowed && !("All" in M.alt_limbs_allowed))
-					continue
+
+		if(E.alt_icon  && E.alt_icon != "None") //If the user's got an alt icon, validate markings for it.
+			if(!E.alt_icon in S.alt_limbs_allowed)
+				continue
+		else
+			if(S.alt_limbs_allowed && !("All" in S.alt_limbs_allowed)) //If the user doesn't have an alt icon, check if the marking will allow it.
+				continue
+
 		valid_markings += marking
 
 	return valid_markings
@@ -489,12 +472,12 @@
 		return //No limb, no alt limb icons.
 	valid_alt_limb_icons["None"] = alt_limb_icons_list["None"] //The only null entry should be the "None" option, and should always exist.
 	for(var/alternate_limb_icon in alt_limb_icons_list)
-		var/datum/sprite_accessory/alt_limb_icons/A = alt_limb_icons_list[alternate_limb]
+		var/datum/sprite_accessory/alt_limb_icons/A = alt_limb_icons_list[alternate_limb_icon]
 		if(limb != A.limb_name)
 			continue
-		if(!(species.name in E.species_allowed))
+		if(!(species.name in A.species_allowed))
 			continue
 
-		valid_alt_limb_icons += alternate_limb
+		valid_alt_limb_icons += alternate_limb_icon
 
 	return valid_alt_limb_icons

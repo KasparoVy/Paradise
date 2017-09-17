@@ -90,7 +90,7 @@ var/global/list/limb_icon_cache = list()
 				mob_icon.Blend(rgb(s_col[1], s_col[2], s_col[3]), ICON_ADD)
 
 	for(var/M in markings)
-		var/datum/sprite_accessory/marking/mark_style = markings[M]["datum"]
+		var/datum/sprite_accessory/body_markings/mark_style = markings[M]["datum"]
 		var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[organ_tag]")
 		mark_s.Blend(markings[M]["color"], ICON_ADD)
 		overlays |= mark_s //So when it's not on your body, it has icons
@@ -129,7 +129,7 @@ var/global/list/limb_icon_cache = list()
 
 	//Head markings, duplicated (sadly) below.
 	for(var/M in markings)
-		var/datum/sprite_accessory/marking/mark_style = markings[M]["datum"]
+		var/datum/sprite_accessory/body_markings/mark_style = markings[M]["datum"]
 		var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[limb_name]")
 		mark_s.Blend(markings[M]["color"], ICON_ADD)
 		overlays |= mark_s

@@ -195,21 +195,21 @@
 			var/obj/item/organ/external/tail = get_organ("tail")
 			if(tail)
 				var/tail_fail = null
-				if(tail.status & ORGAN_CUT_AWAY|ORGAN_DEAD)
+				if(tail.status & ORGAN_DEAD)
 					tail_fail = "you can't wag what you can't feel"
-				if(tail.status & ORGAN_BROKEN|ORGAN_DESTROYED|ORGAN_MUTATED)
+				if(tail.status & ORGAN_BROKEN|ORGAN_MUTATED)
 					tail_fail = "it much too painful an ordeal"
 				if(tail.status & ORGAN_SPLINTED)
 					tail_fail = "yourself unable to move it"
+				if(istype(wear_suit, /obj/item/clothing/suit/space) || (wear_suit.flags_inv & HIDETAIL))
+					tail_fail = "your suit much too restrictive"
+				if(!start_tail_wagging())
+					tail_fail = "you just can't bring yourself to do it"
 				if(tail_fail)
-					to_chat(user, "You try to wag your tail but find [tail_fail].")
+					to_chat(src, "You try to wag your tail but find [tail_fail].")
 					return
 
-				if(!wear_suit || !(wear_suit.flags_inv & HIDETAIL) && !istype(wear_suit, /obj/item/clothing/suit/space) && start_tail_wagging())
-					message = "<B>[src]</B> starts wagging \his tail."
-				else
-					return
-
+				message = "<B>[src]</B> starts wagging \his tail."
 				m_type = 1
 
 		if("swag", "swags")

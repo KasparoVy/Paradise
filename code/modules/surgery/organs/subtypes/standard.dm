@@ -64,11 +64,11 @@
 	amputation_point = "pelvis"
 	var/wagging = FALSE
 
-/obj/item/organ/external/tail/toggle_wagging()
+/obj/item/organ/external/tail/proc/toggle_wagging()
 	if(!wagging)
 		var/icon_file = get_icon_state()
 		var/icon/tail_file = new(icon_file[1])
-		if("[icon_name]_w" in tail_file.IconStates) //Safety for tails that don't have wagging icons.
+		if("[icon_name]_w" in tail_file.IconStates()) //Safety for tails that don't have wagging icons.
 			wagging = TRUE
 			icon_name = "[icon_name]_w"
 			return TRUE

@@ -1412,8 +1412,6 @@
 		if(oldspecies.default_genes.len)
 			oldspecies.handle_dna(src,1) // Remove any genes that belong to the old species
 
-	tail = species.tail
-
 	maxHealth = species.total_health
 
 	toxins_alert = 0
@@ -2056,12 +2054,11 @@ mob/living/carbon/human/get_taste_sensitivity()
 		return 1
 
 /mob/living/carbon/human/proc/stop_tail_wagging()
-	var/obj/item/organ/external/tail = get_organ("tail")
-	if(tail && tail.wagging)
-		return tail.toggle_wagging()
+	var/obj/item/organ/external/tail/T = get_organ("tail")
+	if(T && T.wagging)
+		return T.toggle_wagging()
 
 /mob/living/carbon/human/proc/start_tail_wagging()
-	var/obj/item/organ/external/tail = get_organ("tail")
-	if(tail && !tail.wagging)
-		tail.toggle_wagging()
-		return tail.toggle_wagging()
+	var/obj/item/organ/external/tail/T = get_organ("tail")
+	if(T && !T.wagging)
+		return T.toggle_wagging()

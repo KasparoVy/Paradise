@@ -757,8 +757,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			return 1
 
 /obj/item/organ/external/proc/handle_alt_icon() //All external limbs can have alt_icon processing so long as it doesn't inferfere with anything.
-	var/datum/sprite_accessory/alt_limb_icons/alternate_icon = alt_icons_list[alt_icon]
-	if(!(robotic && status & (ORGAN_ROBOTIC|ORGAN_ASSISTED)) && alt_icon && alternate_icon)
+	var/datum/sprite_accessory/alt_limb_icons/alternate_icon = alt_limb_icons_list[alt_icon]
+	if(!(robotic && status & (ORGAN_ROBOT|ORGAN_ASSISTED)) && alt_icon && alternate_icon)
 		//If alternate_icon.icon_state doesn't exist, that means alternate_icon is "None", so default icon_name back to "icon".
 		icon_name = alternate_icon.icon_state ? alternate_icon.icon_state : initial(icon_name)
 	else //If alt_icon is null or the limb is mechanical, set it to "None" and default icon_name for sanity.

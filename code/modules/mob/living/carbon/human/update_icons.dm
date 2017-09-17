@@ -257,21 +257,22 @@ var/global/list/damage_icon_parts = list()
 
 	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0]"
 
-	var/icon/base_icon
+	var/icon/base_icon = null
+	var/icon/tail_over_icon = null
 	if(human_icon_cache[icon_key] && !rebuild_base)
 		base_icon = human_icon_cache[icon_key]
 	else
 		//BEGIN CACHED ICON GENERATION.
 		var/obj/item/organ/external/chest = get_organ("chest")
 		base_icon = chest.get_icon(skeleton)
-		var/icon/tail_over_icon = null
 
 		for(var/obj/item/organ/external/part in bodyparts)
 			var/icon/temp = part.get_icon(skeleton)
-			if(istype(part, /obj/item/organ/external/tail)
+			if(istype(part, /obj/item/organ/external/tail))
 				var/obj/item/organ/external/tail/T = part
-				tail_over_icon = new(T.icon, (T.wagging ? "tail_w_timing" : "blank"))
-				tail_over_icon.Insert(new/icon(accessory_s, dir=NORTH), dir=NORTH)
+				var/icon_file = T.get_icon_state()
+				tail_over_icon = new(icon_file[1], (T.wagging ? "tail_w_timing" : "blank"))
+				tail_over_icon.Insert(new/icon(temp, dir=NORTH), dir=NORTH)
 			//That part makes left and right legs drawn topmost and lowermost when human looks WEST or EAST
 			//And no change in rendering for other parts (they icon_position is 0, so goes to 'else' part)
 			if(part.icon_position&(LEFT|RIGHT))
@@ -311,13 +312,13 @@ var/global/list/damage_icon_parts = list()
 	//END CACHED ICON GENERATION.
 	stand_icon.Blend(base_icon,ICON_OVERLAY)
 	if(!body_accessory && get_organ("tail")) // If the user's species is flagged to have a tail that needs to be overlapped by limbs... (having a non-tail body accessory like the snake body will override this)
-		overlays_standing[LIMBS_LAYER]	= image(stand_icon) // Diverts limbs to their own layer so they can overlay things (i.e. tails).
+		overlays_standing[LIMBS_LAYER] = image(stand_icon) // Diverts limbs to their own layer so they can overlay things (i.e. tails).
 		overlays_standing[BODY_ACCESSORY_LAYER]	= tail_over_icon ? image(tail_over_icon) : overlays_standing[BODY_ACCESSORY_LAYER]
 	else
 		overlays_standing[LIMBS_LAYER] = null // So we don't get the old species' sprite splatted on top of the new one's
 
 	//Underwear
-	overlays_standing[UNDERWEAR_LAYER]	= null
+	overlays_standing[UNDERWEAR_LAYER] = null
 	var/icon/underwear_standing = new/icon('icons/mob/underwear.dmi',"nude")
 
 	if(underwear && species.clothing_flags & HAS_UNDERWEAR)
@@ -1030,9 +1031,9 @@ var/global/list/damage_icon_parts = list()
 			inv.update_icon()
 	if(wear_mask && (istype(wear_mask, /obj/item/clothing/mask) || istype(wear_mask, /obj/item/clothing/accessory)))
 		var/obj/item/organ/external/head/head_organ = get_organ("head")
-		var/datum/sprite_accessory/alt_heads/alternate_head
-		if(head_organ.alt_head && head_organ.alt_head != "None")
-			alternate_head = alt_heads_list[head_organ.alt_head]
+		var/datum/sprite_accessory/alt_limb_icons/alternate_head = null
+		if(head_organ && head_organ.alt_icon && head_organ.alt_icon != "None")
+			alternate_head = alt_limb_icons_list[head_organ.alt_icon]
 
 		var/image/standing
 		var/icon/mask_icon = new(wear_mask.icon)

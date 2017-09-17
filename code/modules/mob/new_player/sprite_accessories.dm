@@ -2416,7 +2416,7 @@
 /* ALT HEADS */
 
 /datum/sprite_accessory/alt_limb_icons
-	limb_name = null
+	var/limb_name = null
 	icon = null
 	icon_state = null
 	var/animated_icon_state = null
