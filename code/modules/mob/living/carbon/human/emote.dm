@@ -203,7 +203,7 @@
 					tail_fail = "yourself unable to move it"
 				if(istype(wear_suit, /obj/item/clothing/suit/space) || (wear_suit.flags_inv & HIDETAIL))
 					tail_fail = "your suit much too restrictive"
-				if(!start_tail_wagging())
+				if(!start_tail_wagging()) //Catches occurances where certain tails won't have animated icons, thus can't wag.
 					tail_fail = "you just can't bring yourself to do it"
 				if(tail_fail)
 					to_chat(src, "You try to wag your tail but find [tail_fail].")

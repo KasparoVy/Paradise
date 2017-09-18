@@ -144,7 +144,6 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 	var/r_eyes = 0						//Eye color
 	var/g_eyes = 0						//Eye color
 	var/b_eyes = 0						//Eye color
-	var/alt_head = "None"				//Alt head style.
 	var/species = "Human"
 	var/language = "None"				//Secondary language
 	var/autohiss_mode = AUTOHISS_OFF	//Species autohiss level. OFF, BASIC, FULL.
@@ -367,9 +366,6 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 				dat += "<a href=\"byond://?_src_=prefs;preference=records;record=1\">Character Records</a><br>"
 
 			dat += "<h2>Limbs</h2>"
-			if(S.bodyflags & HAS_ALT_HEADS) //Species with alt heads.
-				dat += "<b>Alternate Head:</b> "
-				dat += "<a href='?_src_=prefs;preference=alt_head;task=input'>[alt_head]</a><br>"
 			dat += "<b>Limbs and Parts:</b> <a href='?_src_=prefs;preference=limbs;task=input'>Adjust</a><br>"
 			if(species != "Slime People" && species != "Machine")
 				dat += "<b>Internal Organs:</b> <a href='?_src_=prefs;preference=organs;task=input'>Adjust</a><br>"
@@ -1215,7 +1211,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 						ha_style = random_head_accessory(species)
 				if("m_style_head")
 					if(S.bodyflags & HAS_HEAD_MARKINGS) //Species with head markings.
-						m_styles["head"] = random_marking_style("head", species, robohead, null, alt_head)
+						m_styles["head"] = random_marking_style("head", species, robohead, null, (rlimb_data["head"] && organ_data["head"] == "alt_icon") ? rlimb_data["head"] : null)
 				if("m_head_colour")
 					if(S.bodyflags & HAS_HEAD_MARKINGS) //Species with head markings.
 						m_colours["head"] = rgb(rand(0,255), rand(0,255), rand(0,255))
@@ -1227,7 +1223,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 						m_colours["body"] = rgb(rand(0,255), rand(0,255), rand(0,255))
 				if("m_style_tail")
 					if(S.bodyflags & HAS_TAIL_MARKINGS) //Species with tail markings.
-						m_styles["tail"] = random_marking_style("tail", species, null, body_accessory)
+						m_styles["tail"] = random_marking_style("tail", species, null, (rlimb_data["tail"] && organ_data["tail"] == "alt_icon") ? rlimb_data["tail"] : null)
 				if("m_tail_colour")
 					if(S.bodyflags & HAS_TAIL_MARKINGS) //Species with tail markings.
 						m_colours["tail"] = rgb(rand(0,255), rand(0,255), rand(0,255))
@@ -1319,7 +1315,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							b_headacc = 0
 
 						if(NS.bodyflags & HAS_HEAD_MARKINGS) //Species with head markings.
-							m_styles["head"] = random_marking_style("head", species, robohead, null, alt_head)
+							m_styles["head"] = random_marking_style("head", species, robohead, null, (rlimb_data["head"] && organ_data["head"] == "alt_icon") ? rlimb_data["head"] : null)
 						else
 							m_styles["head"] = "None"
 							m_colours["head"] = "#000000"
@@ -1331,7 +1327,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							m_colours["body"] = "#000000"
 
 						if(NS.bodyflags & HAS_TAIL_MARKINGS) //Species with tail markings.
-							m_styles["tail"] = random_marking_style("tail", species, null, body_accessory)
+							m_styles["tail"] = random_marking_style("tail", species, null, (rlimb_data["tail"] && organ_data["tail"] == "alt_icon") ? rlimb_data["tail"] : null)
 						else
 							m_styles["tail"] = "None"
 							m_colours["tail"] = "#000000"
@@ -1360,12 +1356,11 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							g_skin = 0
 							b_skin = 0
 
-						alt_head = "None" //No alt heads on species that don't have them.
 						speciesprefs = 0 //My Vox tank shouldn't change how my future Grey talks.
 
 						body_accessory = null //no vulptail on humans damnit
 
-						//Reset prosthetics.
+						//Reset prosthetics and alt limb icons.
 						organ_data = list()
 						rlimb_data = list()
 
@@ -1482,7 +1477,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 						if(new_head_accessory_style)
 							ha_style = new_head_accessory_style
 
-				if("alt_head")
+				/*if("alt_head")
 					if(organ_data["head"] == "cyborg")
 						return
 					if(S.bodyflags & HAS_ALT_HEADS) //Species with alt heads.
@@ -1502,7 +1497,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							var/head_marking = m_styles["head"]
 							var/datum/sprite_accessory/body_markings/head/head_marking_style = marking_styles_list[head_marking]
 							if(!head_marking_style.heads_allowed || (!("All" in head_marking_style.heads_allowed) && !(alt_head in head_marking_style.heads_allowed)))
-								m_styles["head"] = "None"
+								m_styles["head"] = "None"*/
 
 				if("m_style_head")
 					if(S.bodyflags & HAS_HEAD_MARKINGS) //Species with head markings.
@@ -1514,11 +1509,11 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 								continue
 							if(M.marking_location != "head")
 								continue
-							if(alt_head && alt_head != "None")
-								if(!("All" in M.heads_allowed) && !(alt_head in M.heads_allowed))
+							if(organ_data["head"] == "alt_icon" && rlimb_data["head"] != "None")
+								if(!("All" in M.alt_limbs_allowed) && !(rlimb_data["head"] in M.alt_limbs_allowed))
 									continue
 							else
-								if(M.heads_allowed && !("All" in M.heads_allowed))
+								if(M.alt_limbs_allowed && !("All" in M.alt_limbs_allowed))
 									continue
 
 							if(S.bodyflags & ALL_RPARTS) //Species that can use prosthetic heads.
@@ -1581,11 +1576,11 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 								continue
 							if(!(species in M.species_allowed))
 								continue
-							if(!body_accessory)
-								if(M.tails_allowed)
+							if(organ_data["tail"] == "alt_icon" && rlimb_data["tail"] != "None")
+								if(!("All" in M.alt_limbs_allowed) && !(rlimb_data["tail"] in M.alt_limbs_allowed))
 									continue
 							else
-								if(!M.tails_allowed || !(body_accessory in M.tails_allowed))
+								if(M.alt_limbs_allowed && !("All" in M.alt_limbs_allowed))
 									continue
 
 							valid_markings += markingstyle
@@ -1780,13 +1775,15 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 					var/valid_limbs = list("Left Leg", "Right Leg", "Left Arm", "Right Arm", "Left Foot", "Right Foot", "Left Hand", "Right Hand")
 					if(S.bodyflags & ALL_RPARTS)
 						valid_limbs = list("Torso", "Lower Body", "Head", "Left Leg", "Right Leg", "Left Arm", "Right Arm", "Left Foot", "Right Foot", "Left Hand", "Right Hand")
+					if("tail" in S.has_limbs)
+						valid_limbs = list("Left Leg", "Right Leg", "Left Arm", "Right Arm", "Left Foot", "Right Foot", "Left Hand", "Right Hand", "Tail")
 					var/limb_name = input(user, "Which limb do you want to change?") as null|anything in valid_limbs
 					if(!limb_name) return
 
 					var/limb = null
 					var/second_limb = null // if you try to change the arm, the hand should also change
 					var/third_limb = null  // if you try to unchange the hand, the arm should also change
-					var/valid_limb_states = list("Normal", "Amputated", "Prosthesis")
+					var/valid_limb_states = list("Normal", "Amputated", "Prosthesis", "Alternate Icon")
 					var/no_amputate = 0
 
 					switch(limb_name)
@@ -1828,6 +1825,8 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							limb = "r_hand"
 							if(!(S.bodyflags & ALL_RPARTS))
 								third_limb = "r_arm"
+						if("Tail")
+							limb = "tail"
 
 					var/new_state = input(user, "What state do you wish the limb to be in?") as null|anything in valid_limb_states
 					if(!new_state) return
@@ -1886,7 +1885,6 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 									return
 								if(limb == "head")
 									ha_style = "None"
-									alt_head = null
 									h_style = hair_styles_list["Bald"]
 									f_style = facial_hair_styles_list["Shaved"]
 									m_styles["head"] = "None"
@@ -1900,6 +1898,29 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 								else
 									rlimb_data[second_limb] = choice
 									organ_data[second_limb] = "cyborg"
+						if("Alternate Icon")
+							var/list/valid_alt_limb_icons = list()
+							valid_alt_limb_icons["None"] = alt_limb_icons_list["None"] //The only null entry should be the "None" option, and should always exist.
+							for(var/alternate_limb_icon in alt_limb_icons_list)
+								var/datum/sprite_accessory/alt_limb_icons/A = alt_limb_icons_list[alternate_limb_icon]
+								if(limb != A.limb_name)
+									continue
+								if(!(species in A.species_allowed))
+									continue
+
+								valid_alt_limb_icons += alternate_limb_icon
+
+							if(valid_alt_limb_icons.len > 1)
+								var/new_alt_limb_icon = input(user, "Which alternate appearance would you like your [limb] to have?")  as null|anything in valid_alt_limb_icons
+								if(new_alt_limb_icon)
+									if(m_styles[limb])
+										var/marking = m_styles[limb]
+										var/datum/sprite_accessory/body_markings/marking_style = marking_styles_list[marking]
+										if(!marking_style.alt_limbs_allowed || (!("All" in marking_style.alt_limbs_allowed) && !(new_alt_limb_icon in marking_style.alt_limbs_allowed)))
+											m_styles[limb] = "None"
+									rlimb_data[limb] = new_alt_limb_icon
+									organ_data[limb] = "alt_icon"
+
 				if("organs")
 					var/organ_name = input(user, "Which internal function do you want to change?") as null|anything in list("Heart", "Eyes")
 					if(!organ_name) return
@@ -2138,16 +2159,13 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 	H.h_style = h_style
 	H.f_style = f_style
 
-	H.alt_head = alt_head
-	//End of head-specific.
-
 	character.r_skin = r_skin
 	character.g_skin = g_skin
 	character.b_skin = b_skin
 
 	character.s_tone = s_tone
 
-	// Destroy/cyborgize organs
+	// Destroy/cyborgize/alt_iconize organs
 	for(var/name in organ_data)
 
 		var/status = organ_data[name]
@@ -2155,12 +2173,15 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 		if(O)
 			if(status == "amputated")
 				qdel(O.remove(character))
-
 			else if(status == "cyborg")
 				if(rlimb_data[name])
 					O.robotize(rlimb_data[name], convert_all = 0)
 				else
 					O.robotize()
+			else if(status == "alt_icon")
+				if(name in m_styles)
+					m_styles[name] = "None"
+				O.alt_icon = rlimb_data[name]
 		else
 			var/obj/item/organ/internal/I = character.get_int_organ_tag(name)
 			if(I)

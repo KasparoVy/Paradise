@@ -71,16 +71,15 @@
 		if("[icon_name]_w" in tail_file.IconStates()) //Safety for tails that don't have wagging icons.
 			wagging = TRUE
 			icon_name = "[icon_name]_w"
+			if(owner)
+				owner.update_body(1, 1) //Update the body and force limb icon regeneration to update with the new icon.
 			return TRUE
 	else
 		wagging = FALSE
 		icon_name = replacetext(icon_name, "_w", "", -2)
+		if(owner)
+			owner.update_body(1, 1) //Update the body and force limb icon regeneration to update with the new icon.
 		return TRUE
-
-	if(owner)
-		owner.update_body(1, 1) //Update the body and force limb icon regeneration to update with the new icon.
-	else
-
 
 /obj/item/organ/external/tail/remove()
 	if(wagging)

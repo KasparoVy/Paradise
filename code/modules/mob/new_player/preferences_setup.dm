@@ -35,7 +35,7 @@
 		g_headacc = colours["green"]
 		b_headacc = colours["blue"]
 	if(S.bodyflags & HAS_HEAD_MARKINGS)
-		m_styles["head"] = random_marking_style("head", species, robohead, null, alt_head)
+		m_styles["head"] = random_marking_style("head", species, robohead, null, (rlimb_data["head"] && organ_data["head"] == "alt_icon") ? rlimb_data["head"] : null)
 		var/list/colours = randomize_skin_color(1)
 		m_colours["head"] = rgb(colours["red"], colours["green"], colours["blue"])
 	if(S.bodyflags & HAS_BODY_MARKINGS)
