@@ -46,6 +46,15 @@
 	else
 		ears_icon.Blend(ears_colour, ICON_ADD)
 
+/obj/item/organ/internal/ears/visible/can_render(mob/living/carbon/human/HA)
+	var/mob/living/carbon/human/H = HA
+	if(!istype(H))
+		H = owner
+	if((H.head && (H.head.flags & BLOCKHAIR)) || (H.wear_mask && (H.wear_mask.flags & BLOCKHAIR))) //Hidden in the same way as head accessories/hair/facial hair. Prevents wierd sprite parts sticking out of helmets.
+		return FALSE
+
+	return TRUE
+
 /obj/item/organ/internal/ears/visible/render()
 	. = mutable_appearance(ears_icon, layer = render_layer) //Finally return the MA using the compiled icon.
 

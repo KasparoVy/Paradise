@@ -107,6 +107,9 @@
 	return 1
 
 // Rendering!
+/obj/item/organ/internal/proc/can_render() //Conditions required for a visible internal organ to render.
+	return FALSE
+
 /obj/item/organ/internal/proc/render()
 	return
 

@@ -680,6 +680,7 @@ var/global/list/damage_icon_parts = list()
 		else
 			overlays_standing[GLASSES_LAYER] = new_glasses
 			apply_overlay(GLASSES_LAYER)
+	update_misc_effects() //Hide/reveal shiny eyes as needed.
 
 /mob/living/carbon/human/update_inv_ears(var/update_icons=1)
 	remove_overlay(EARS_LAYER)
@@ -804,6 +805,9 @@ var/global/list/damage_icon_parts = list()
 			bloodsies.color = head.blood_color
 			standing.overlays += bloodsies
 		overlays_standing[HEAD_LAYER] = standing
+
+	update_int_organs() //Hide/reveal ears as required.
+	update_misc_effects() //Hide/reveal shiny eyes as needed.
 	apply_overlay(HEAD_LAYER)
 
 /mob/living/carbon/human/update_inv_belt(var/update_icons=1)
@@ -936,6 +940,9 @@ var/global/list/damage_icon_parts = list()
 			bloodsies.color = wear_mask.blood_color
 			standing.overlays += bloodsies
 		overlays_standing[FACEMASK_LAYER] = standing
+
+	update_int_organs() //Hide/reveal ears as required.
+	update_misc_effects() //Hide/reveal shiny eyes as needed.
 	apply_overlay(FACEMASK_LAYER)
 
 
@@ -1195,9 +1202,10 @@ var/global/list/damage_icon_parts = list()
 		var/list/standing = list()
 		for(var/organ in internal_organs)
 			var/obj/item/organ/internal/I = organ
-			var/render = I.render()
-			if(render)
-				standing += render
+			if(I.can_render(src)) //Yes I can!
+				var/render = I.render()
+				if(render)
+					standing += render
 
 		overlays_standing[INTORGAN_LAYER] = standing
 		apply_overlay(INTORGAN_LAYER)
