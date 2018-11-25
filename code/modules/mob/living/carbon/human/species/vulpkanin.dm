@@ -28,6 +28,7 @@
 
 	scream_verb = "yelps"
 
+	mutantears = /obj/item/organ/internal/ears/visible/vulpkanin
 	has_organ = list(
 		"heart" =    /obj/item/organ/internal/heart,
 		"lungs" =    /obj/item/organ/internal/lungs,

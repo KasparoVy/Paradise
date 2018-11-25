@@ -42,6 +42,8 @@ var/global/list/limb_icon_cache = list()
 	if(H.dna.species.bodyflags & HAS_ICON_SKIN_TONE)
 		var/obj/item/organ/external/chest/C = H.get_organ("chest")
 		change_organ_icobase(C.icobase, C.deform)
+	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
+	if(ears) ears.update_appearance(H)
 
 /obj/item/organ/external/proc/sync_colour_to_dna()
 	if(is_robotic())
@@ -57,6 +59,8 @@ var/global/list/limb_icon_cache = list()
 	..()
 	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)//owner.internal_bodyparts_by_name["eyes"]
 	if(eyes) eyes.update_colour()
+	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
+	if(ears) ears.update_appearance(H)
 
 /obj/item/organ/external/head/remove(mob/living/user, ignore_children)
 	get_icon()
@@ -118,6 +122,10 @@ var/global/list/limb_icon_cache = list()
 			if(head_marking_style.do_colouration)
 				h_marking_s.Blend(owner.m_colours["head"], ICON_ADD)
 			overlays |= h_marking_s
+
+	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
+	if(istype(ears))
+		overlays |= ears.render()
 
 	if(ha_style)
 		var/datum/sprite_accessory/head_accessory_style = GLOB.head_accessory_styles_list[ha_style]

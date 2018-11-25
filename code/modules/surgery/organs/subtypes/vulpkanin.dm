@@ -12,3 +12,6 @@
 	colourmatrix = MATRIX_VULP_CBLIND
 	dark_view = 8
 	replace_colours = LIST_VULP_REPLACE
+
+/obj/item/organ/internal/ears/visible/vulpkanin
+	name = "vulpkanin ears"

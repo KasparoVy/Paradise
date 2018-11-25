@@ -12,3 +12,6 @@
 	colourmatrix = MATRIX_TAJ_CBLIND
 	dark_view = 8
 	replace_colours = LIST_TAJ_REPLACE
+
+/obj/item/organ/internal/ears/visible/tajaran
+	name = "tajaran ears"

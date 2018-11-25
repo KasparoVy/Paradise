@@ -500,9 +500,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 		dir = 2
 
 	if(victim)
+		victim.update_body() //Switched from regenerate_icons() to avoid frankensteined limbs inheriting their new owner's body colour unintentionally. See limb reattachment.
 		victim.updatehealth("droplimb")
 		victim.UpdateDamageIcon()
-		victim.regenerate_icons()
 
 	switch(disintegrate)
 		if(DROPLIMB_SHARP)

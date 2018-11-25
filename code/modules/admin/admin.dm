@@ -913,7 +913,7 @@ var/global/nologevent = 0
 /client/proc/update_mob_sprite(mob/living/carbon/human/H as mob)
 	set category = "Admin"
 	set name = "Update Mob Sprite"
-	set desc = "Should fix any mob sprite update errors."
+	set desc = "Should fix any mob sprite update errors. Forces attached limbs to inherit colour from owner."
 
 	if(!check_rights(R_ADMIN))
 		return

@@ -34,6 +34,7 @@
 	base_color = "#424242"
 	butt_sprite = "tajaran"
 
+	mutantears = /obj/item/organ/internal/ears/visible/tajaran
 	has_organ = list(
 		"heart" =    /obj/item/organ/internal/heart,
 		"lungs" =    /obj/item/organ/internal/lungs,

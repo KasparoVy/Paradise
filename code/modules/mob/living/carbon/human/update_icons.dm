@@ -147,7 +147,7 @@ var/global/list/damage_icon_parts = list()
 		E.update_icon()
 		if(E.damage_state == "00")
 			continue
-		
+
 		var/icon/DI
 		var/cache_index = "[E.damage_state]/[E.icon_name]/[dna.species.blood_color]/[dna.species.name]"
 
@@ -437,7 +437,7 @@ var/global/list/damage_icon_parts = list()
 		else
 			//warning("Invalid f_style for [species.name]: [f_style]")
 
-	
+
 
 /mob/living/carbon/human/update_mutations(var/update_icons=1)
 	remove_overlay(MUTATIONS_LAYER)
@@ -1035,7 +1035,7 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/update_tail_layer(var/update_icons=1)
 	remove_overlay(TAIL_UNDERLIMBS_LAYER) // SEW direction icons, overlayed by LIMBS_LAYER.
 	remove_overlay(TAIL_LAYER) /* This will be one of two things:
-							If the species' tail is overlapped by limbs, this will be only the N direction icon so tails 
+							If the species' tail is overlapped by limbs, this will be only the N direction icon so tails
 							can still appear on the outside of uniforms and such.
 							Otherwise, since the user's tail isn't overlapped by limbs, it will be a full icon with all directions. */
 
@@ -1110,7 +1110,7 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/start_tail_wagging(var/update_icons=1)
 	remove_overlay(TAIL_UNDERLIMBS_LAYER) // SEW direction icons, overlayed by LIMBS_LAYER.
 	remove_overlay(TAIL_LAYER) /* This will be one of two things:
-							If the species' tail is overlapped by limbs, this will be only the N direction icon so tails 
+							If the species' tail is overlapped by limbs, this will be only the N direction icon so tails
 							can still appear on the outside of uniforms and such.
 							Otherwise, since the user's tail isn't overlapped by limbs, it will be a full icon with all directions. */
 
@@ -1191,15 +1191,16 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/update_int_organs()
 	remove_overlay(INTORGAN_LAYER)
 
-	var/list/standing = list()
-	for(var/organ in internal_organs)
-		var/obj/item/organ/internal/I = organ
-		var/render = I.render()
-		if(render)
-			standing += render
+	if(!(SKELETON in mutations)) //The organs will have probably shriveled up and such by this point.
+		var/list/standing = list()
+		for(var/organ in internal_organs)
+			var/obj/item/organ/internal/I = organ
+			var/render = I.render()
+			if(render)
+				standing += render
 
-	overlays_standing[INTORGAN_LAYER] = standing
-	apply_overlay(INTORGAN_LAYER)
+		overlays_standing[INTORGAN_LAYER] = standing
+		apply_overlay(INTORGAN_LAYER)
 
 /mob/living/carbon/human/handle_transform_change()
 	..()

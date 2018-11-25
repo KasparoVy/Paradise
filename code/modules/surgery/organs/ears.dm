@@ -14,6 +14,46 @@
 	// without external aid (earmuffs, drugs)
 	var/ear_damage = 0
 
+/obj/item/organ/internal/ears/visible //This subtype is actually rendered on the mob/head organ sprites!
+	var/render_layer = -INTORGAN_LAYER
+	var/icobase = null
+	var/icon/ears_icon = null
+	var/ears_tone = null
+	var/ears_colour = "#000000"
+
+/obj/item/organ/internal/ears/visible/proc/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Update the cached appearance properties used in icon generation.
+	var/mob/living/carbon/human/H = HA
+	if(!istype(H))
+		H = owner
+	var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ))
+	if(istype(PO))
+		icobase = PO.get_icon_state()
+		if(!isnull(PO.s_tone))
+			ears_tone = PO.s_tone
+		else if(PO.s_col)
+			ears_colour = PO.s_col
+
+	if(regenerate)
+		generate_icon()
+
+/obj/item/organ/internal/ears/visible/proc/generate_icon() //Compile the icon using the cached appearance properties.
+	ears_icon = new /icon(icobase[1], icon_state)
+	if(!isnull(ears_tone))
+		if(ears_tone >= 0)
+			ears_icon.Blend(rgb(ears_tone, ears_tone, ears_tone), ICON_ADD)
+		else
+			ears_icon.Blend(ears_tone, ICON_SUBTRACT)
+	else
+		ears_icon.Blend(ears_colour, ICON_ADD)
+
+/obj/item/organ/internal/ears/visible/render()
+	. = mutable_appearance(ears_icon, layer = render_layer) //Finally return the MA using the compiled icon.
+
+/obj/item/organ/internal/ears/visible/insert(mob/living/carbon/human/M, special = 0)
+	..()
+	if(istype(M))
+		M.update_body()
+
 /obj/item/organ/internal/ears/on_life()
 	if(!iscarbon(owner))
 		return
@@ -35,7 +75,7 @@
 /obj/item/organ/internal/ears/proc/RestoreEars()
 	deaf = 0
 	ear_damage = 0
-	
+
 	var/mob/living/carbon/C = owner
 	if(istype(C) && C.disabilities & DEAF)
 		deaf = 1
@@ -65,4 +105,3 @@
 	var/obj/item/organ/internal/ears/ears = get_int_organ(/obj/item/organ/internal/ears)
 	if(ears)
 		ears.MinimumDeafTicks(value)
-
