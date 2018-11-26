@@ -207,44 +207,43 @@
 #define MFOAM_IRON 		2
 
 //Human Overlays Indexes/////////
-#define BODY_LAYER				37
-#define MUTANTRACE_LAYER		36
-#define TAIL_UNDERLIMBS_LAYER	35	//Tail split-rendering.
-#define LIMBS_LAYER				34
-#define INTORGAN_LAYER			33
-#define MARKINGS_LAYER			32
-#define UNDERWEAR_LAYER			31
-#define MUTATIONS_LAYER			30
-#define H_DAMAGE_LAYER			29
-#define UNIFORM_LAYER			28
-#define ID_LAYER				27
-#define SHOES_LAYER				26
-#define GLOVES_LAYER			25
-#define EARS_LAYER				24
-#define SUIT_LAYER				23
-#define BELT_LAYER				22	//Possible make this an overlay of somethign required to wear a belt?
-#define SUIT_STORE_LAYER		21
-#define BACK_LAYER				20
-#define HEAD_ACCESSORY_LAYER	19
-#define FHAIR_LAYER				18
-#define GLASSES_LAYER			17
-#define HAIR_LAYER				16	//TODO: make part of head layer?
-#define HEAD_ACC_OVER_LAYER		15	//Select-layer rendering.
-#define FHAIR_OVER_LAYER		14	//Select-layer rendering.
-#define GLASSES_OVER_LAYER		13	//Select-layer rendering.
-#define TAIL_LAYER				12	//bs12 specific. this hack is probably gonna come back to haunt me
-#define FACEMASK_LAYER			11
-#define HEAD_LAYER				10
-#define COLLAR_LAYER			9
-#define HANDCUFF_LAYER			8
-#define LEGCUFF_LAYER			7
-#define L_HAND_LAYER			6
-#define R_HAND_LAYER			5
-#define TARGETED_LAYER			4	//BS12: Layer for the target overlay from weapon targeting system
-#define FIRE_LAYER				3	//If you're on fire
-#define MISC_LAYER				2
+#define BODY_LAYER				36
+#define MUTANTRACE_LAYER		35
+#define TAIL_UNDERLIMBS_LAYER	34	//Tail split-rendering.
+#define LIMBS_LAYER				33
+#define INTORGAN_LAYER			32  //Used for rendering visible internal organs i.e. Taj/Vulp ears or eyes. Eyeshine is handled here.
+#define MARKINGS_LAYER			31
+#define UNDERWEAR_LAYER			30
+#define MUTATIONS_LAYER			29
+#define H_DAMAGE_LAYER			28
+#define UNIFORM_LAYER			27
+#define ID_LAYER				26
+#define SHOES_LAYER				25
+#define GLOVES_LAYER			24
+#define EARS_LAYER				23
+#define SUIT_LAYER				22
+#define BELT_LAYER				21	//Possible make this an overlay of somethign required to wear a belt?
+#define SUIT_STORE_LAYER		20
+#define BACK_LAYER				19
+#define HEAD_ACCESSORY_LAYER	18
+#define FHAIR_LAYER				17
+#define GLASSES_LAYER			16
+#define HAIR_LAYER				15	//TODO: make part of head layer?
+#define HEAD_ACC_OVER_LAYER		14	//Select-layer rendering.
+#define FHAIR_OVER_LAYER		13	//Select-layer rendering.
+#define GLASSES_OVER_LAYER		12	//Select-layer rendering.
+#define TAIL_LAYER				11	//bs12 specific. this hack is probably gonna come back to haunt me
+#define FACEMASK_LAYER			10
+#define HEAD_LAYER				9
+#define COLLAR_LAYER			8
+#define HANDCUFF_LAYER			7
+#define LEGCUFF_LAYER			6
+#define L_HAND_LAYER			5
+#define R_HAND_LAYER			4
+#define TARGETED_LAYER			3	//BS12: Layer for the target overlay from weapon targeting system
+#define FIRE_LAYER				2	//If you're on fire
 #define FROZEN_LAYER			1
-#define TOTAL_LAYERS			37
+#define TOTAL_LAYERS			36
 
 ///Access Region Codes///
 #define REGION_ALL			0

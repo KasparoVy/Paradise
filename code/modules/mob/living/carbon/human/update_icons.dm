@@ -185,7 +185,6 @@ var/global/list/damage_icon_parts = list()
 	if(stand_icon)
 		qdel(stand_icon)
 
-	update_misc_effects()
 	stand_icon = new (dna.species.icon_template ? dna.species.icon_template : 'icons/mob/human.dmi', "blank")
 	var/list/standing = list()
 	var/icon_key = generate_icon_render_key()
@@ -280,7 +279,7 @@ var/global/list/damage_icon_parts = list()
 	//markings
 	update_markings(0)
 	//hair
-	update_hair(0)
+	update_hair(0, FALSE)
 	update_fhair(0)
 
 
@@ -354,7 +353,7 @@ var/global/list/damage_icon_parts = list()
 
 
 //HAIR OVERLAY
-/mob/living/carbon/human/proc/update_hair(var/update_icons=1)
+/mob/living/carbon/human/proc/update_hair(var/update_icons=1, var/skip_eye_update=FALSE)
 	//Reset our hair
 	remove_overlay(HAIR_LAYER)
 
@@ -389,7 +388,8 @@ var/global/list/damage_icon_parts = list()
 		else
 			//warning("Invalid h_style for [species.name]: [h_style]")
 		//hair_standing.Blend(debrained_s, ICON_OVERLAY)//how does i overlay for fish?
-
+	if(!skip_eye_update && eyes_shine()) //If eyes shine, regenerate the organ as we could've just gotten a hairstyle that would cover one of the eyes.
+		update_int_organs()
 	overlays_standing[HAIR_LAYER] = mutable_appearance(hair_standing, layer = -HAIR_LAYER)
 	apply_overlay(HAIR_LAYER)
 
@@ -509,7 +509,7 @@ var/global/list/damage_icon_parts = list()
 	update_inv_gloves(0,0)
 	update_inv_glasses(0)
 	update_inv_ears(0)
-	update_inv_shoes(0,0)
+	update_inv_shoes(0, 0)
 	update_inv_s_store(0)
 	update_inv_wear_mask(0)
 	update_inv_head(0,0)
@@ -647,7 +647,6 @@ var/global/list/damage_icon_parts = list()
 			overlays_standing[GLOVES_LAYER]	= bloodsies
 	apply_overlay(GLOVES_LAYER)
 
-
 /mob/living/carbon/human/update_inv_glasses(var/update_icons=1)
 	remove_overlay(GLASSES_LAYER)
 	remove_overlay(GLASSES_OVER_LAYER)
@@ -680,7 +679,9 @@ var/global/list/damage_icon_parts = list()
 		else
 			overlays_standing[GLASSES_LAYER] = new_glasses
 			apply_overlay(GLASSES_LAYER)
-	update_misc_effects() //Hide/reveal shiny eyes as needed.
+
+	if(eyes_shine())
+		update_int_organs() //Hide/reveal shiny eyes as needed.
 
 /mob/living/carbon/human/update_inv_ears(var/update_icons=1)
 	remove_overlay(EARS_LAYER)
@@ -806,8 +807,7 @@ var/global/list/damage_icon_parts = list()
 			standing.overlays += bloodsies
 		overlays_standing[HEAD_LAYER] = standing
 
-	update_int_organs() //Hide/reveal ears as required.
-	update_misc_effects() //Hide/reveal shiny eyes as needed.
+	update_int_organs() //Hide/reveal ears/eyes as required.
 	apply_overlay(HEAD_LAYER)
 
 /mob/living/carbon/human/update_inv_belt(var/update_icons=1)
@@ -941,8 +941,7 @@ var/global/list/damage_icon_parts = list()
 			standing.overlays += bloodsies
 		overlays_standing[FACEMASK_LAYER] = standing
 
-	update_int_organs() //Hide/reveal ears as required.
-	update_misc_effects() //Hide/reveal shiny eyes as needed.
+	update_int_organs() //Hide/reveal eyes as required.
 	apply_overlay(FACEMASK_LAYER)
 
 
@@ -1203,7 +1202,7 @@ var/global/list/damage_icon_parts = list()
 		for(var/organ in internal_organs)
 			var/obj/item/organ/internal/I = organ
 			if(I.can_render(src)) //Yes I can!
-				var/render = I.render()
+				var/render = I.render(src)
 				if(render)
 					standing += render
 
@@ -1243,15 +1242,6 @@ var/global/list/damage_icon_parts = list()
 
 		overlays_standing[COLLAR_LAYER]	= standing
 	apply_overlay(COLLAR_LAYER)
-
-/mob/living/carbon/human/proc/update_misc_effects()
-	remove_overlay(MISC_LAYER)
-
-	//Begin appending miscellaneous effects.
-	if(eyes_shine())
-		overlays_standing[MISC_LAYER] = get_eye_shine() //Image layer is specified in get_eye_shine() proc as LIGHTING_LAYER + 1.
-
-	apply_overlay(MISC_LAYER)
 
 /mob/living/carbon/human/admin_Freeze(client/admin, skip_overlays = TRUE)
 	. = ..()

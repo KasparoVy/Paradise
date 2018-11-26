@@ -43,7 +43,8 @@ var/global/list/limb_icon_cache = list()
 		var/obj/item/organ/external/chest/C = H.get_organ("chest")
 		change_organ_icobase(C.icobase, C.deform)
 	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
-	if(ears) ears.update_appearance(H)
+	if(ears)
+		ears.update_appearance(H)
 
 /obj/item/organ/external/proc/sync_colour_to_dna()
 	if(is_robotic())
@@ -57,10 +58,15 @@ var/global/list/limb_icon_cache = list()
 
 /obj/item/organ/external/head/sync_colour_to_human(var/mob/living/carbon/human/H)
 	..()
-	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)//owner.internal_bodyparts_by_name["eyes"]
-	if(eyes) eyes.update_colour()
+	var/obj/item/organ/internal/cyberimp/eyes/cybereyes = owner.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
+	if(cybereyes)
+		cybereyes.update_appearance(H)
+	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)
+	if(eyes)
+		eyes.update_appearance(H)
 	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
-	if(ears) ears.update_appearance(H)
+	if(ears)
+		ears.update_appearance(H)
 
 /obj/item/organ/external/head/remove(mob/living/user, ignore_children)
 	get_icon()
@@ -103,16 +109,17 @@ var/global/list/limb_icon_cache = list()
 	if(!owner)
 		return
 
-	if(dna.species.has_organ["eyes"])
-		var/icon/eyes_icon = null
-		if(owner.eyes_shine())
-			eyes_icon = owner.get_eye_shine()
-		else
-			eyes_icon = owner.get_eyecon()
-
-		if(eyes_icon)
-			mob_icon.Blend(eyes_icon, ICON_OVERLAY)
-			overlays |= eyes_icon
+	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/internal/cyberimp/eyes/eye_implant = owner.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
+	if(istype(eye_implant) && eye_implant.can_render()) //Render eye implants if they're available since they should overlay eyes.
+		overlays |= eye_implant.render()
+	else if(istype(eyes) && eyes.can_render()) //Render eyes if the mob doesn't have the augs.
+		overlays |= eyes.render()
+	else if(dna.species.has_organ["eyes"]) //Gorey eyeless sockets.
+		var/icon/eyecon = new /icon('icons/mob/human_face.dmi', dna.species.eyes)
+		eyecon.Blend("#800000", ICON_ADD)
+		if(eyecon)
+			overlays |= eyecon
 
 	if(owner.lip_style && (LIPS in dna.species.species_traits))
 		var/icon/lip_icon = new/icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")

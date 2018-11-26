@@ -12,9 +12,11 @@
 	var/see_invisible = 0
 	var/eye_colour = "#000000"
 	var/old_eye_colour = "#000000"
+	var/render_layer = -INTORGAN_LAYER //Will be different if eyes are shining to ensure they render above light.
+	var/render_plane = null //Will only be set when eyes are shining to ensure they render above light.
+	var/icon/aug_eyecon = null
 	var/flash_protect = 0
 	var/aug_message = "Your vision is augmented!"
-
 
 /obj/item/organ/internal/cyberimp/eyes/insert(var/mob/living/carbon/M, var/special = 0)
 	..()
@@ -29,14 +31,47 @@
 	. = ..()
 	M.update_sight()
 
-/obj/item/organ/internal/cyberimp/eyes/proc/generate_icon(var/mob/living/carbon/human/HA)
+/obj/item/organ/internal/cyberimp/eyes/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE)
+	if(regenerate)
+		generate_icon(HA)
+
+/obj/item/organ/internal/cyberimp/eyes/proc/generate_icon(mob/living/carbon/human/HA)
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
-	var/icon/cybereyes_icon = new /icon('icons/mob/human_face.dmi', H.dna.species.eyes)
-	cybereyes_icon.Blend(eye_colour, ICON_ADD) // Eye implants override native DNA eye color
+	var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ)) //Aug eyes should always fit the person they're stuck in.
+	var/icon/aug_eyecon = new /icon('icons/mob/human_face.dmi', (istype(PO) ? PO.dna.species.eyes : H.dna.species.eyes))
+	aug_eyecon.Blend(eye_colour, ICON_ADD) // Eye implants override native DNA eye color
 
-	return cybereyes_icon
+	return aug_eyecon
+
+/obj/item/organ/internal/cyberimp/eyes/can_render()
+	return TRUE
+
+/obj/item/organ/internal/cyberimp/eyes/proc/can_shine(mob/living/carbon/human/HA) //Nice augs.
+	var/mob/living/carbon/human/H = HA
+	if(!istype(H))
+		H = owner
+	if(!get_location_accessible(H, "eyes"))
+		return FALSE
+
+	return TRUE
+
+/obj/item/organ/internal/cyberimp/eyes/render(mob/living/carbon/human/HA)
+	var/mob/living/carbon/human/H = HA
+	if(!istype(H))
+		H = owner
+	var/will_shine = can_shine(H)
+	var/L = will_shine ? (LIGHTING_LAYER + 1) : render_layer //If the eyes will shine, render using a different layer.
+
+	var/obj/item/organ/external/head/head_organ = H.get_organ("head")
+	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[head_organ.h_style]
+	var/icon/hair = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+
+	var/mutable_appearance/MA = mutable_appearance(get_icon_difference(aug_eyecon, hair), layer = L) //Use the above hair business to 'cut' the hair pixels out of the eye icon. This has the effect of the hair hiding the eyes, even when they shine.
+	if(will_shine)
+		MA.plane = LIGHTING_PLANE
+	. = MA //Finally return the MA using the compiled icon.
 
 /obj/item/organ/internal/cyberimp/eyes/emp_act(severity)
 	if(!owner || emp_proof)

@@ -733,7 +733,7 @@
 									found_record = 1
 									if(R.fields["criminal"] == "*Execute*")
 										to_chat(usr, "<span class='warning'>Unable to modify the sec status of a person with an active Execution order. Use a security computer instead.</span>")
-									else 
+									else
 										var/rank
 										if(ishuman(usr))
 											var/mob/living/carbon/human/U = usr
@@ -981,7 +981,6 @@
 		src.examinate(M)
 	. = ..()
 
-
 ///check_eye_prot()
 ///Returns a number between -1 to 2
 /mob/living/carbon/human/check_eye_prot()
@@ -1163,8 +1162,11 @@
 
 	//Replacing lost organs with the species default.
 	temp_holder = new /mob/living/carbon/human()
-	for(var/index in H.dna.species.has_organ)
-		var/organ = H.dna.species.has_organ[index]
+	var/list/species_organs = H.dna.species.has_organ.Copy() //Compile a list of species organs and tack on the mutantears afterward.
+	if(H.dna.species.mutantears)
+		species_organs["ears"] = H.dna.species.mutantears
+	for(var/index in species_organs)
+		var/organ = species_organs[index]
 		if(!(organ in types_of_int_organs)) //If the mob is missing this particular organ...
 			var/obj/item/organ/internal/I = new organ(temp_holder) //Create the organ inside our holder so we can check it before implantation.
 			if(H.get_organ_slot(I.slot)) //Check to see if the user already has an organ in the slot the 'missing organ' belongs to. If they do, skip implantation.
@@ -1462,6 +1464,16 @@
 	else
 		return FALSE
 
+/mob/living/carbon/human/proc/eyes_shine() //Just a helper to conveniently check if anything would cause eyeshine.
+	var/obj/item/organ/internal/eyes/eyes = get_int_organ(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/internal/cyberimp/eyes/cybereyes = get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
+	if(!(istype(eyes) && eyes.can_shine())) //The eyes.can_shine() call checks to see if there's XRAY vision involved as well.
+		return FALSE
+	if(!(istype(cybereyes) && cybereyes.can_shine()))
+		return FALSE
+
+	return TRUE //If they've got unobscured shiny eyes, augs or xray vision.
+
 /mob/living/carbon/human/get_default_language()
 	if(default_language)
 		return default_language
@@ -1519,42 +1531,6 @@
 		var/obj/effect/decal/cleanable/blood/writing/W = new(T)
 		W.message = message
 		W.add_fingerprint(src)
-
-/mob/living/carbon/human/proc/get_eyecon()
-	var/obj/item/organ/internal/eyes/eyes = get_int_organ(/obj/item/organ/internal/eyes)
-	var/obj/item/organ/internal/cyberimp/eyes/eye_implant = get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
-	if(istype(dna.species) && dna.species.eyes)
-		var/icon/eyes_icon = new/icon('icons/mob/human_face.dmi', dna.species.eyes)
-		if(eye_implant) //Eye implants override native DNA eye colo(u)r
-			eyes_icon = eye_implant.generate_icon()
-		else if(eyes)
-			eyes_icon = eyes.generate_icon()
-		else
-			eyes_icon.Blend("#800000", ICON_ADD)
-
-		return eyes_icon
-
-/mob/living/carbon/human/proc/get_eye_shine() //Referenced cult constructs for shining in the dark. Needs to be above lighting effects such as shading.
-	var/obj/item/organ/external/head/head_organ = get_organ("head")
-	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[head_organ.h_style]
-	var/icon/hair = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
-	var/mutable_appearance/MA = mutable_appearance(get_icon_difference(get_eyecon(), hair), layer = LIGHTING_LAYER + 1)
-	MA.plane = LIGHTING_PLANE
-	return MA //Cut the hair's pixels from the eyes icon so eyes covered by bangs stay hidden even while on a higher layer.
-
-/*Used to check if eyes should shine in the dark. Returns the image of the eyes on the layer where they will appear to shine.
-Eyes need to have significantly high darksight to shine unless the mob has the XRAY vision mutation. Eyes will not shine if they are covered in any way.*/
-/mob/living/carbon/human/proc/eyes_shine()
-	var/obj/item/organ/internal/eyes/eyes = get_int_organ(/obj/item/organ/internal/eyes)
-	var/obj/item/organ/internal/cyberimp/eyes/eye_implant = get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
-	if(!(istype(eyes) || istype(eye_implant)))
-		return FALSE
-	if(!get_location_accessible(src, "eyes"))
-		return FALSE
-	if(!(eyes.shine()) && !istype(eye_implant) && !(XRAY in mutations)) //If their eyes don't shine, they don't have other augs, nor do they have X-RAY vision
-		return FALSE
-
-	return TRUE
 
 /mob/living/carbon/human/assess_threat(var/mob/living/simple_animal/bot/secbot/judgebot, var/lasercolor)
 	if(judgebot.emagged == 2)

@@ -107,10 +107,13 @@
 	return 1
 
 // Rendering!
+/obj/item/organ/internal/proc/update_appearance() //Handles updating an organ's appearance when rendered.
+	return
+
 /obj/item/organ/internal/proc/can_render() //Conditions required for a visible internal organ to render.
 	return FALSE
 
-/obj/item/organ/internal/proc/render()
+/obj/item/organ/internal/proc/render() //Returns the rendered mutable appearance.
 	return
 
 /obj/item/reagent_containers/food/snacks/organ

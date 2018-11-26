@@ -21,7 +21,7 @@
 	var/ears_tone = null
 	var/ears_colour = "#000000"
 
-/obj/item/organ/internal/ears/visible/proc/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Update the cached appearance properties used in icon generation.
+/obj/item/organ/internal/ears/visible/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Update the cached appearance properties used in icon generation.
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
