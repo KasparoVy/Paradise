@@ -59,12 +59,13 @@ var/global/list/limb_icon_cache = list()
 /obj/item/organ/external/head/sync_colour_to_human(var/mob/living/carbon/human/H)
 	..()
 	var/obj/item/organ/internal/cyberimp/eyes/cybereyes = owner.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
+	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
+
 	if(cybereyes)
 		cybereyes.update_appearance(H)
-	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)
 	if(eyes)
 		eyes.update_appearance(H)
-	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
 	if(ears)
 		ears.update_appearance(H)
 
@@ -117,8 +118,8 @@ var/global/list/limb_icon_cache = list()
 		overlays |= eyes.render()
 	else if(dna.species.has_organ["eyes"]) //Gorey eyeless sockets.
 		var/icon/eyecon = new /icon('icons/mob/human_face.dmi', dna.species.eyes)
-		eyecon.Blend("#800000", ICON_ADD)
 		if(eyecon)
+			eyecon.Blend("#800000", ICON_ADD)
 			overlays |= eyecon
 
 	if(owner.lip_style && (LIPS in dna.species.species_traits))
@@ -140,7 +141,7 @@ var/global/list/limb_icon_cache = list()
 		overlays |= ears.render()
 
 	if(ha_style)
-		if(!((owner.head && (owner.head.flags & BLOCKHAIR)) && (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
+		if(!((owner.head && (owner.head.flags & BLOCKHAIR)) || (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
 			var/datum/sprite_accessory/head_accessory_style = GLOB.head_accessory_styles_list[ha_style]
 			if(head_accessory_style && head_accessory_style.species_allowed && (dna.species.name in head_accessory_style.species_allowed))
 				var/icon/head_accessory_s = new/icon("icon" = head_accessory_style.icon, "icon_state" = "[head_accessory_style.icon_state]_s")
@@ -149,7 +150,7 @@ var/global/list/limb_icon_cache = list()
 				overlays |= head_accessory_s
 
 	if(f_style)
-		if(!((owner.head && (owner.head.flags & BLOCKHAIR)) && (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
+		if(!((owner.head && (owner.head.flags & BLOCKHAIR)) || (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
 			var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[f_style]
 			if(facial_hair_style && ((facial_hair_style.species_allowed && (dna.species.name in facial_hair_style.species_allowed)) || (dna.species.bodyflags & ALL_RPARTS)))
 				var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")

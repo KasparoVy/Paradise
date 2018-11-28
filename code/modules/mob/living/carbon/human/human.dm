@@ -1471,7 +1471,6 @@
 		return FALSE
 	if(!(istype(cybereyes) && cybereyes.can_shine()))
 		return FALSE
-
 	return TRUE //If they've got unobscured shiny eyes, augs or xray vision.
 
 /mob/living/carbon/human/get_default_language()

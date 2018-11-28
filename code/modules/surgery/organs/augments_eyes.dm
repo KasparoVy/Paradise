@@ -61,13 +61,12 @@
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
-	var/will_shine = can_shine(H)
-	var/L = will_shine ? (LIGHTING_LAYER + 1) : render_layer //If the eyes will shine, render using a different layer.
 
-	var/obj/item/organ/external/head/head_organ = H.get_organ("head")
-	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[head_organ.h_style]
+	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[H.get_organ("head").h_style]
 	var/icon/hair = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 
+	var/will_shine = can_shine(H)
+	var/L = will_shine ? (LIGHTING_LAYER + 1) : render_layer //If the eyes will shine, render using a different layer.
 	var/mutable_appearance/MA = mutable_appearance(get_icon_difference(aug_eyecon, hair), layer = L) //Use the above hair business to 'cut' the hair pixels out of the eye icon. This has the effect of the hair hiding the eyes, even when they shine.
 	if(will_shine)
 		MA.plane = LIGHTING_PLANE

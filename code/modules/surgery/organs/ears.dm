@@ -26,7 +26,7 @@
 	if(!istype(H))
 		H = owner
 	var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ))
-	if(istype(PO))
+	if(istype(PO)) //If there's a parent organ present in our current host, fetch the icon and colour/tone we'll be using.
 		icobase = PO.get_icon_state()
 		if(!isnull(PO.s_tone))
 			ears_tone = PO.s_tone
@@ -36,13 +36,13 @@
 	if(regenerate)
 		generate_icon()
 
-/obj/item/organ/internal/ears/visible/proc/generate_icon() //Compile the icon using the cached appearance properties.
+/obj/item/organ/internal/ears/visible/proc/generate_icon() //Compile the icon using the cached appearance properties we fetched in update_appearance().
 	ears_icon = new /icon(icobase[1], icon_state)
 	if(!isnull(ears_tone))
 		if(ears_tone >= 0)
 			ears_icon.Blend(rgb(ears_tone, ears_tone, ears_tone), ICON_ADD)
 		else
-			ears_icon.Blend(ears_tone, ICON_SUBTRACT)
+			ears_icon.Blend(rgb(-ears_tone, -ears_tone, -ears_tone), ICON_SUBTRACT)
 	else
 		ears_icon.Blend(ears_colour, ICON_ADD)
 
@@ -52,7 +52,6 @@
 		H = owner
 	if((H.head && (H.head.flags & BLOCKHAIR)) || (H.wear_mask && (H.wear_mask.flags & BLOCKHAIR))) //Hidden in the same way as head accessories/hair/facial hair. Prevents wierd sprite parts sticking out of helmets.
 		return FALSE
-
 	return TRUE
 
 /obj/item/organ/internal/ears/visible/render()
