@@ -64,7 +64,7 @@
 			log_runtime(EXCEPTION("[src] attempted to remove from a [parent_organ], but [parent_organ] didn't exist! [atom_loc_line(M)]"), src)
 		else
 			parent.internal_organs -= src
-		H.update_int_organs()
+		H.update_body()
 
 	for(var/X in actions)
 		var/datum/action/A = X

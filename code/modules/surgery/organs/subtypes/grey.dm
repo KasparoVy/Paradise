@@ -16,3 +16,7 @@
 /obj/item/organ/internal/eyes/grey
 	name = "grey eyeballs"
 	dark_view = 5
+	desc = "Large and unsettling, they look eerily curious even disembodied."
+
+	species_fit = list("Generic", "Vox", "Drask")
+	species_fit_states = list("Generic" = "generic_fitted_grey_eyes_s", "Vox" = "vox_fitted_grey_eyes_s", "Drask" = "drask_fitted_grey_eyes_s")

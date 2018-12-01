@@ -5,13 +5,20 @@
 	organ_tag = "eyes"
 	parent_organ = "head"
 	slot = "eyes"
+
 	var/eye_colour = "#000000"
 	var/render_layer = -INTORGAN_LAYER //Will be different if eyes are shining to ensure they render above light.
 	var/render_plane = null //Will only be set when eyes are shining to ensure they render above light.
 	var/icon/eyecon = null
+
+	var/datum/species/current_species = null
+	species_fit = list("Vox", "Grey", "Drask") //Species to fit eyecon to when the eyes are rendered. If the species isn't here, use the generic shift.
+	var/list/species_fit_states = list("Vox" = "vox_eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s")
+
 	var/list/colourmatrix = null
 	var/list/colourblind_matrix = MATRIX_GREYSCALE //Special colourblindness parameters. By default, it's black-and-white.
 	var/list/replace_colours = LIST_GREYSCALE_REPLACE
+
 	var/dependent_disabilities = null //Gets set by eye-dependent disabilities such as colourblindness so the eyes can transfer the disability during transplantation.
 	var/dark_view = 2 //Default dark_view for Humans.
 	var/weld_proof = null //If set, the eyes will not take damage during welding. eg. IPC optical sensors do not take damage when they weld things while all other eyes will.
@@ -21,8 +28,17 @@
 	if(regenerate)
 		generate_icon()
 
-/obj/item/organ/internal/eyes/proc/generate_icon()
-	eyecon = new /icon('icons/mob/human_face.dmi', dna.species.eyes) //Lets ensure the eyes maintain the characteristics of the species they came from.
+/obj/item/organ/internal/eyes/proc/generate_icon(datum/species/species_override)
+	if(!current_species)
+		current_species = dna.species
+	var/icon_state = current_species.eyes
+	if(istype(species_override) && !(current_species == species_override.name))
+		if(species_override.name in species_fit)
+			icon_state = species_fit_states[species_override.name]
+		else if("Generic" in species_fit)
+			icon_state = species_fit_states["Generic"]
+
+	eyecon = new /icon('icons/mob/human_face.dmi', icon_state) //Fit the eyes to the species. They maintain their characteristics but are rendered with more appropriate sprites.
 	eyecon.Blend(eye_colour, ICON_ADD)
 
 	return eyecon
@@ -70,9 +86,13 @@
 		MA.plane = LIGHTING_PLANE
 	. = MA //Finally return the MA using the compiled icon.
 
-/obj/item/organ/internal/eyes/insert(mob/living/carbon/human/M, special = 0)
+/obj/item/organ/internal/eyes/insert(mob/living/carbon/human/M, special = 0) //Species-fitting eyes before rendering is handled here.
 	..()
 	if(istype(M) && eye_colour)
+		var/obj/item/organ/external/head/PO = M.get_organ(check_zone(parent_organ)) //Fetch the head, we're checking the species!
+		if(istype(PO) && PO.dna && !(PO.dna.species.name == dna.species.name))
+			generate_icon(PO.dna.species) //Species-fit the eyecon for less janky frankensteins.
+			current_species = PO.dna.species //Cache the current species
 		M.update_body() //Apply our eye colour to the target.
 
 	if(!(M.disabilities & COLOURBLIND) && (dependent_disabilities & COLOURBLIND)) //If the eyes are colourblind and we're not, carry over the gene.

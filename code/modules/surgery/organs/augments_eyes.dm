@@ -22,6 +22,7 @@
 	..()
 	var/mob/living/carbon/human/H = M
 	if(istype(H) && eye_colour)
+		update_appearance(H) //Fit the sprite of the eyes to the new user.
 		H.update_body() //Apply our eye colour to the target.
 	if(aug_message && !special)
 		to_chat(owner, "<span class='notice'>[aug_message]</span>")

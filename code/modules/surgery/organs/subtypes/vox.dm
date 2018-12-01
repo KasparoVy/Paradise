@@ -1,7 +1,6 @@
 /obj/item/organ/internal/liver/vox
 	alcohol_intensity = 1.6
 
-
 /obj/item/organ/internal/stack
 	name = "cortical stack"
 	icon_state = "cortical-stack"
@@ -20,7 +19,6 @@
 		stackdamaged = FALSE
 	..()
 
-
 /obj/item/organ/internal/stack/emp_act(severity)
 	if(owner)
 		owner.mutations.Add(SCRAMBLED)
@@ -30,3 +28,10 @@
 		if(!stackdamaged)
 			stackdamaged = TRUE
 	..()
+
+/obj/item/organ/internal/eyes/vox
+	name = "vox eyeballs"
+	desc = "Suitable for unprotected forays into the void."
+
+	species_fit = list("Generic", "Grey", "Drask")
+	species_fit_states = list("Generic" = "eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s")

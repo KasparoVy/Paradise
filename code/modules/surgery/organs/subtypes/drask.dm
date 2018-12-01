@@ -25,5 +25,8 @@
 /obj/item/organ/internal/eyes/drask
 	name = "drask eyeballs"
 	icon = 'icons/obj/surgery_drask.dmi'
-	desc = "Drask eyes. They look even stranger disembodied"
+	desc = "Drask eyes. They look even stranger disembodied."
 	dark_view = 5
+
+	species_fit = list("Generic", "Vox", "Grey")
+	species_fit_states = list("Generic" = "generic_fitted_drask_eyes_s", "Vox" = "vox_fitted_drask_eyes_s", "Grey" = "grey_fitted_drask_eyes_s")
