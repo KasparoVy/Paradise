@@ -11,9 +11,8 @@
 	var/render_plane = null //Will only be set when eyes are shining to ensure they render above light.
 	var/icon/eyecon = null
 
-	var/datum/species/current_species = null
-	species_fit = list("Vox", "Grey", "Drask") //Species to fit eyecon to when the eyes are rendered. If the species isn't here, use the generic shift.
-	var/list/species_fit_states = list("Vox" = "vox_eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s")
+	species_fit = list("Vox", "Grey", "Drask", "Kidan") //Species to fit eyecon to when the eyes are rendered. If the species isn't here, use the generic shift.
+	var/list/species_fit_states = list("Vox" = "vox_eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s", "Kidan" = "kidan_fitted_eyes")
 
 	var/list/colourmatrix = null
 	var/list/colourblind_matrix = MATRIX_GREYSCALE //Special colourblindness parameters. By default, it's black-and-white.
@@ -24,21 +23,26 @@
 	var/weld_proof = null //If set, the eyes will not take damage during welding. eg. IPC optical sensors do not take damage when they weld things while all other eyes will.
 
 /obj/item/organ/internal/eyes/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Update the cached appearance properties used in icon generation.
+	var/mob/living/carbon/human/H = HA
+	if(!istype(H))
+		H = owner
 	dna.write_eyes_attributes(src) //Writes eye colour to eye_colour from the DNA. Eye colour changes are traditionally done against the DNA, which is why this works.
 	if(regenerate)
-		generate_icon()
+		var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ))
+		var/datum/species/new_species = null
+		if(dna.species.name != PO.dna.species.name)
+			new_species = PO.dna.species
+		generate_icon(new_species)
 
-/obj/item/organ/internal/eyes/proc/generate_icon(datum/species/species_override)
-	if(!current_species)
-		current_species = dna.species
-	var/icon_state = current_species.eyes
-	if(istype(species_override) && !(current_species == species_override.name))
+/obj/item/organ/internal/eyes/generate_icon(datum/species/species_override)
+	var/eyecon_state = dna.species.eyes
+	if(istype(species_override) && species_override.name != dna.species.name) //If it's a different species, fit it. If it's the same as our DNA spacies, use standard generation.
 		if(species_override.name in species_fit)
-			icon_state = species_fit_states[species_override.name]
+			eyecon_state = species_fit_states[species_override.name]
 		else if("Generic" in species_fit)
-			icon_state = species_fit_states["Generic"]
+			eyecon_state = species_fit_states["Generic"]
 
-	eyecon = new /icon('icons/mob/human_face.dmi', icon_state) //Fit the eyes to the species. They maintain their characteristics but are rendered with more appropriate sprites.
+	eyecon = new /icon('icons/mob/human_face.dmi', eyecon_state) //Fit the eyes to the species. They maintain their characteristics but are rendered with more appropriate sprites.
 	eyecon.Blend(eye_colour, ICON_ADD)
 
 	return eyecon
@@ -76,7 +80,7 @@
 	if(!istype(H))
 		H = owner
 
-	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[H.get_organ("head").h_style]
+	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[H.get_organ(check_zone(parent_organ)).h_style]
 	var/icon/hair = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 
 	var/will_shine = can_shine(H)
@@ -90,9 +94,8 @@
 	..()
 	if(istype(M) && eye_colour)
 		var/obj/item/organ/external/head/PO = M.get_organ(check_zone(parent_organ)) //Fetch the head, we're checking the species!
-		if(istype(PO) && PO.dna && !(PO.dna.species.name == dna.species.name))
+		if(istype(PO) && PO.dna)
 			generate_icon(PO.dna.species) //Species-fit the eyecon for less janky frankensteins.
-			current_species = PO.dna.species //Cache the current species
 		M.update_body() //Apply our eye colour to the target.
 
 	if(!(M.disabilities & COLOURBLIND) && (dependent_disabilities & COLOURBLIND)) //If the eyes are colourblind and we're not, carry over the gene.
@@ -109,6 +112,7 @@
 		M.dna.SetSEState(COLOURBLINDBLOCK,0)
 		genemutcheck(M,COLOURBLINDBLOCK,null,MUTCHK_FORCED)
 	. = ..()
+	M.update_body() //Render bloody sockets.
 
 /obj/item/organ/internal/eyes/surgeryize()
 	if(!owner)

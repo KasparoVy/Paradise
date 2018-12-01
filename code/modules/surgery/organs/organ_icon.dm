@@ -112,18 +112,15 @@ var/global/list/limb_icon_cache = list()
 
 	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)
 	var/obj/item/organ/internal/cyberimp/eyes/eye_implant = owner.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
+	if(dna.species.has_organ["eyes"]) //Gorey sockets.
+		mob_icon.Blend(render_eye_sockets(), ICON_OVERLAY)
+		overlays |= render_eye_sockets()
 	if(istype(eye_implant) && eye_implant.can_render()) //Render eye implants if they're available since they should overlay eyes.
 		overlays |= eye_implant.render()
 	else if(istype(eyes) && eyes.can_render()) //Render eyes if the mob doesn't have the augs.
 		overlays |= eyes.render()
-	else if(dna.species.has_organ["eyes"]) //Gorey eyeless sockets.
-		var/icon/eyecon = new /icon('icons/mob/human_face.dmi', dna.species.eyes)
-		if(eyecon)
-			eyecon.Blend("#800000", ICON_ADD)
-			overlays |= eyecon
-
 	if(owner.lip_style && (LIPS in dna.species.species_traits))
-		var/icon/lip_icon = new/icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
+		var/icon/lip_icon = new /icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
 		overlays |= lip_icon
 		mob_icon.Blend(lip_icon, ICON_OVERLAY)
 
@@ -131,7 +128,7 @@ var/global/list/limb_icon_cache = list()
 	if(head_marking && head_marking != "None")
 		var/datum/sprite_accessory/head_marking_style = GLOB.marking_styles_list[head_marking]
 		if(head_marking_style && head_marking_style.species_allowed && (dna.species.name in head_marking_style.species_allowed) && head_marking_style.marking_location == "head")
-			var/icon/h_marking_s = new/icon("icon" = head_marking_style.icon, "icon_state" = "[head_marking_style.icon_state]_s")
+			var/icon/h_marking_s = new /icon("icon" = head_marking_style.icon, "icon_state" = "[head_marking_style.icon_state]_s")
 			if(head_marking_style.do_colouration)
 				h_marking_s.Blend(owner.m_colours["head"], ICON_ADD)
 			overlays |= h_marking_s
@@ -144,7 +141,7 @@ var/global/list/limb_icon_cache = list()
 		if(!((owner.head && (owner.head.flags & BLOCKHAIR)) || (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
 			var/datum/sprite_accessory/head_accessory_style = GLOB.head_accessory_styles_list[ha_style]
 			if(head_accessory_style && head_accessory_style.species_allowed && (dna.species.name in head_accessory_style.species_allowed))
-				var/icon/head_accessory_s = new/icon("icon" = head_accessory_style.icon, "icon_state" = "[head_accessory_style.icon_state]_s")
+				var/icon/head_accessory_s = new /icon("icon" = head_accessory_style.icon, "icon_state" = "[head_accessory_style.icon_state]_s")
 				if(head_accessory_style.do_colouration)
 					head_accessory_s.Blend(headacc_colour, ICON_ADD)
 				overlays |= head_accessory_s
@@ -153,7 +150,7 @@ var/global/list/limb_icon_cache = list()
 		if(!((owner.head && (owner.head.flags & BLOCKHAIR)) || (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
 			var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[f_style]
 			if(facial_hair_style && ((facial_hair_style.species_allowed && (dna.species.name in facial_hair_style.species_allowed)) || (dna.species.bodyflags & ALL_RPARTS)))
-				var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
+				var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 				if(istype(dna.species, /datum/species/slime)) // I am el worstos
 					facial_s.Blend("[owner.skin_colour]A0", ICON_AND) //A0 = 160 alpha.
 				else if(facial_hair_style.do_colouration)
@@ -164,7 +161,7 @@ var/global/list/limb_icon_cache = list()
 		if(!((owner.head && ((owner.head.flags & BLOCKHEADHAIR) || (owner.head.flags & BLOCKHAIR))) && (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
 			var/datum/sprite_accessory/hair_style = GLOB.hair_styles_full_list[h_style]
 			if(hair_style && ((dna.species.name in hair_style.species_allowed) || (dna.species.bodyflags & ALL_RPARTS)))
-				var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+				var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 				if(istype(dna.species, /datum/species/slime)) // I am el worstos
 					hair_s.Blend("[owner.skin_colour]A0", ICON_AND) //A0 = 160 alpha.
 				else if(hair_style.do_colouration)
@@ -172,6 +169,14 @@ var/global/list/limb_icon_cache = list()
 				overlays |= hair_s
 
 	return mob_icon
+
+/obj/item/organ/external/head/proc/render_eye_sockets()
+	if(!dna.species.has_organ["eyes"])
+		return
+	var/icon/bloody_sockets = new /icon('icons/mob/human_face.dmi', dna.species.eyes)
+	if(bloody_sockets)
+		bloody_sockets.Blend("#800000", ICON_ADD)
+	return bloody_sockets
 
 /obj/item/organ/external/proc/get_icon_state(skeletal)
 	var/gender

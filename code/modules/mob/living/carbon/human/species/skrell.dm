@@ -34,7 +34,7 @@
 		"kidneys" =  /obj/item/organ/internal/kidneys,
 		"brain" =    /obj/item/organ/internal/brain,
 		"appendix" = /obj/item/organ/internal/appendix,
-		"eyes" =     /obj/item/organ/internal/eyes, //Default darksight of 2.
+		"eyes" =     /obj/item/organ/internal/eyes/skrell, //Default darksight of 2.
 		"headpocket" = /obj/item/organ/internal/headpocket
 		)
 

@@ -47,7 +47,7 @@
 
 	var/new_eyes = input("Please select eye color.", "Character Generation", eyes_organ.eye_colour) as null|color
 	if(new_eyes)
-		M.change_eye_color(new_eyes)
+		M.change_eye_color(new_eyes, TRUE, TRUE)
 
 	//Alt heads.
 	if(head_organ.dna.species.bodyflags & HAS_ALT_HEADS)

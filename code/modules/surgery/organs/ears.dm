@@ -36,7 +36,7 @@
 	if(regenerate)
 		generate_icon()
 
-/obj/item/organ/internal/ears/visible/proc/generate_icon() //Compile the icon using the cached appearance properties we fetched in update_appearance().
+/obj/item/organ/internal/ears/visible/generate_icon() //Compile the icon using the cached appearance properties we fetched in update_appearance().
 	ears_icon = new /icon(icobase[1], icon_state)
 	if(!isnull(ears_tone))
 		if(ears_tone >= 0)

@@ -67,7 +67,7 @@
 		"kidneys" =  /obj/item/organ/internal/kidneys,
 		"brain" =    /obj/item/organ/internal/brain,
 		"appendix" = /obj/item/organ/internal/appendix,
-		"eyes" =     /obj/item/organ/internal/eyes, //Default darksight of 2.
+		"eyes" =     /obj/item/organ/internal/eyes/vox, //Default darksight of 2.
 		"stack" =    /obj/item/organ/internal/stack //Not the same as the cortical stack implant Vox Raiders spawn with. The cortical stack implant is used
 		)												//for determining the success of the heist game-mode's 'leave nobody behind' objective, while this is just an organ.
 

@@ -64,5 +64,5 @@
 	name = "skrell eyeballs"
 	desc = "Suitable for underwater use."
 
-	species_fit = list("Vox", "Grey", "Drask")
-	species_fit_states = list("Vox" = "vox_fitted_skrell_eyes_s", "Grey" = "grey_fitted_skrell_eyes_s", "Drask" = "drask_fitted_skrell_eyes_s")
+	species_fit = list("Vox", "Grey", "Drask", "Kidan")
+	species_fit_states = list("Vox" = "vox_fitted_skrell_eyes_s", "Grey" = "grey_fitted_skrell_eyes_s", "Drask" = "drask_fitted_skrell_eyes_s", "Kidan" = "kidan_fitted_skrell_eyes_s")

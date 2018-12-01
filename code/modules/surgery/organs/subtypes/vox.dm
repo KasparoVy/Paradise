@@ -33,5 +33,5 @@
 	name = "vox eyeballs"
 	desc = "Suitable for unprotected forays into the void."
 
-	species_fit = list("Generic", "Grey", "Drask")
-	species_fit_states = list("Generic" = "eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s")
+	species_fit = list("Generic", "Grey", "Drask", "Kidan")
+	species_fit_states = list("Generic" = "eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s", "Kidan" = "kidan_fitted_eyes")

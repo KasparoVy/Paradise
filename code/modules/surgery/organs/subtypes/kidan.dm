@@ -107,6 +107,13 @@
 
 	. = ..()
 
+/obj/item/organ/internal/eyes/kidan
+	name = "kidan eyes"
+	desc = "Huge, multifaceted and very unsettling."
+
+	species_fit = list("Generic", "Vox", "Grey", "Drask")
+	species_fit_states = list("Generic" = "kidan_eyes_s", "Vox" = "vox_fitted_kidan_eyes_s", "Grey" = "grey_fitted_kidan_eyes_s", "Drask" = "drask_fitted_kidan_eyes_s")
+
 #undef KIDAN_LANTERN_HUNGERCOST
 #undef KIDAN_LANTERN_MINHUNGER
 #undef KIDAN_LANTERN_LIGHT
