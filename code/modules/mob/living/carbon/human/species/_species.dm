@@ -10,6 +10,7 @@
 	var/blood_mask = 'icons/mob/human_races/masks/blood_human.dmi'
 
 	var/eyes = "eyes_s"                                  // Icon for eyes.
+	var/ears = null                                      // Icon for visible ears. Only instantiated for species that have them i.e. Tajara & Vulpkanin.
 	var/blurb = "A completely nondescript species."      // A brief lore summary for use in the chargen screen.
 	var/butt_sprite = "human"
 

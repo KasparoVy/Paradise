@@ -16,7 +16,6 @@
 
 /obj/item/organ/internal/ears/visible //This subtype is actually rendered on the mob/head organ sprites!
 	var/render_layer = -INTORGAN_LAYER
-	var/icobase = null
 	var/icon/ears_icon = null
 	var/ears_tone = null
 	var/ears_colour = "#000000"
@@ -27,17 +26,26 @@
 		H = owner
 	var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ))
 	if(istype(PO)) //If there's a parent organ present in our current host, fetch the icon and colour/tone we'll be using.
-		icobase = PO.get_icon_state()
 		if(!isnull(PO.s_tone))
 			ears_tone = PO.s_tone
 		else if(PO.s_col)
 			ears_colour = PO.s_col
 
 	if(regenerate)
-		generate_icon()
+		var/datum/species/new_species = null
+		if(dna.species.name != PO.dna.species.name)
+			new_species = PO.dna.species
+		generate_icon(new_species)
 
-/obj/item/organ/internal/ears/visible/generate_icon() //Compile the icon using the cached appearance properties we fetched in update_appearance().
-	ears_icon = new /icon(icobase[1], icon_state)
+/obj/item/organ/internal/ears/visible/generate_icon(datum/species/species_override) //Compile the icon using the cached appearance properties we fetched in update_appearance().
+	var/ears_icon_state = dna.species.ears
+	if(istype(species_override) && species_override.name != dna.species.name) //If it's a different species, fit it. If it's the same as our DNA spacies, use standard generation.
+		if(species_override.name in species_fit)
+			ears_icon_state = species_fit_states[species_override.name]
+		else if("Generic" in species_fit)
+			ears_icon_state = species_fit_states["Generic"]
+
+	ears_icon = new /icon('icons/mob/human_face.dmi', ears_icon_state)
 	if(!isnull(ears_tone))
 		if(ears_tone >= 0)
 			ears_icon.Blend(rgb(ears_tone, ears_tone, ears_tone), ICON_ADD)
@@ -50,7 +58,7 @@
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
-	if((H.head && (H.head.flags & BLOCKHAIR)) || (H.wear_mask && (H.wear_mask.flags & BLOCKHAIR))) //Hidden in the same way as head accessories/hair/facial hair. Prevents wierd sprite parts sticking out of helmets.
+	if(!H || (H.head && (H.head.flags & BLOCKHAIR)) || (H.wear_mask && (H.wear_mask.flags & BLOCKHAIR))) //Hidden in the same way as head accessories/hair/facial hair. Prevents wierd sprite parts sticking out of helmets.
 		return FALSE
 	return TRUE
 
@@ -60,7 +68,14 @@
 /obj/item/organ/internal/ears/visible/insert(mob/living/carbon/human/M, special = 0)
 	..()
 	if(istype(M))
-		M.update_body()
+		var/obj/item/organ/external/head/PO = M.get_organ(check_zone(parent_organ)) //Fetch the head, we're checking the species!
+		if(istype(PO) && PO.dna)
+			generate_icon(PO.dna.species) //Species-fit the ears for less janky frankensteins.
+		M.update_body() //Apply our ears to the target.
+
+/obj/item/organ/internal/ears/visible/remove(mob/living/carbon/human/M, special = 0)
+	. = ..()
+	M.update_body() //Remove the ears.
 
 /obj/item/organ/internal/ears/on_life()
 	if(!iscarbon(owner))

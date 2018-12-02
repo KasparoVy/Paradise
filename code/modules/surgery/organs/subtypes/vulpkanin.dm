@@ -15,3 +15,6 @@
 
 /obj/item/organ/internal/ears/visible/vulpkanin
 	name = "vulpkanin ears"
+	desc = "Large and fluffy."
+	species_fit = list("Generic", "Vox", "Grey", "Drask")
+	species_fit_states = list("Generic" = "vulp_ears_s", "Vox" = "vox_fitted_vulp_ears_s", "Grey" = "grey_fitted_vulp_ears_s", "Drask" = "drask_fitted_vulp_ears_s")

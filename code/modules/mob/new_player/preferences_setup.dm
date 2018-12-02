@@ -261,8 +261,8 @@
 			continue
 		preview_icon.Blend(new /icon(icobase, "[name]"), ICON_OVERLAY)
 
-	if(current_species && current_species.mutantears)
-		preview_icon.Blend(new /icon("icon" = icobase, "icon_state" = "ears"), ICON_OVERLAY)
+	if(current_species && current_species.mutantears && current_species.ears)
+		preview_icon.Blend(new /icon("icon" = 'icons/mob/human_face.dmi', "icon_state" = current_species.ears), ICON_OVERLAY)
 
 	// Skin color
 	if(current_species && (current_species.bodyflags & HAS_SKIN_COLOR))

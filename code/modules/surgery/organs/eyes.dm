@@ -11,8 +11,8 @@
 	var/render_plane = null //Will only be set when eyes are shining to ensure they render above light.
 	var/icon/eyecon = null
 
-	species_fit = list("Vox", "Grey", "Drask", "Kidan") //Species to fit eyecon to when the eyes are rendered. If the species isn't here, use the generic shift.
-	var/list/species_fit_states = list("Vox" = "vox_eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s", "Kidan" = "kidan_fitted_eyes")
+	species_fit = list("Vox", "Grey", "Drask", "Kidan")
+	species_fit_states = list("Vox" = "vox_eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s", "Kidan" = "kidan_fitted_eyes")
 
 	var/list/colourmatrix = null
 	var/list/colourblind_matrix = MATRIX_GREYSCALE //Special colourblindness parameters. By default, it's black-and-white.
@@ -45,8 +45,6 @@
 	eyecon = new /icon('icons/mob/human_face.dmi', eyecon_state) //Fit the eyes to the species. They maintain their characteristics but are rendered with more appropriate sprites.
 	eyecon.Blend(eye_colour, ICON_ADD)
 
-	return eyecon
-
 /obj/item/organ/internal/eyes/can_render(mob/living/carbon/human/HA)
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
@@ -54,7 +52,6 @@
 	var/obj/item/organ/internal/cyberimp/eyes/eye_implant = H.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
 	if(istype(eye_implant)) //Only render our special eyes and hide our less specail ones.
 		return FALSE
-
 	return TRUE
 
 /obj/item/organ/internal/eyes/proc/get_colourmatrix() //Returns a special colour matrix if the eyes are organic and the mob is colourblind, otherwise it uses the current one.

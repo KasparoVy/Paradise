@@ -8,6 +8,9 @@
 	var/non_primary = 0
 	var/unremovable = FALSE //Whether it shows up as an option to remove during surgery.
 
+	species_fit = null //Species to fit onmob icon to when the organs are rendered. If the species isn't here, use the generic shift.
+	var/list/species_fit_states = null //Instantiated for visible intorgans
+
 /obj/item/organ/internal/New(var/mob/living/carbon/holder)
 	..()
 	if(istype(holder))
@@ -107,7 +110,7 @@
 	return 1
 
 // Rendering!
-/obj/item/organ/internal/proc/update_appearance() //Handles updating an organ's appearance when rendered.
+/obj/item/organ/internal/proc/update_appearance() //Handles updating an organ's appearance when rendered. Updates the cached appearance properties used in icon generation.
 	return
 
 /obj/item/organ/internal/proc/generate_icon() //Generate the icon based on cached properties. Handle species fitting.

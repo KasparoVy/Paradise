@@ -4,6 +4,8 @@
 	icobase = 'icons/mob/human_races/r_tajaran.dmi'
 	deform = 'icons/mob/human_races/r_def_tajaran.dmi'
 	language = "Siik'tajr"
+	primitive_form = /datum/species/monkey/tajaran
+	ears = "taj_ears_s"
 	tail = "tajtail"
 	skinned_type = /obj/item/stack/sheet/fur
 	unarmed_type = /datum/unarmed_attack/claws
@@ -21,8 +23,6 @@
 	heat_level_1 = 340
 	heat_level_2 = 380
 	heat_level_3 = 440
-
-	primitive_form = /datum/species/monkey/tajaran
 
 	species_traits = list(LIPS, CAN_BE_FAT)
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT | HAS_SOCKS

@@ -5,6 +5,7 @@
 	deform = 'icons/mob/human_races/r_vulpkanin.dmi'
 	language = "Canilunzt"
 	primitive_form = /datum/species/monkey/vulpkanin
+	ears = "vulp_ears_s"
 	tail = "vulptail"
 	skinned_type = /obj/item/stack/sheet/fur
 	unarmed_type = /datum/unarmed_attack/claws

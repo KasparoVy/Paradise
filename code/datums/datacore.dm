@@ -377,8 +377,8 @@ var/record_id_num = 1001
 		var/icon_properties = E.get_icon_state()
 		preview_icon.Blend(new /icon("icon" = icon_properties[1], "icon_state" = icon_properties[2]), ICON_OVERLAY)
 
-	if(H.dna.species.mutantears)
-		preview_icon.Blend(new /icon("icon" = icobase, "icon_state" = "ears"), ICON_OVERLAY)
+	if(H.dna.species.mutantears && head_organ.dna.species.ears)
+		preview_icon.Blend(new /icon("icon" = 'icons/mob/human_face.dmi', "icon_state" = head_organ.dna.species.ears), ICON_OVERLAY)
 
 	// Skin tone
 	if(H.dna.species.bodyflags & HAS_SKIN_TONE)
