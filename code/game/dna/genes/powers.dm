@@ -166,14 +166,14 @@
 	M.update_sight()
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
-		H.update_int_organs() //Apply eyeshine as needed.
+		H.update_body() //Apply eyeshine as needed.
 
 /datum/dna/gene/basic/xray/deactivate(mob/living/M, connected, flags)
 	..()
 	M.update_sight()
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
-		H.update_int_organs() //Remove eyeshine as needed.
+		H.update_body() //Remove eyeshine as needed.
 
 /datum/dna/gene/basic/tk
 	name="Telekenesis"

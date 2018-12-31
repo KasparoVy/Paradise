@@ -40,6 +40,11 @@
 			log_runtime(EXCEPTION("[src] attempted to insert into a [parent_organ], but [parent_organ] wasn't an organ! [atom_loc_line(M)]"), src)
 		else
 			parent.internal_organs |= src
+			if(intorgan_visible) //Fit/handle rendering of visible intorgans on insertion.
+				if(parent.dna)
+					generate_icon(parent.dna.species) //Species-fit the ears for less janky frankensteins.
+				H.update_body() //Apply our visible intorgans to the target.
+
 	//M.internal_bodyparts_by_name[src] |= src(H,1)
 	loc = null
 	for(var/X in actions)
@@ -68,7 +73,7 @@
 			log_runtime(EXCEPTION("[src] attempted to remove from a [parent_organ], but [parent_organ] didn't exist! [atom_loc_line(M)]"), src)
 		else
 			parent.internal_organs -= src
-		H.update_body()
+		H.update_body() //Visible intorgans being removed should disappear from the mob sprite due to this call..
 
 	for(var/X in actions)
 		var/datum/action/A = X

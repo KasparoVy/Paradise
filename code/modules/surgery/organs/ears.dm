@@ -57,18 +57,6 @@
 /obj/item/organ/internal/ears/visible/render()
 	. = mutable_appearance(ears_icon, layer = render_layer) //Finally return the MA using the compiled icon.
 
-/obj/item/organ/internal/ears/visible/insert(mob/living/carbon/human/M, special = 0)
-	..()
-	if(istype(M))
-		var/obj/item/organ/external/head/PO = M.get_organ(check_zone(parent_organ)) //Fetch the head, we're checking the species!
-		if(istype(PO) && PO.dna)
-			generate_icon(PO.dna.species) //Species-fit the ears for less janky frankensteins.
-		M.update_body() //Apply our ears to the target.
-
-/obj/item/organ/internal/ears/visible/remove(mob/living/carbon/human/M, special = 0)
-	. = ..()
-	M.update_body() //Remove the ears.
-
 /obj/item/organ/internal/ears/on_life()
 	if(!iscarbon(owner))
 		return

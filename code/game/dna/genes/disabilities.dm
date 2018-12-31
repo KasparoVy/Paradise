@@ -130,14 +130,14 @@
 	M.update_client_colour() //Handle the activation of the colourblindness on the mob.
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
-		H.update_int_organs() //Apply eyeshine as needed.
+		H.update_body() //Apply eyeshine as needed.
 
 /datum/dna/gene/disability/colourblindness/deactivate(var/mob/M, var/connected, var/flags)
 	..()
 	M.update_client_colour() //Handle the deactivation of the colourblindness on the mob.
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
-		H.update_int_organs() //Remove eyeshine as needed.
+		H.update_body() //Remove eyeshine as needed.
 
 /datum/dna/gene/disability/deaf
 	name="Deafness"

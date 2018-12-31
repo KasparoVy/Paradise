@@ -21,19 +21,12 @@
 
 /obj/item/organ/internal/cyberimp/eyes/insert(mob/living/carbon/M, special = 0)
 	..()
-	var/mob/living/carbon/human/H = M
-	if(istype(H) && eye_colour)
-		update_appearance(H) //Fit the sprite of the eyes to the new user.
-		H.update_body() //Apply our eye colour to the target.
 	if(aug_message && !special)
 		to_chat(owner, "<span class='notice'>[aug_message]</span>")
 	M.update_sight()
 
 /obj/item/organ/internal/cyberimp/eyes/remove(mob/living/carbon/M, special = 0)
 	. = ..()
-	var/mob/living/carbon/human/H = M
-	if(istype(H))
-		H.update_body()
 	M.update_sight()
 
 /obj/item/organ/internal/cyberimp/eyes/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Always update appearance. Cybereyes!

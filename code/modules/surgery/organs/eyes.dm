@@ -82,12 +82,6 @@
 
 /obj/item/organ/internal/eyes/insert(mob/living/carbon/human/M, special = 0) //Species-fitting eyes before rendering is handled here.
 	..()
-	if(istype(M) && eye_colour)
-		var/obj/item/organ/external/head/PO = M.get_organ(check_zone(parent_organ)) //Fetch the head, we're checking the species!
-		if(istype(PO) && PO.dna)
-			generate_icon(PO.dna.species) //Species-fit the eyecon for less janky frankensteins.
-		M.update_body() //Apply our eye colour to the target.
-
 	if(!(M.disabilities & COLOURBLIND) && (dependent_disabilities & COLOURBLIND)) //If the eyes are colourblind and we're not, carry over the gene.
 		dependent_disabilities &= ~COLOURBLIND
 		M.dna.SetSEState(COLOURBLINDBLOCK,1)
@@ -102,7 +96,6 @@
 		M.dna.SetSEState(COLOURBLINDBLOCK,0)
 		genemutcheck(M,COLOURBLINDBLOCK,null,MUTCHK_FORCED)
 	. = ..()
-	M.update_body() //Render bloody sockets.
 
 /obj/item/organ/internal/eyes/surgeryize()
 	if(!owner)
