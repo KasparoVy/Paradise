@@ -82,7 +82,7 @@
 	else
 		overlays_standing[X_FIRE_LAYER] = null
 
-/mob/living/carbon/alien/humanoid/update_inv_wear_suit(var/update_icons=1)
+/mob/living/carbon/alien/humanoid/update_inv_wear_suit(update_icons = TRUE)
 	if(client && hud_used)
 		var/obj/screen/inventory/inv = hud_used.inv_slots[slot_wear_suit]
 		inv.update_icon()
@@ -113,7 +113,7 @@
 	if(update_icons)	update_icons()
 
 
-/mob/living/carbon/alien/humanoid/update_inv_head(var/update_icons=1)
+/mob/living/carbon/alien/humanoid/update_inv_head(update_icons = TRUE)
 	if(head)
 		var/t_state = head.item_state
 		if(!t_state)	t_state = head.icon_state
@@ -127,13 +127,13 @@
 	if(update_icons)	update_icons()
 
 
-/mob/living/carbon/alien/humanoid/update_inv_pockets(var/update_icons=1)
+/mob/living/carbon/alien/humanoid/update_inv_pockets(update_icons = TRUE)
 	if(l_store)		l_store.screen_loc = ui_storage1
 	if(r_store)		r_store.screen_loc = ui_storage2
 	if(update_icons)	update_icons()
 
 
-/mob/living/carbon/alien/humanoid/update_inv_r_hand(var/update_icons=1)
+/mob/living/carbon/alien/humanoid/update_inv_r_hand(update_icons = TRUE)
 	..(1)
 	if(r_hand)
 		var/t_state = r_hand.item_state
@@ -144,7 +144,7 @@
 		overlays_standing[X_R_HAND_LAYER]	= null
 	if(update_icons)	update_icons()
 
-/mob/living/carbon/alien/humanoid/update_inv_l_hand(var/update_icons=1)
+/mob/living/carbon/alien/humanoid/update_inv_l_hand(update_icons = TRUE)
 	..(1)
 	if(l_hand)
 		var/t_state = l_hand.item_state

@@ -22,7 +22,7 @@
 	var/ears_colour = "#000000"
 
 /obj/item/organ/internal/ears/visible/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Update the cached appearance properties used in icon generation.
-	var/obj/item/organ/external/head/PO = ..()
+	var/obj/item/organ/external/head/PO = ..() //Offload preflight checks and fetching of parent organ to the parent proc since its logic should be shared by most visible intorgans.
 	if(istype(PO)) //If there's a parent organ present in our current host, fetch the icon and colour/tone we'll be using.
 		if(!isnull(PO.s_tone))
 			ears_tone = PO.s_tone
@@ -31,7 +31,7 @@
 
 	if(regenerate)
 		var/datum/species/new_species = null
-		if(dna.species.name != PO.dna.species.name)
+		if(istype(PO) && dna.species.name != PO.dna.species.name)
 			new_species = PO.dna.species
 		generate_icon(new_species)
 

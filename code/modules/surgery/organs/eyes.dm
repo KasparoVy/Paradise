@@ -26,7 +26,7 @@
 /obj/item/organ/internal/eyes/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Update the cached appearance properties used in icon generation.
 	dna.write_eyes_attributes(src) //Writes eye colour to eye_colour from the DNA. Eye colour changes are traditionally done against the DNA, which is why this works.
 	if(regenerate)
-		var/obj/item/organ/external/head/PO = ..()
+		var/obj/item/organ/external/head/PO = ..() //Offload preflight checks and fetching of parent organ to the parent proc since its logic should be shared by most visible intorgans.
 		if(istype(PO))
 			var/datum/species/new_species = null
 			if(dna.species.name != PO.dna.species.name)

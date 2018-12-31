@@ -79,11 +79,11 @@
 				var/obj/item/organ/external/E = H.bodyparts_by_name[organname]
 				if(istype(E) && E.dna && istype(E.dna.species, /datum/species/slime))
 					E.sync_colour_to_human(H)
-			H.update_hair(0)
+			H.update_hair()
 			H.update_body()
 	..()
 
-/datum/species/slime/can_hear() // fucking snowflakes 
+/datum/species/slime/can_hear() // fucking snowflakes
 	. = TRUE
 
 /datum/action/innate/slimecolor

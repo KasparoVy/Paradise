@@ -86,7 +86,7 @@
 	if(opacity && isturf(loc))
 		var/turf/T = loc
 		T.has_opaque_atom = TRUE // No need to recalculate it in this case, it's guranteed to be on afterwards anyways.
-	
+
 	if(loc)
 		loc.InitializedOn(src) // Used for poolcontroller / pool to improve performance greatly. However it also open up path to other usage of observer pattern on turfs.
 
@@ -558,15 +558,15 @@ var/list/blood_splatter_icons = list()
 	else if(w_uniform)
 		w_uniform.add_blood(blood_dna, color)
 		w_uniform.blood_color = color
-		update_inv_w_uniform(1)
+		update_inv_w_uniform()
 	if(head)
 		head.add_blood(blood_dna, color)
 		head.blood_color = color
-		update_inv_head(0,0)
+		update_inv_head()
 	if(glasses)
 		glasses.add_blood(blood_dna, color)
 		glasses.blood_color = color
-		update_inv_glasses(0)
+		update_inv_glasses()
 	if(gloves)
 		var/obj/item/clothing/gloves/G = gloves
 		G.add_blood(blood_dna, color)
@@ -578,7 +578,7 @@ var/list/blood_splatter_icons = list()
 		transfer_blood_dna(blood_dna)
 		verbs += /mob/living/carbon/human/proc/bloody_doodle
 
-	update_inv_gloves(1)	//handles bloody hands overlays and updating
+	update_inv_gloves()	//handles bloody hands overlays and updating
 	return 1
 
 /obj/item/proc/add_blood_overlay(color)

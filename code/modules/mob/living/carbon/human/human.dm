@@ -1225,7 +1225,7 @@
 		qdel(feet_blood_DNA)
 		bloody_feet = list(BLOOD_STATE_HUMAN = 0, BLOOD_STATE_XENO = 0,  BLOOD_STATE_NOT_BLOODY = 0)
 		blood_state = BLOOD_STATE_NOT_BLOODY
-		update_inv_shoes(1)
+		update_inv_shoes()
 		return 1
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
@@ -1456,7 +1456,7 @@
 		UpdateAppearance()
 
 	overlays.Cut()
-	update_mutantrace(1)
+	update_mutantrace()
 	regenerate_icons()
 
 	if(dna.species)

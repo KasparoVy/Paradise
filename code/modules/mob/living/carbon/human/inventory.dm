@@ -212,36 +212,36 @@
 		if(slot_wear_mask)
 			wear_mask = W
 			if((wear_mask.flags & BLOCKHAIR) || (wear_mask.flags & BLOCKHEADHAIR))
-				update_hair(redraw_mob)	//rebuild hair
-				update_fhair(redraw_mob)
-				update_head_accessory(redraw_mob)
+				update_hair()
+				update_fhair()
+				update_head_accessory()
 			if(hud_list.len)
 				sec_hud_set_ID()
 			wear_mask_update(W, toggle_off = TRUE)
-			update_inv_wear_mask(redraw_mob)
+			update_inv_wear_mask()
 		if(slot_handcuffed)
 			handcuffed = W
-			update_inv_handcuffed(redraw_mob)
+			update_inv_handcuffed()
 		if(slot_legcuffed)
 			legcuffed = W
-			update_inv_legcuffed(redraw_mob)
+			update_inv_legcuffed()
 		if(slot_l_hand)
 			l_hand = W
-			update_inv_l_hand(redraw_mob)
+			update_inv_l_hand()
 		if(slot_r_hand)
 			r_hand = W
-			update_inv_r_hand(redraw_mob)
+			update_inv_r_hand()
 		if(slot_belt)
 			belt = W
-			update_inv_belt(redraw_mob)
+			update_inv_belt()
 		if(slot_wear_id)
 			wear_id = W
 			if(hud_list.len)
 				sec_hud_set_ID()
-			update_inv_wear_id(redraw_mob)
+			update_inv_wear_id()
 		if(slot_wear_pda)
 			wear_pda = W
-			update_inv_wear_pda(redraw_mob)
+			update_inv_wear_pda()
 		if(slot_l_ear)
 			l_ear = W
 			if(l_ear.slot_flags & SLOT_TWOEARS)
@@ -250,7 +250,7 @@
 				r_ear = O
 				O.layer = 20
 				O.plane = HUD_PLANE
-			update_inv_ears(redraw_mob)
+			update_inv_ears()
 		if(slot_r_ear)
 			r_ear = W
 			if(r_ear.slot_flags & SLOT_TWOEARS)
@@ -259,7 +259,7 @@
 				l_ear = O
 				O.layer = 20
 				O.plane = HUD_PLANE
-			update_inv_ears(redraw_mob)
+			update_inv_ears()
 		if(slot_glasses)
 			glasses = W
 			var/obj/item/clothing/glasses/G = W
@@ -269,16 +269,16 @@
 				update_nearsighted_effects()
 			if(G.vision_flags || G.darkness_view || G.invis_override || G.invis_view)
 				update_sight()
-			update_inv_glasses(redraw_mob)
+			update_inv_glasses()
 			update_client_colour()
 		if(slot_gloves)
 			gloves = W
-			update_inv_gloves(redraw_mob)
+			update_inv_gloves()
 		if(slot_head)
 			head = W
 			if((head.flags & BLOCKHAIR) || (head.flags & BLOCKHEADHAIR))
-				update_hair(redraw_mob)	//rebuild hair
-				update_fhair(redraw_mob)
+				update_hair()
+				update_fhair()
 				update_head_accessory(redraw_mob)
 			// paper + bandanas
 			if(istype(W, /obj/item/clothing/head))
@@ -286,25 +286,25 @@
 				if(hat.vision_flags || hat.darkness_view || hat.helmet_goggles_invis_view)
 					update_sight()
 			head_update(W)
-			update_inv_head(redraw_mob)
+			update_inv_head()
 		if(slot_shoes)
 			shoes = W
-			update_inv_shoes(redraw_mob)
+			update_inv_shoes()
 		if(slot_wear_suit)
 			wear_suit = W
-			update_inv_wear_suit(redraw_mob)
+			update_inv_wear_suit()
 		if(slot_w_uniform)
 			w_uniform = W
-			update_inv_w_uniform(redraw_mob)
+			update_inv_w_uniform()
 		if(slot_l_store)
 			l_store = W
-			update_inv_pockets(redraw_mob)
+			update_inv_pockets()
 		if(slot_r_store)
 			r_store = W
-			update_inv_pockets(redraw_mob)
+			update_inv_pockets()
 		if(slot_s_store)
 			s_store = W
-			update_inv_s_store(redraw_mob)
+			update_inv_s_store()
 		if(slot_in_backpack)
 			if(get_active_hand() == W)
 				unEquip(W)
