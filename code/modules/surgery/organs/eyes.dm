@@ -60,7 +60,7 @@
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
-	if(!get_location_accessible(H, "eyes"))
+	if(H.glasses || !get_location_accessible(H, "eyes")) //Don't shine if the eyes are obscured in any way.
 		return FALSE
 	if(is_robotic() || (dark_view > EYE_SHINE_THRESHOLD) || (XRAY in H.mutations)) //Eyes shine if they are synth, great at darksight, or if the host has XRAY vision.
 		return TRUE

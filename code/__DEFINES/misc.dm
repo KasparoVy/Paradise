@@ -207,11 +207,10 @@
 #define MFOAM_IRON 		2
 
 //Human Overlays Indexes/////////
-#define BODY_LAYER				36
-#define MUTANTRACE_LAYER		35
-#define TAIL_UNDERLIMBS_LAYER	34	//Tail split-rendering.
-#define LIMBS_LAYER				33
-#define INTORGAN_LAYER			32  //Used for rendering visible internal organs i.e. Taj/Vulp ears or eyes. Eyeshine is handled here.
+#define UNDER_BODY_LAYER		35	//Anything that should render below the body. Currently used in tail split-rendering.
+#define BODY_LAYER				34
+#define INTORGAN_LAYER			33  //Used for rendering visible internal organs i.e. Taj/Vulp ears or eyes. Eyeshine is handled here.
+#define MUTANTRACE_LAYER		32
 #define MARKINGS_LAYER			31
 #define UNDERWEAR_LAYER			30
 #define MUTATIONS_LAYER			29
@@ -243,7 +242,7 @@
 #define TARGETED_LAYER			3	//BS12: Layer for the target overlay from weapon targeting system
 #define FIRE_LAYER				2	//If you're on fire
 #define FROZEN_LAYER			1
-#define TOTAL_LAYERS			36
+#define TOTAL_LAYERS			35
 
 ///Access Region Codes///
 #define REGION_ALL			0

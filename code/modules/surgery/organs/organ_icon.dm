@@ -42,9 +42,9 @@ var/global/list/limb_icon_cache = list()
 	if(H.dna.species.bodyflags & HAS_ICON_SKIN_TONE)
 		var/obj/item/organ/external/chest/C = H.get_organ("chest")
 		change_organ_icobase(C.icobase, C.deform)
-	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
-	if(ears)
-		ears.update_appearance(H)
+	for(var/obj/item/organ/internal/visible_intorgan in internal_organs) //Trigger onmob appearance property updates for eligible visible intorgans.
+		if(visible_intorgan.intorgan_visible)
+			visible_intorgan.update_appearance(H)
 
 /obj/item/organ/external/proc/sync_colour_to_dna()
 	if(is_robotic())
@@ -56,24 +56,18 @@ var/global/list/limb_icon_cache = list()
 		s_tone = null
 		s_col = rgb(dna.GetUIValue(DNA_UI_SKIN_R), dna.GetUIValue(DNA_UI_SKIN_G), dna.GetUIValue(DNA_UI_SKIN_B))
 
-/obj/item/organ/external/head/sync_colour_to_human(var/mob/living/carbon/human/H)
-	..()
-	var/obj/item/organ/internal/cyberimp/eyes/cybereyes = owner.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
-	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)
-	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
-
-	if(cybereyes)
-		cybereyes.update_appearance(H)
-	if(eyes)
-		eyes.update_appearance(H)
-	if(ears)
-		ears.update_appearance(H)
-
 /obj/item/organ/external/head/remove(mob/living/user, ignore_children)
 	get_icon()
 	. = ..()
 
-/obj/item/organ/external/proc/get_icon(skeletal, fat)
+/obj/item/organ/external/proc/render_visible_intorgans() //Compile a list of overlays from rendered visible internal organs.
+	var/list/overlays_to_apply = list()
+	for(var/obj/item/organ/internal/visible_intorgan in internal_organs) //Trigger onmob appearance property updates for eligible visible intorgans.
+		if(visible_intorgan.intorgan_visible && visible_intorgan.can_render())
+			overlays_to_apply += visible_intorgan.render()
+	return overlays_to_apply
+
+/obj/item/organ/external/proc/get_icon(skeletal, fat, skip_intorgan_render = FALSE)
 	// Kasparrov, you monster
 	if(force_icon)
 		mob_icon = new /icon(force_icon, "[icon_name]")
@@ -98,56 +92,48 @@ var/global/list/limb_icon_cache = list()
 			else if(s_col)
 				mob_icon.Blend(s_col, ICON_ADD)
 
+	if(!skip_intorgan_render && owner) //Allows for special handling & maintains overlays on disembodied parts.
+		cut_overlays()
+		add_overlay(render_visible_intorgans())
+
 	dir = EAST
 	icon = mob_icon
-
 	return mob_icon
 
 /obj/item/organ/external/head/get_icon()
-
-	..()
-	overlays.Cut()
+	..(skip_intorgan_render = TRUE) //Skip because we want to put bloody sockets on the head before the eyes get rendered. Means we gotta cut & add overlays manually.
 	if(!owner)
 		return
+	cut_overlays() //This being after the owner check avoids premature cutting, preserving overlays when the head gets decapitated and eliminating the need to overlay & blend into mob_icon at once.
 
-	var/obj/item/organ/internal/eyes/eyes = owner.get_int_organ(/obj/item/organ/internal/eyes)
-	var/obj/item/organ/internal/cyberimp/eyes/eye_implant = owner.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
-	if(dna.species.has_organ["eyes"]) //Gorey sockets.
-		mob_icon.Blend(render_eye_sockets(), ICON_OVERLAY)
-		overlays |= render_eye_sockets()
-	if(istype(eye_implant) && eye_implant.can_render()) //Render eye implants if they're available since they should overlay eyes.
-		overlays |= eye_implant.render()
-	else if(istype(eyes) && eyes.can_render()) //Render eyes if the mob doesn't have the augs.
-		overlays |= eyes.render()
+	if(dna.species.has_organ["eyes"]) //Gorey sockets. These get covered up by optical organs via render_visible_intorgans() below.
+		add_overlay(render_eye_sockets())
+
+	add_overlay(render_visible_intorgans()) //Now we render the intorgans. Markings will render ontop of these, as intended. Makes sure ears still get markings.
+
 	if(owner.lip_style && (LIPS in dna.species.species_traits))
 		var/icon/lip_icon = new /icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
-		overlays |= lip_icon
-		mob_icon.Blend(lip_icon, ICON_OVERLAY)
+		add_overlay(lip_icon)
 
 	var/head_marking = owner.m_styles["head"]
-	if(head_marking && head_marking != "None")
+	if(head_marking)
 		var/datum/sprite_accessory/head_marking_style = GLOB.marking_styles_list[head_marking]
 		if(head_marking_style && head_marking_style.species_allowed && (dna.species.name in head_marking_style.species_allowed) && head_marking_style.marking_location == "head")
 			var/icon/h_marking_s = new /icon("icon" = head_marking_style.icon, "icon_state" = "[head_marking_style.icon_state]_s")
 			if(head_marking_style.do_colouration)
 				h_marking_s.Blend(owner.m_colours["head"], ICON_ADD)
-			overlays |= h_marking_s
+			add_overlay(h_marking_s)
 
-	var/obj/item/organ/internal/ears/visible/ears = owner.get_int_organ(/obj/item/organ/internal/ears/visible)
-	if(istype(ears) && ears.can_render())
-		overlays |= ears.render()
-
-	if(ha_style)
-		if(!((owner.head && (owner.head.flags & BLOCKHAIR)) || (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
+	if(!((owner.head && (owner.head.flags & BLOCKHAIR)) || (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR)))) //Common restriction for all the below features.
+		if(ha_style)
 			var/datum/sprite_accessory/head_accessory_style = GLOB.head_accessory_styles_list[ha_style]
 			if(head_accessory_style && head_accessory_style.species_allowed && (dna.species.name in head_accessory_style.species_allowed))
 				var/icon/head_accessory_s = new /icon("icon" = head_accessory_style.icon, "icon_state" = "[head_accessory_style.icon_state]_s")
 				if(head_accessory_style.do_colouration)
 					head_accessory_s.Blend(headacc_colour, ICON_ADD)
-				overlays |= head_accessory_s
+				add_overlay(head_accessory_s)
 
-	if(f_style)
-		if(!((owner.head && (owner.head.flags & BLOCKHAIR)) || (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
+		if(f_style)
 			var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[f_style]
 			if(facial_hair_style && ((facial_hair_style.species_allowed && (dna.species.name in facial_hair_style.species_allowed)) || (dna.species.bodyflags & ALL_RPARTS)))
 				var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
@@ -155,18 +141,18 @@ var/global/list/limb_icon_cache = list()
 					facial_s.Blend("[owner.skin_colour]A0", ICON_AND) //A0 = 160 alpha.
 				else if(facial_hair_style.do_colouration)
 					facial_s.Blend(facial_colour, ICON_ADD)
-				overlays |= facial_s
+				add_overlay(facial_s)
 
-	if(h_style)
-		if(!((owner.head && ((owner.head.flags & BLOCKHEADHAIR) || (owner.head.flags & BLOCKHAIR))) && (owner.wear_mask && (owner.wear_mask.flags & BLOCKHAIR))))
-			var/datum/sprite_accessory/hair_style = GLOB.hair_styles_full_list[h_style]
-			if(hair_style && ((dna.species.name in hair_style.species_allowed) || (dna.species.bodyflags & ALL_RPARTS)))
-				var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
-				if(istype(dna.species, /datum/species/slime)) // I am el worstos
-					hair_s.Blend("[owner.skin_colour]A0", ICON_AND) //A0 = 160 alpha.
-				else if(hair_style.do_colouration)
-					hair_s.Blend(hair_colour, ICON_ADD)
-				overlays |= hair_s
+		if(h_style)
+			if(!owner.isSynthetic() || (owner.isSynthetic() && ((owner.head && (owner.head.flags & BLOCKHEADHAIR)) || (owner.wear_mask && (owner.wear_mask.flags & BLOCKHEADHAIR)))))
+				var/datum/sprite_accessory/hair_style = GLOB.hair_styles_full_list[h_style]
+				if(hair_style && ((dna.species.name in hair_style.species_allowed) || (dna.species.bodyflags & ALL_RPARTS)))
+					var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+					if(istype(dna.species, /datum/species/slime)) // I am el worstos
+						hair_s.Blend("[owner.skin_colour]A0", ICON_AND) //A0 = 160 alpha.
+					else if(hair_style.do_colouration)
+						hair_s.Blend(hair_colour, ICON_ADD)
+					add_overlay(hair_s)
 
 	return mob_icon
 

@@ -39,7 +39,7 @@
 		H = owner
 	var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ)) //Aug eyes should always fit the person they're stuck in.
 	var/icon/aug_eyecon = new /icon('icons/mob/human_face.dmi', (istype(PO) ? PO.dna.species.eyes : H.dna.species.eyes))
-	aug_eyecon.Blend(eye_colour, ICON_ADD) // Eye implants override native DNA eye color
+	aug_eyecon.Blend(eye_colour, ICON_ADD) //Eye implants override native DNA eye color.
 
 	return aug_eyecon
 
@@ -50,7 +50,7 @@
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
-	if(!get_location_accessible(H, "eyes"))
+	if(H.glasses || !get_location_accessible(H, "eyes")) //Don't shine if the eyes are obscured in any way.
 		return FALSE
 
 	return TRUE

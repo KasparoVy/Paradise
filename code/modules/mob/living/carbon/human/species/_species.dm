@@ -138,7 +138,7 @@
 		"kidneys" =  /obj/item/organ/internal/kidneys,
 		"brain" =    /obj/item/organ/internal/brain,
 		"appendix" = /obj/item/organ/internal/appendix,
-		"eyes" =     /obj/item/organ/internal/eyes
+		"eyes" =     /obj/item/organ/internal/eyes //Instantiate new eye subtypes when dealing with species that have eyes different from human-standard.
 		)
 	var/vision_organ              // If set, this organ is required for vision. Defaults to "eyes" if the species has them.
 	var/list/has_limbs = list(
@@ -155,7 +155,7 @@
 		"r_foot" = list("path" = /obj/item/organ/external/foot/right))
 
 	// Mutant pieces
-	var/obj/item/organ/internal/ears/mutantears = /obj/item/organ/internal/ears
+	var/obj/item/organ/internal/ears/mutantears = /obj/item/organ/internal/ears //Instantiate new (and relevant) ear subtypes when dealing with species that have unique (perhaps visible) ears.
 
 /datum/species/New()
 	//If the species has eyes, they are the default vision organ
