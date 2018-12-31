@@ -15,16 +15,14 @@
 	var/ear_damage = 0
 
 /obj/item/organ/internal/ears/visible //This subtype is actually rendered on the mob/head organ sprites!
+	intorgan_visible = TRUE
 	var/render_layer = -INTORGAN_LAYER
 	var/icon/ears_icon = null
 	var/ears_tone = null
 	var/ears_colour = "#000000"
 
 /obj/item/organ/internal/ears/visible/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Update the cached appearance properties used in icon generation.
-	var/mob/living/carbon/human/H = HA
-	if(!istype(H))
-		H = owner
-	var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ))
+	var/obj/item/organ/external/head/PO = ..()
 	if(istype(PO)) //If there's a parent organ present in our current host, fetch the icon and colour/tone we'll be using.
 		if(!isnull(PO.s_tone))
 			ears_tone = PO.s_tone
@@ -38,13 +36,7 @@
 		generate_icon(new_species)
 
 /obj/item/organ/internal/ears/visible/generate_icon(datum/species/species_override) //Compile the icon using the cached appearance properties we fetched in update_appearance().
-	var/ears_icon_state = dna.species.ears
-	if(istype(species_override) && species_override.name != dna.species.name) //If it's a different species, fit it. If it's the same as our DNA spacies, use standard generation.
-		if(species_override.name in species_fit)
-			ears_icon_state = species_fit_states[species_override.name]
-		else if("Generic" in species_fit)
-			ears_icon_state = species_fit_states["Generic"]
-
+	var/ears_icon_state = ..(species_override, dna.species.ears) //Offload species_fitting to the parent proc since its logic should be shared by most visible intorgans.
 	ears_icon = new /icon('icons/mob/human_face.dmi', ears_icon_state)
 	if(!isnull(ears_tone))
 		if(ears_tone >= 0)

@@ -7,6 +7,7 @@
 	slot = "eyes"
 
 	var/eye_colour = "#000000"
+	intorgan_visible = TRUE
 	var/render_layer = -INTORGAN_LAYER //Will be different if eyes are shining to ensure they render above light.
 	var/render_plane = null //Will only be set when eyes are shining to ensure they render above light.
 	var/icon/eyecon = null
@@ -23,25 +24,17 @@
 	var/weld_proof = null //If set, the eyes will not take damage during welding. eg. IPC optical sensors do not take damage when they weld things while all other eyes will.
 
 /obj/item/organ/internal/eyes/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Update the cached appearance properties used in icon generation.
-	var/mob/living/carbon/human/H = HA
-	if(!istype(H))
-		H = owner
 	dna.write_eyes_attributes(src) //Writes eye colour to eye_colour from the DNA. Eye colour changes are traditionally done against the DNA, which is why this works.
 	if(regenerate)
-		var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ))
-		var/datum/species/new_species = null
-		if(dna.species.name != PO.dna.species.name)
-			new_species = PO.dna.species
-		generate_icon(new_species)
+		var/obj/item/organ/external/head/PO = ..()
+		if(istype(PO))
+			var/datum/species/new_species = null
+			if(dna.species.name != PO.dna.species.name)
+				new_species = PO.dna.species
+			generate_icon(new_species)
 
 /obj/item/organ/internal/eyes/generate_icon(datum/species/species_override)
-	var/eyecon_state = dna.species.eyes
-	if(istype(species_override) && species_override.name != dna.species.name) //If it's a different species, fit it. If it's the same as our DNA spacies, use standard generation.
-		if(species_override.name in species_fit)
-			eyecon_state = species_fit_states[species_override.name]
-		else if("Generic" in species_fit)
-			eyecon_state = species_fit_states["Generic"]
-
+	var/eyecon_state = ..(species_override, dna.species.eyes) //Offload species_fitting to the parent proc since its logic should be shared by most visible intorgans.
 	eyecon = new /icon('icons/mob/human_face.dmi', eyecon_state) //Fit the eyes to the species. They maintain their characteristics but are rendered with more appropriate sprites.
 	eyecon.Blend(eye_colour, ICON_ADD)
 

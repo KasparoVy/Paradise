@@ -12,6 +12,7 @@
 	var/see_invisible = 0
 	var/eye_colour = "#000000"
 	var/old_eye_colour = "#000000"
+	intorgan_visible = TRUE
 	var/render_layer = -INTORGAN_LAYER //Will be different if eyes are shining to ensure they render above light.
 	var/render_plane = null //Will only be set when eyes are shining to ensure they render above light.
 	var/icon/aug_eyecon = null
@@ -35,7 +36,7 @@
 		H.update_body()
 	M.update_sight()
 
-/obj/item/organ/internal/cyberimp/eyes/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE)
+/obj/item/organ/internal/cyberimp/eyes/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Always update appearance. Cybereyes!
 	if(regenerate)
 		generate_icon(HA)
 
