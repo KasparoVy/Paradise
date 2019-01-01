@@ -8,10 +8,6 @@
 	var/non_primary = 0
 	var/unremovable = FALSE //Whether it shows up as an option to remove during surgery.
 
-	var/intorgan_visible = FALSE
-	species_fit = null //Species to fit onmob icon to when the organs are rendered. If the species isn't here, use the generic fit.
-	var/list/species_fit_states = null //Instantiated for visible intorgans.
-
 /obj/item/organ/internal/New(var/mob/living/carbon/holder)
 	..()
 	if(istype(holder))
@@ -114,35 +110,6 @@
 		return 0
 	insert(H)
 	return 1
-
-// Rendering!
-/obj/item/organ/internal/proc/update_appearance(mob/living/carbon/human/HA, regenerate = TRUE) //Handles updating an organ's appearance when rendered. Updates the cached appearance properties used in icon generation.
-	if(!intorgan_visible)
-		return
-	//Here, though, we're only going to to the basic qualification & pre-flight checks that'll be shared by most visible intorgans.
-	var/mob/living/carbon/human/H = HA
-	if(!istype(H))
-		H = owner
-	return H.get_organ(check_zone(parent_organ)) //Preflight complete, send parent organ for further organ-specific evaluation in child procs.
-
-/obj/item/organ/internal/proc/generate_icon(datum/species/species_override, new_icon_state) //Generate the icon based on cached properties. Handle species fitting.
-	if(!intorgan_visible)
-		return
-	if(new_icon_state)
-		. = new_icon_state
-	if(istype(species_override) && species_override.name != dna.species.name) //If it's a different species, fit it. If it's the same as our DNA spacies, use standard generation.
-		if(!(LAZYLEN(species_fit) && LAZYLEN(species_fit_states))) //Can't fit, invalid parameters. Abort, abort (while returning new_icon_state if it was passed properly)!
-			return
-		if(species_override.name in species_fit)
-			. = species_fit_states[species_override.name]
-		else if("Generic" in species_fit)
-			. = species_fit_states["Generic"]
-
-/obj/item/organ/internal/proc/can_render() //Conditions required for a visible internal organ to render.
-	return FALSE
-
-/obj/item/organ/internal/proc/render() //Returns the rendered mutable appearance.
-	return
 
 /obj/item/reagent_containers/food/snacks/organ
 	name = "appendix"

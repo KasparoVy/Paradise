@@ -60,13 +60,6 @@ var/global/list/limb_icon_cache = list()
 	get_icon()
 	. = ..()
 
-/obj/item/organ/external/proc/render_visible_intorgans() //Compile a list of overlays from rendered visible internal organs.
-	var/list/overlays_to_apply = list()
-	for(var/obj/item/organ/internal/visible_intorgan in internal_organs) //Trigger onmob appearance property updates for eligible visible intorgans.
-		if(visible_intorgan.intorgan_visible && visible_intorgan.can_render())
-			overlays_to_apply += visible_intorgan.render()
-	return overlays_to_apply
-
 /obj/item/organ/external/proc/get_icon(skeletal, fat, skip_intorgan_render = FALSE)
 	// Kasparrov, you monster
 	if(force_icon)

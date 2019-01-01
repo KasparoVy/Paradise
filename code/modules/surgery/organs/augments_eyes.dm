@@ -13,9 +13,6 @@
 	var/eye_colour = "#000000"
 	var/old_eye_colour = "#000000"
 	intorgan_visible = TRUE
-	var/render_layer = -INTORGAN_LAYER //Will be different if eyes are shining to ensure they render above light.
-	var/render_plane = null //Will only be set when eyes are shining to ensure they render above light.
-	var/icon/aug_eyecon = null
 	var/flash_protect = 0
 	var/aug_message = "Your vision is augmented!"
 
@@ -33,18 +30,13 @@
 	if(regenerate)
 		generate_icon(HA)
 
-/obj/item/organ/internal/cyberimp/eyes/generate_icon(mob/living/carbon/human/HA)
+/obj/item/organ/internal/cyberimp/eyes/generate_icon(mob/living/carbon/human/HA) //Aug eyes should always fit the person they're stuck in, so handle things our own way.
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
-	var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ)) //Aug eyes should always fit the person they're stuck in.
-	var/icon/aug_eyecon = new /icon('icons/mob/human_face.dmi', (istype(PO) ? PO.dna.species.eyes : H.dna.species.eyes))
-	aug_eyecon.Blend(eye_colour, ICON_ADD) //Eye implants override native DNA eye color.
-
-	return aug_eyecon
-
-/obj/item/organ/internal/cyberimp/eyes/can_render()
-	return TRUE
+	var/obj/item/organ/external/head/PO = H.get_organ(check_zone(parent_organ))
+	if(..(new_icon_state = (istype(PO) ? PO.dna.species.eyes : H.dna.species.eyes))) //Use basic icon generation in the parent proc with our fit-everything approach to the icon state.
+		onmob_icon.Blend(eye_colour, ICON_ADD) //Icon generation successful, colour the organ.
 
 /obj/item/organ/internal/cyberimp/eyes/proc/can_shine(mob/living/carbon/human/HA) //Nice augs.
 	var/mob/living/carbon/human/H = HA
@@ -55,20 +47,18 @@
 
 	return TRUE
 
-/obj/item/organ/internal/cyberimp/eyes/render(mob/living/carbon/human/HA)
+/obj/item/organ/internal/cyberimp/eyes/render(mob/living/carbon/human/HA) //Gotta do this our own way because of eyeshine handling.
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
 
-	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[H.get_organ("head").h_style]
+	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[H.get_organ(check_zone(parent_organ)).h_style]
 	var/icon/hair = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+	if(can_shine(H)) //If the eyes will shine, render using a different layer & plane.
+		render_layer = LIGHTING_LAYER + 1
+		render_plane = LIGHTING_PLANE
 
-	var/will_shine = can_shine(H)
-	var/L = will_shine ? (LIGHTING_LAYER + 1) : render_layer //If the eyes will shine, render using a different layer.
-	var/mutable_appearance/MA = mutable_appearance(get_icon_difference(aug_eyecon, hair), layer = L) //Use the above hair business to 'cut' the hair pixels out of the eye icon. This has the effect of the hair hiding the eyes, even when they shine.
-	if(will_shine)
-		MA.plane = LIGHTING_PLANE
-	. = MA //Finally return the MA using the compiled icon.
+	. = ..(get_icon_difference(onmob_icon, hair)) //Use the above hair business to 'cut' the hair pixels out of the eye icon. This has the effect of the hair hiding the eyes, even when they shine.
 
 /obj/item/organ/internal/cyberimp/eyes/emp_act(severity)
 	if(!owner || emp_proof)

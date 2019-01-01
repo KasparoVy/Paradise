@@ -1195,7 +1195,7 @@ var/global/list/damage_icon_parts = list()
 		var/list/standing = list()
 		for(var/organ in internal_organs)
 			var/obj/item/organ/internal/I = organ
-			if(I.intorgan_visible && I.can_render(src)) //Yes I can!
+			if(I.can_render(src)) //Yes I can!
 				var/render = I.render(src)
 				if(render)
 					standing += render //Add the mutableappearance we just fetched to the stack 'o' overlays and send it off on its merry way.

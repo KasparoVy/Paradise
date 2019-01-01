@@ -16,8 +16,6 @@
 
 /obj/item/organ/internal/ears/visible //This subtype is actually rendered on the mob/head organ sprites!
 	intorgan_visible = TRUE
-	var/render_layer = -INTORGAN_LAYER
-	var/icon/ears_icon = null
 	var/ears_tone = null
 	var/ears_colour = "#000000"
 
@@ -35,27 +33,24 @@
 			new_species = PO.dna.species
 		generate_icon(new_species)
 
-/obj/item/organ/internal/ears/visible/generate_icon(datum/species/species_override) //Compile the icon using the cached appearance properties we fetched in update_appearance().
-	var/ears_icon_state = ..(species_override, dna.species.ears) //Offload species_fitting to the parent proc since its logic should be shared by most visible intorgans.
-	ears_icon = new /icon('icons/mob/human_face.dmi', ears_icon_state)
-	if(!isnull(ears_tone))
-		if(ears_tone >= 0)
-			ears_icon.Blend(rgb(ears_tone, ears_tone, ears_tone), ICON_ADD)
+/obj/item/organ/internal/ears/visible/generate_icon(datum/species/fit_this_species) //Compile the icon using the cached appearance properties we fetched in update_appearance().
+	if(..(fit_this_species, dna.species.ears)) //Offload species_fitting and basic icon generation to the parent proc since its logic should be shared by most visible intorgans.
+		if(!isnull(ears_tone))
+			if(ears_tone >= 0)
+				onmob_icon.Blend(rgb(ears_tone, ears_tone, ears_tone), ICON_ADD)
+			else
+				onmob_icon.Blend(rgb(-ears_tone, -ears_tone, -ears_tone), ICON_SUBTRACT)
 		else
-			ears_icon.Blend(rgb(-ears_tone, -ears_tone, -ears_tone), ICON_SUBTRACT)
-	else
-		ears_icon.Blend(ears_colour, ICON_ADD)
+			onmob_icon.Blend(ears_colour, ICON_ADD)
 
 /obj/item/organ/internal/ears/visible/can_render(mob/living/carbon/human/HA)
-	var/mob/living/carbon/human/H = HA
-	if(!istype(H))
-		H = owner
-	if(!H || (H.head && (H.head.flags & BLOCKHAIR)) || (H.wear_mask && (H.wear_mask.flags & BLOCKHAIR))) //Hidden in the same way as head accessories/hair/facial hair. Prevents wierd sprite parts sticking out of helmets.
-		return FALSE
-	return TRUE
-
-/obj/item/organ/internal/ears/visible/render()
-	. = mutable_appearance(ears_icon, layer = render_layer) //Finally return the MA using the compiled icon.
+	if(..()) //Run basic prelim checks first, i.e. if intorgan_visible is TRUE.
+		var/mob/living/carbon/human/H = HA
+		if(!istype(H))
+			H = owner
+		if(!H || (H.head && (H.head.flags & BLOCKHAIR)) || (H.wear_mask && (H.wear_mask.flags & BLOCKHAIR))) //Hidden in the same way as head accessories/hair/facial hair. Prevents wierd sprite parts sticking out of helmets.
+			return FALSE
+		return TRUE
 
 /obj/item/organ/internal/ears/on_life()
 	if(!iscarbon(owner))

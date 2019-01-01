@@ -8,9 +8,6 @@
 
 	var/eye_colour = "#000000"
 	intorgan_visible = TRUE
-	var/render_layer = -INTORGAN_LAYER //Will be different if eyes are shining to ensure they render above light.
-	var/render_plane = null //Will only be set when eyes are shining to ensure they render above light.
-	var/icon/eyecon = null
 
 	species_fit = list("Vox", "Grey", "Drask", "Kidan")
 	species_fit_states = list("Vox" = "vox_eyes_s", "Grey" = "grey_fitted_eyes_s", "Drask" = "drask_fitted_eyes_s", "Kidan" = "kidan_fitted_eyes")
@@ -33,19 +30,19 @@
 				new_species = PO.dna.species
 			generate_icon(new_species)
 
-/obj/item/organ/internal/eyes/generate_icon(datum/species/species_override)
-	var/eyecon_state = ..(species_override, dna.species.eyes) //Offload species_fitting to the parent proc since its logic should be shared by most visible intorgans.
-	eyecon = new /icon('icons/mob/human_face.dmi', eyecon_state) //Fit the eyes to the species. They maintain their characteristics but are rendered with more appropriate sprites.
-	eyecon.Blend(eye_colour, ICON_ADD)
+/obj/item/organ/internal/eyes/generate_icon(datum/species/fit_this_species)
+	if(..(fit_this_species, dna.species.eyes)) //Offload species_fitting and basic icon generation to the parent proc since its logic should be shared by most visible intorgans.
+		onmob_icon.Blend(eye_colour, ICON_ADD) //Icon generation successful, colour the organ.
 
 /obj/item/organ/internal/eyes/can_render(mob/living/carbon/human/HA)
-	var/mob/living/carbon/human/H = HA
-	if(!istype(H))
-		H = owner
-	var/obj/item/organ/internal/cyberimp/eyes/eye_implant = H.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
-	if(istype(eye_implant)) //Only render our special eyes and hide our less specail ones.
-		return FALSE
-	return TRUE
+	if(..()) //Run basic prelim checks first, i.e. if intorgan_visible is TRUE.
+		var/mob/living/carbon/human/H = HA
+		if(!istype(H))
+			H = owner
+		var/obj/item/organ/internal/cyberimp/eyes/eye_implant = H.get_int_organ(/obj/item/organ/internal/cyberimp/eyes)
+		if(istype(eye_implant)) //Only render our special eyes and hide our less specail ones.
+			return FALSE
+		return TRUE
 
 /obj/item/organ/internal/eyes/proc/get_colourmatrix() //Returns a special colour matrix if the eyes are organic and the mob is colourblind, otherwise it uses the current one.
 	if(!is_robotic() && owner.disabilities & COLOURBLIND)
@@ -65,20 +62,18 @@
 	if(is_robotic() || (dark_view > EYE_SHINE_THRESHOLD) || (XRAY in H.mutations)) //Eyes shine if they are synth, great at darksight, or if the host has XRAY vision.
 		return TRUE
 
-/obj/item/organ/internal/eyes/render(mob/living/carbon/human/HA)
+/obj/item/organ/internal/eyes/render(mob/living/carbon/human/HA) //Gotta do this our own way because of eyeshine handling.
 	var/mob/living/carbon/human/H = HA
 	if(!istype(H))
 		H = owner
 
 	var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_full_list[H.get_organ(check_zone(parent_organ)).h_style]
 	var/icon/hair = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+	if(can_shine(H)) //If the eyes will shine, render using a different layer & plane.
+		render_layer = LIGHTING_LAYER + 1
+		render_plane = LIGHTING_PLANE
 
-	var/will_shine = can_shine(H)
-	var/L = will_shine ? (LIGHTING_LAYER + 1) : render_layer //If the eyes will shine, render using a different layer.
-	var/mutable_appearance/MA = mutable_appearance(get_icon_difference(eyecon, hair), layer = L) //Use the above hair business to 'cut' the hair pixels out of the eye icon. This has the effect of the hair hiding the eyes, even when they shine.
-	if(will_shine)
-		MA.plane = LIGHTING_PLANE
-	. = MA //Finally return the MA using the compiled icon.
+	. = ..(get_icon_difference(onmob_icon, hair)) //Use the above hair business to 'cut' the hair pixels out of the eye icon. This has the effect of the hair hiding the eyes, even when they shine.
 
 /obj/item/organ/internal/eyes/insert(mob/living/carbon/human/M, special = 0) //Species-fitting eyes before rendering is handled here.
 	..()
