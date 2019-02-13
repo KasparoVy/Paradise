@@ -48,6 +48,8 @@ var/global/default_martial_art = new/datum/martial_art
 
 	var/special_voice = "" // For changing our voice. Used by a symptom.
 
+	var/scream_voice = "Male Default"
+
 	var/hand_blood_color
 
 	var/name_override //For temporary visible name changes

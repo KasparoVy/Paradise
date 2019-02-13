@@ -806,11 +806,7 @@
 				if(!muzzled)
 					message = "<B>[src]</B> [dna.species.scream_verb][M ? " at [M]" : ""]!"
 					m_type = 2
-					if(gender == FEMALE)
-						playsound(loc, "[dna.species.female_scream_sound]", 80, 1, frequency = get_age_pitch())
-					else
-						playsound(loc, "[dna.species.male_scream_sound]", 80, 1, frequency = get_age_pitch()) //default to male screams if no gender is present.
-
+					playsound(loc, get_scream_sound(), 80, 1, 0, pitch = get_age_pitch()) //defaults to male screams if no gender is present.
 				else
 					message = "<B>[src]</B> makes a very loud noise[M ? " at [M]" : ""]."
 					m_type = 2
