@@ -246,26 +246,35 @@
 		head_organ.ha_style = "None"
 	var/headacc	= GLOB.head_accessory_styles_list.Find(head_organ.ha_style)
 
-	SetUIValueRange(DNA_UI_HAIR_R,		color2R(head_organ.hair_colour),		255,	1)
-	SetUIValueRange(DNA_UI_HAIR_G,		color2G(head_organ.hair_colour),		255,	1)
-	SetUIValueRange(DNA_UI_HAIR_B,		color2B(head_organ.hair_colour),		255,	1)
+	// *scream
+	if(!head_organ.scream_voice)
+		head_organ.scream_voice = list(
+		MALE   = "Male Default",
+		FEMALE = "Female Default"
+		)
 
-	SetUIValueRange(DNA_UI_HAIR2_R,		color2R(head_organ.sec_hair_colour),	255,	1)
-	SetUIValueRange(DNA_UI_HAIR2_G,		color2G(head_organ.sec_hair_colour),	255,	1)
-	SetUIValueRange(DNA_UI_HAIR2_B,		color2B(head_organ.sec_hair_colour),	255,	1)
+	SetUIValueRange(DNA_UI_HAIR_R,			color2R(head_organ.hair_colour),		255,	1)
+	SetUIValueRange(DNA_UI_HAIR_G,			color2G(head_organ.hair_colour),		255,	1)
+	SetUIValueRange(DNA_UI_HAIR_B,			color2B(head_organ.hair_colour),		255,	1)
 
-	SetUIValueRange(DNA_UI_BEARD_R,		color2R(head_organ.facial_colour),		255,	1)
-	SetUIValueRange(DNA_UI_BEARD_G,		color2G(head_organ.facial_colour),		255,	1)
-	SetUIValueRange(DNA_UI_BEARD_B,		color2B(head_organ.facial_colour),		255,	1)
+	SetUIValueRange(DNA_UI_HAIR2_R,			color2R(head_organ.sec_hair_colour),	255,	1)
+	SetUIValueRange(DNA_UI_HAIR2_G,			color2G(head_organ.sec_hair_colour),	255,	1)
+	SetUIValueRange(DNA_UI_HAIR2_B,			color2B(head_organ.sec_hair_colour),	255,	1)
 
-	SetUIValueRange(DNA_UI_BEARD2_R,	color2R(head_organ.sec_facial_colour),	255,	1)
-	SetUIValueRange(DNA_UI_BEARD2_G,	color2G(head_organ.sec_facial_colour),	255,	1)
-	SetUIValueRange(DNA_UI_BEARD2_B,	color2B(head_organ.sec_facial_colour),	255,	1)
+	SetUIValueRange(DNA_UI_BEARD_R,			color2R(head_organ.facial_colour),		255,	1)
+	SetUIValueRange(DNA_UI_BEARD_G,			color2G(head_organ.facial_colour),		255,	1)
+	SetUIValueRange(DNA_UI_BEARD_B,			color2B(head_organ.facial_colour),		255,	1)
 
-	SetUIValueRange(DNA_UI_HACC_R,		color2R(head_organ.headacc_colour),		255,	1)
-	SetUIValueRange(DNA_UI_HACC_G,		color2G(head_organ.headacc_colour),		255,	1)
-	SetUIValueRange(DNA_UI_HACC_B,		color2B(head_organ.headacc_colour),		255,	1)
+	SetUIValueRange(DNA_UI_BEARD2_R,		color2R(head_organ.sec_facial_colour),	255,	1)
+	SetUIValueRange(DNA_UI_BEARD2_G,		color2G(head_organ.sec_facial_colour),	255,	1)
+	SetUIValueRange(DNA_UI_BEARD2_B,		color2B(head_organ.sec_facial_colour),	255,	1)
 
-	SetUIValueRange(DNA_UI_HAIR_STYLE,	hair,		GLOB.hair_styles_full_list.len,			1)
-	SetUIValueRange(DNA_UI_BEARD_STYLE,	beard,		GLOB.facial_hair_styles_list.len,	1)
-	SetUIValueRange(DNA_UI_HACC_STYLE,	headacc,	GLOB.head_accessory_styles_list.len,	1)
+	SetUIValueRange(DNA_UI_HACC_R,			color2R(head_organ.headacc_colour),		255,	1)
+	SetUIValueRange(DNA_UI_HACC_G,			color2G(head_organ.headacc_colour),		255,	1)
+	SetUIValueRange(DNA_UI_HACC_B,			color2B(head_organ.headacc_colour),		255,	1)
+
+	SetUIValueRange(DNA_UI_HAIR_STYLE,		hair,		GLOB.hair_styles_full_list.len,			1)
+	SetUIValueRange(DNA_UI_BEARD_STYLE,		beard,		GLOB.facial_hair_styles_list.len,		1)
+	SetUIValueRange(DNA_UI_HACC_STYLE,		headacc,	GLOB.head_accessory_styles_list.len,	1)
+
+	SetUIValueRange(DNA_UI_SCREAM_VOICE,	scream,		screams.len,							1)

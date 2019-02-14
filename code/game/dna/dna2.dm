@@ -152,11 +152,6 @@ var/global/list/bad_blocks[0]
 	// Markings
 	if(!character.m_styles)
 		character.m_styles = DEFAULT_MARKING_STYLES
-	// *scream
-	var/list/screams = character.generate_valid_scream_voices()
-	if(!character.scream_voice || !(character.scream_voice in screams))
-		character.reset_scream_voice()
-	var/scream = screams.Find(character.scream_voice)
 
 	var/head_marks	= GLOB.marking_styles_list.Find(character.m_styles["head"])
 	var/body_marks	= GLOB.marking_styles_list.Find(character.m_styles["body"])
@@ -192,7 +187,6 @@ var/global/list/bad_blocks[0]
 	SetUIValueRange(DNA_UI_HEAD_MARK_STYLE,	head_marks,		GLOB.marking_styles_list.len,		1)
 	SetUIValueRange(DNA_UI_BODY_MARK_STYLE,	body_marks,		GLOB.marking_styles_list.len,		1)
 	SetUIValueRange(DNA_UI_TAIL_MARK_STYLE,	tail_marks,		GLOB.marking_styles_list.len,		1)
-	SetUIValueRange(DNA_UI_SCREAM_VOICE,	scream,			screams.len,	1)
 
 	UpdateUI()
 

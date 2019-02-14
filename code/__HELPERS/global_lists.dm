@@ -59,6 +59,12 @@
 		var/datum/pipes/P = D
 		if(P.rpd_dispensable)
 			GLOB.rpd_pipe_list += list(list("pipe_name" = P.pipe_name, "pipe_id" = P.pipe_id, "pipe_type" = P.pipe_type, "pipe_category" = P.pipe_category, "orientations" = P.orientations, "pipe_icon" = P.pipe_icon, "bendy" = P.bendy))
+
+	//*scream
+	for(var/spath in subtypesof(/datum/scream, GLOB.all_screams_list))
+		var/datum/scream/aiee = new spath()
+		GLOB.all_screams[aiee.name] = aiee
+
 	return 1
 
 /* // Uncomment to debug chemical reaction list.

@@ -131,13 +131,13 @@
 		if("howl", "howls")
 			var/M = handle_emote_param(param) //Check to see if the param is valid (mob with the param name is in view).
 			message = "<B>[src]</B> howls[M ? " at [M]" : ""]!"
-			playsound(loc, 'sound/goonstation/voice/howl.ogg', 100, 0, 10)
+			playsound(loc, 'sound/goonstation/voice/howl.ogg', 100, 0, 10, pitch = get_age_pitch())
 			m_type = 2
 
 		if("growl", "growls")
 			var/M = handle_emote_param(param)
 			message = "<B>[src]</B> growls[M ? " at [M]" : ""]."
-			playsound(loc, "growls", 80, 0)
+			playsound(loc, "growls", 80, 0, pitch = get_age_pitch())
 			m_type = 2
 
 		if("ping", "pings")
