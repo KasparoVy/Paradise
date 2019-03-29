@@ -50,10 +50,10 @@
 		M.change_eye_color(new_eyes)
 
 	// scream
-	var/list/valid_screams = M.generate_valid_scream_voices()
-	var/new_scream = input("Please select scream_voice", "Character Generation", M.scream_voice) as null|anything in valid_screams
+	var/list/valid_screams = M.get_valid_screams()
+	var/new_scream = input("Please select scream voice", "Character Generation", M.dna.species.scream_voice) as null|anything in valid_screams
 	if(new_scream)
-		M.change_scream_voice(new_scream)
+		M.change_scream(new_scream)
 
 	//Alt heads.
 	if(head_organ.dna.species.bodyflags & HAS_ALT_HEADS)

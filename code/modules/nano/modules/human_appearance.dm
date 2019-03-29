@@ -111,8 +111,7 @@
 		if(can_change(APPEARANCE_EYE_COLOR))
 			var/obj/item/organ/internal/eyes/eyes_organ = owner.get_int_organ(/obj/item/organ/internal/eyes)
 			var/new_eyes = input("Please select eye color.", "Eye Color", eyes_organ.eye_colour) as color|null
-			if(new_eyes && can_still_topic(state) && owner.change_eye_color(new_eyes))
-				update_dna()
+			if(new_eyes && can_still_topic(state) && owner.change_eye_color(new_eyes)) //Proc updates dna already.
 				return 1
 	if(href_list["head_accessory"])
 		if(can_change_head_accessory() && (href_list["head_accessory"] in valid_head_accessories))
@@ -172,9 +171,8 @@
 				cut_and_generate_data()
 				return 1
 	if(href_list["scream_voice"])
-		if(can_change(APPEARANCE_SCREAM_VOICE) && (href_list["scream_voice"] in valid_scream_voices))
-			if(owner.change_scream_voice(href_list["scream_voice"]))
-				update_dna()
+		if(can_change(APPEARANCE_SCREAM_VOICE) && (href_list["scream_voice"] in valid_screams))
+			if(owner.change_scream(href_list["scream_voice"])) //Proc already updates DNA.
 				cut_and_generate_data()
 				return 1
 
@@ -272,13 +270,13 @@
 		data["alt_head_styles"] = alt_head_styles
 		data["alt_head_style"] = head_organ.alt_head
 
-	data["change_scream_voice"] = can_change(APPEARANCE_SCREAM_VOICE)
-	if(data["change_scream_voice"])
+	data["change_scream"] = can_change(APPEARANCE_SCREAM_VOICE)
+	if(data["change_scream"])
 		var/scream_voices[0]
-		for(var/scream in valid_scream_voices)
+		for(var/scream in valid_screams)
 			scream_voices[++scream_voices.len] = list("screamvoice" = scream)
 		data["scream_voices"] = scream_voices
-		data["scream_voice"] = owner.scream_voice
+		data["scream_voice"] = owner.dna.species.scream_voice
 
 	data["change_head_accessory_color"] = can_change_head_accessory()
 	data["change_hair_color"] = can_change(APPEARANCE_HAIR_COLOR)
@@ -345,7 +343,7 @@
 	valid_tail_marking_styles.Cut()
 	valid_body_accessories.Cut()
 	valid_alt_head_styles.Cut()
-	valid_scream_voices.Cut()
+	valid_screams.Cut()
 	generate_data()
 
 /datum/nano_module/appearance_changer/proc/generate_data()
@@ -368,5 +366,5 @@
 		valid_body_accessories = owner.generate_valid_body_accessories()
 	if(!valid_alt_head_styles.len)
 		valid_alt_head_styles = owner.generate_valid_alt_heads()
-	if(!valid_scream_voices.len)
-		valid_scream_voices = owner.generate_valid_scream_voices()
+	if(!valid_screams.len)
+		valid_screams = owner.get_valid_screams()

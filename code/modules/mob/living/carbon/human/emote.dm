@@ -804,9 +804,10 @@
 				m_type = 1
 			else
 				if(!muzzled)
-					message = "<B>[src]</B> [dna.species.scream_verb][M ? " at [M]" : ""]!"
+					var/datum/scream/aaa = get_scream()
+					message = "<B>[src]</B> [aaa.verb_override ? aaa.verb_override : dna.species.scream_verb][M ? " at [M]" : ""]!"
 					m_type = 2
-					playsound(loc, get_scream_sound(), 80, 1, 0, pitch = get_age_pitch()) //defaults to male screams if no gender is present.
+					playsound(loc, aaa.get_sound(src), aaa.volume, 1, 0, pitch = get_age_pitch()) //defaults to male screams if no gender is present.
 				else
 					message = "<B>[src]</B> makes a very loud noise[M ? " at [M]" : ""]."
 					m_type = 2
@@ -902,7 +903,7 @@
 			else
 				var/obj/item/organ/external/head/H = get_organ("head") // If you have a robotic head, you can make beep-boop noises
 				if(H && H.is_robotic())
-					emotelist += "\nRobotic head specific emotes :- beep(s)-(none)/mob, buzz(es)-none/mob, no-(none)/mob, ping(s)-(none)/mob, yes-(none)/mob, buzz2-(none)/mob"
+					emotelist += "\nRobotic head specific emotes :- beep(s)-(none  )/mob, buzz(es)-none/mob, no-(none)/mob, ping(s)-(none)/mob, yes-(none)/mob, buzz2-(none)/mob"
 
 			if(isslimeperson(src))
 				emotelist += "\nSlime people specific emotes :- squish(es)-(none)/mob"

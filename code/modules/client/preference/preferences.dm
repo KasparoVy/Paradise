@@ -131,7 +131,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 	var/alt_head = "None"				//Alt head style.
 	var/species = "Human"
 	var/language = "None"				//Secondary language
-	var/scream = "Default Male"				//Scream voice, see applicable species datums.
+	var/scream = "Default"				//Scream voice, see applicable species datums.
 	var/autohiss_mode = AUTOHISS_OFF	//Species autohiss level. OFF, BASIC, FULL.
 
 	var/body_accessory = null
@@ -1336,7 +1336,8 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							m_styles["tail"] = "None"
 							m_colours["tail"] = "#000000"
 
-						scream = pick(NS.scream_voices[gender == FEMALE ? gender : MALE]) //Randomize their scream.
+
+						scream = pick(NS.get_valid_screams()) //Randomize their scream.
 
 						// Don't wear another species' underwear!
 						var/datum/sprite_accessory/SA = GLOB.underwear_list[underwear]
@@ -1407,14 +1408,14 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 						metadata = sanitize(copytext(new_metadata,1,MAX_MESSAGE_LEN))
 
 				if("scream")
-					var/list/scream_options = S.get_scream_sounds(gender)
-					if(LAZYLEN(scream_options) > 1)
-						var/new_scream = input(user, "Choose your character's scream:", "Character Preference") as null|anything in scream_options
+					var/list/valid_screams = S.get_valid_screams()
+					if(LAZYLEN(valid_screams) > 1)
+						var/new_scream = input(user, "Choose your character's scream:", "Character Preference") as null|anything in valid_screams
 						if(new_scream)
-							scream = scream_options[new_scream]
+							scream = valid_screams[new_scream]
 					var/test_scream = input(user, "Would you like to hear it?", "Character Preference") as null|anything in list("Yes", "No")
 					if(test_scream && test_scream == "Yes")
-						user << sound(scream, repeat = 0, wait = 0, volume = 80, channel = 2) //Play them an example of the scream sound. It won't be pitch-shifted by their age like it would be in game.
+						user << sound(scream, repeat = 0, wait = 0, volume = 80, channel = 2, pitch = 1.0 + 0.5*(30 - age)/80) //Play them an example of the scream sound.
 
 				if("b_type")
 					var/new_b_type = input(user, "Choose your character's blood-type:", "Character Preference") as null|anything in list( "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" )
@@ -2125,7 +2126,6 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 
 	character.change_gender(gender)
 	character.age = age
-	character.scream_voice = gender == FEMALE ? S.female_scream_sounds[scream] : S.male_scream_sounds[scream]
 	character.b_type = b_type
 
 	//Head-specific
@@ -2170,6 +2170,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 					I.robotize()
 
 	character.dna.b_type = b_type
+	character.dna.species.scream_voice = scream
 
 	// Wheelchair necessary?
 	var/obj/item/organ/external/l_foot = character.get_organ("l_foot")

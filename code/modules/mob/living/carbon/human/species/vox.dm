@@ -45,6 +45,7 @@
 
 	reagent_tag = PROCESS_ORG
 	scream_verb = "shrieks"
+	scream_voice = "Shriek"
 	default_scream = "Shriek"
 	male_cough_sounds = list('sound/voice/shriekcough.ogg')
 	female_cough_sounds = list('sound/voice/shriekcough.ogg')

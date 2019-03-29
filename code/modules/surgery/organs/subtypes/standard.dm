@@ -179,11 +179,6 @@
 	var/sec_facial_colour = "#000000"
 	var/f_style = "Shaved"
 
-	var/list/scream_voice = list(
-		MALE   = 'sound/effects/mob_effects/malescream1.ogg',
-		FEMALE = 'sound/effects/mob_effects/femalescream1.ogg'
-		)
-
 /obj/item/organ/external/head/remove()
 	if(owner)
 		if(!istype(dna))

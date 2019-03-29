@@ -51,7 +51,6 @@
 #define DNA_UI_GENDER		32
 #define DNA_UI_BEARD_STYLE	33
 #define DNA_UI_HAIR_STYLE	34
-/*#define DNA_UI_BACC_STYLE	23*/
 #define DNA_UI_HACC_STYLE	35
 #define DNA_UI_HEAD_MARK_STYLE	36
 #define DNA_UI_BODY_MARK_STYLE	37
@@ -156,6 +155,7 @@ var/global/list/bad_blocks[0]
 	var/head_marks	= GLOB.marking_styles_list.Find(character.m_styles["head"])
 	var/body_marks	= GLOB.marking_styles_list.Find(character.m_styles["body"])
 	var/tail_marks	= GLOB.marking_styles_list.Find(character.m_styles["tail"])
+	var/screams		= GLOB.all_screams_list.Find(S.scream_voice)
 
 	head_traits_to_dna(H)
 	eye_color_to_dna(eyes_organ)
@@ -187,6 +187,8 @@ var/global/list/bad_blocks[0]
 	SetUIValueRange(DNA_UI_HEAD_MARK_STYLE,	head_marks,		GLOB.marking_styles_list.len,		1)
 	SetUIValueRange(DNA_UI_BODY_MARK_STYLE,	body_marks,		GLOB.marking_styles_list.len,		1)
 	SetUIValueRange(DNA_UI_TAIL_MARK_STYLE,	tail_marks,		GLOB.marking_styles_list.len,		1)
+
+	SetUIValueRange(DNA_UI_SCREAM_VOICE,	screams,		GLOB.all_screams_list.len,			1)
 
 	UpdateUI()
 

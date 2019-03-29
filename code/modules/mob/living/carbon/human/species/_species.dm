@@ -113,7 +113,8 @@
 	var/list/speech_sounds                   // A list of sounds to potentially play when speaking.
 	var/list/speech_chance                   // The likelihood of a speech sound playing.
 	var/scream_verb = "screams"
-	var/default_scream = "Default"			 // Default scream voice.
+	var/scream_voice = "Default"
+	var/default_scream = "Default"
 	var/list/male_cough_sounds = list('sound/effects/mob_effects/m_cougha.ogg','sound/effects/mob_effects/m_coughb.ogg', 'sound/effects/mob_effects/m_coughc.ogg')
 	var/list/female_cough_sounds = list('sound/effects/mob_effects/f_cougha.ogg','sound/effects/mob_effects/f_coughb.ogg')
 	var/male_sneeze_sound = 'sound/effects/mob_effects/sneeze.ogg'
@@ -741,13 +742,3 @@ It'll return null if the organ doesn't correspond, so include null checks when u
 	var/obj/item/organ/internal/ears/ears = H.get_int_organ(/obj/item/organ/internal/ears)
 	if(istype(ears) && !ears.deaf)
 		. = TRUE
-
-/datum/species/proc/get_scream_sounds() //Returns a list of screams members of the species can use.
-	var/list/valid_screams = list()
-	for(var/scream/S in GLOB.all_screams)
-		if(LAZYLEN(S.species_restricted) && (name in species_restricted))
-			continue
-		if(LAZYLEN(S.species_allowed) && !(name in species_allowed))
-			continue
-		valid_screams[S.name] += S
-	return valid_screams
