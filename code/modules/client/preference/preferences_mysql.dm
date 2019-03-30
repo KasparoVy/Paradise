@@ -171,7 +171,8 @@
 					socks,
 					body_accessory,
 					gear,
-					autohiss
+					autohiss,
+					scream
 				 	FROM [format_table_name("characters")] WHERE ckey='[C.ckey]' AND slot='[slot]'"})
 	if(!query.Execute())
 		var/err = query.ErrorMsg()
@@ -250,6 +251,7 @@
 		body_accessory = query.item[50]
 		gear = params2list(query.item[51])
 		autohiss_mode = text2num(query.item[52])
+		scream = query.item[53]
 
 	//Sanitize
 	var/datum/species/SP = GLOB.all_species[species]
@@ -284,6 +286,7 @@
 	backbag			= sanitize_text(backbag, initial(backbag))
 	b_type			= sanitize_text(b_type, initial(b_type))
 	autohiss_mode	= sanitize_integer(autohiss_mode, 0, 2, initial(autohiss_mode))
+	scream			= sanitize_inlist(scream, GLOB.all_screams, initial(scream))
 
 	alternate_option = sanitize_integer(alternate_option, 0, 2, initial(alternate_option))
 	job_support_high = sanitize_integer(job_support_high, 0, 65535, initial(job_support_high))
@@ -383,7 +386,8 @@
 												socks='[socks]',
 												body_accessory='[body_accessory]',
 												gear='[gearlist]',
-												autohiss='[autohiss_mode]'
+												autohiss='[autohiss_mode]',
+												scream='[sanitizeSQL(scream)]'
 												WHERE ckey='[C.ckey]'
 												AND slot='[default_slot]'"}
 												)
@@ -421,7 +425,7 @@
 											gen_record,
 											player_alt_titles,
 											disabilities, organ_data, rlimb_data, nanotrasen_relation, speciesprefs,
-											socks, body_accessory, gear, autohiss)
+											socks, body_accessory, gear, autohiss, scream)
 
 					VALUES
 											('[C.ckey]', '[default_slot]', '[sanitizeSQL(metadata)]', '[sanitizeSQL(real_name)]', '[be_random_name]','[gender]',
@@ -449,7 +453,7 @@
 											'[sanitizeSQL(gen_record)]',
 											'[playertitlelist]',
 											'[disabilities]', '[organlist]', '[rlimblist]', '[nanotrasen_relation]', '[speciesprefs]',
-											'[socks]', '[body_accessory]', '[gearlist]', '[autohiss_mode]')
+											'[socks]', '[body_accessory]', '[gearlist]', '[autohiss_mode]', '[scream]')
 
 "}
 )

@@ -112,6 +112,7 @@
 	var/secondary_langs = list()             // The names of secondary languages that are available to this species.
 	var/list/speech_sounds                   // A list of sounds to potentially play when speaking.
 	var/list/speech_chance                   // The likelihood of a speech sound playing.
+	var/speech_age_affected = TRUE			 // If the mob's speech sounds are pitched based on age.
 	var/scream_verb = "screams"
 	var/scream_voice = "Default"
 	var/default_scream = "Default"

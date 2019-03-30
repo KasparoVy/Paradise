@@ -131,13 +131,13 @@
 		if("howl", "howls")
 			var/M = handle_emote_param(param) //Check to see if the param is valid (mob with the param name is in view).
 			message = "<B>[src]</B> howls[M ? " at [M]" : ""]!"
-			playsound(loc, 'sound/goonstation/voice/howl.ogg', 100, 0, 10, pitch = get_age_pitch())
+			playsound(loc, 'sound/goonstation/voice/howl.ogg', 100, 1, 10, frequency = get_age_pitch())
 			m_type = 2
 
 		if("growl", "growls")
 			var/M = handle_emote_param(param)
 			message = "<B>[src]</B> growls[M ? " at [M]" : ""]."
-			playsound(loc, "growls", 80, 0, pitch = get_age_pitch())
+			playsound(loc, "growls", 80, 1, frequency = get_age_pitch())
 			m_type = 2
 
 		if("ping", "pings")
@@ -807,7 +807,7 @@
 					var/datum/scream/aaa = get_scream()
 					message = "<B>[src]</B> [aaa.verb_override ? aaa.verb_override : dna.species.scream_verb][M ? " at [M]" : ""]!"
 					m_type = 2
-					playsound(loc, aaa.get_sound(src), aaa.volume, 1, 0, pitch = get_age_pitch()) //defaults to male screams if no gender is present.
+					playsound(loc, aaa.get_sound(gender), aaa.volume, 1, frequency = get_age_pitch()) //Defaults to male screams if no gender is present.
 				else
 					message = "<B>[src]</B> makes a very loud noise[M ? " at [M]" : ""]."
 					m_type = 2
@@ -903,7 +903,7 @@
 			else
 				var/obj/item/organ/external/head/H = get_organ("head") // If you have a robotic head, you can make beep-boop noises
 				if(H && H.is_robotic())
-					emotelist += "\nRobotic head specific emotes :- beep(s)-(none  )/mob, buzz(es)-none/mob, no-(none)/mob, ping(s)-(none)/mob, yes-(none)/mob, buzz2-(none)/mob"
+					emotelist += "\nRobotic head specific emotes :- beep(s)-(none)/mob, buzz(es)-none/mob, no-(none)/mob, ping(s)-(none)/mob, yes-(none)/mob, buzz2-(none)/mob"
 
 			if(isslimeperson(src))
 				emotelist += "\nSlime people specific emotes :- squish(es)-(none)/mob"

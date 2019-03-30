@@ -8,8 +8,8 @@
 
 	speech_sounds = list('sound/voice/drasktalk.ogg')
 	speech_chance = 20
-	male_scream_sound = 'sound/voice/drasktalk2.ogg'
-	female_scream_sound = 'sound/voice/drasktalk2.ogg'
+	scream_voice = "Drone"
+	default_scream = "Drone"
 	male_cough_sounds = 'sound/voice/draskcough.ogg'
 	female_cough_sounds = 'sound/voice/draskcough.ogg'
 	male_sneeze_sound = 'sound/voice/drasksneeze.ogg'

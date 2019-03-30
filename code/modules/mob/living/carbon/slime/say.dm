@@ -14,7 +14,7 @@
 		return 1
 	return ..()
 
-/mob/living/carbon/slime/hear_say(list/message_pieces, var/verb = "says", var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol)
+/mob/living/carbon/slime/hear_say(list/message_pieces, var/verb = "says", var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol, var/pitch)
 	if(speaker in Friends)
 		speech_buffer = list()
 		speech_buffer.Add(speaker)

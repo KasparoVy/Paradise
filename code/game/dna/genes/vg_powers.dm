@@ -50,7 +50,7 @@
 		M.change_eye_color(new_eyes)
 
 	// scream
-	var/list/valid_screams = M.get_valid_screams()
+	var/list/valid_screams = M.dna.species.get_valid_screams(TRUE)
 	var/new_scream = input("Please select scream voice", "Character Generation", M.dna.species.scream_voice) as null|anything in valid_screams
 	if(new_scream)
 		M.change_scream(new_scream)

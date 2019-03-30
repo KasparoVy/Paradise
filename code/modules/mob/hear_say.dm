@@ -47,7 +47,7 @@
 		. = trim(. + trim(msg))
 		. += "\""
 
-/mob/proc/hear_say(var/list/message_pieces, var/verb = "says", var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol)
+/mob/proc/hear_say(var/list/message_pieces, var/verb = "says", var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol, var/pitch)
 	if(!client)
 		return 0
 
@@ -105,8 +105,8 @@
 	else
 		to_chat(src, "<span class='game say'><span class='name'>[speaker_name]</span>[speaker.GetAltName()] [track][message]</span>")
 		if(speech_sound && (get_dist(speaker, src) <= world.view && src.z == speaker.z))
-			var/turf/source = speaker? get_turf(speaker) : get_turf(src)
-			src.playsound_local(source, speech_sound, sound_vol, 1)
+			var/turf/source = speaker ? get_turf(speaker) : get_turf(src)
+			playsound_local(source, speech_sound, sound_vol, 1, frequency = pitch)
 
 
 /mob/proc/hear_radio(list/message_pieces, verb = "says", part_a, part_b, mob/speaker = null, hard_to_hear = 0, vname = "", atom/follow_target)

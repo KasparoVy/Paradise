@@ -1,9 +1,9 @@
 /datum/scream //Global list is referred to by GLOB.all_screams["scream_name_here"] or ... in GLOB.all_screams.
-	var/mame					= null	//Should be appropriate.
+	var/name					= null	//Should be appropriate.
 	var/sound_male				= 'sound/effects/mob_effects/malescream1.ogg' 	//Sound filepath. Scream defaults to this if gender is anything but female.
 	var/sound_female			= 'sound/effects/mob_effects/femalescream1.ogg'	//These vars have defaults in the event that a scream is added without a gender counterpart.
 	var/volume					= 80	//Number from 0-100.
-	var/list/species_restricted	= list("Vox", "Machine", "Monkey", "Farwa", "Wolpin", "Neara", "Stok", "Abductor")	//If initialized, make sure this species can't pick this scream.
+	var/list/species_restricted	= list("Vox", "Drask", "Machine", "Monkey", "Farwa", "Wolpin", "Neara", "Stok", "Abductor")	//If initialized, make sure this species can't pick this scream.
 	var/list/species_allowed	= null	//If initialized, make sure only these species can pick this scream.
 	var/verb_override			= null	//If initialized, override the scream verb from species with this.
 
@@ -47,7 +47,14 @@
 	species_restricted			= null
 	species_allowed				= list("Vox")
 
-/datum/scream/yelp //Foxy and disturbing: A winning combination.
+/datum/scream/drask //Whale.
+	name						= "Drone"
+	sound_male					= 'sound/voice/drasktalk2.ogg'
+	sound_female				= 'sound/voice/drasktalk2.ogg'
+	species_restricted			= null
+	species_allowed				= list("Drask")
+
+/datum/scream/yelp //Yep, that's a fox.
 	name						= "Yelp"
 	sound_male					= 'sound/voice/vulp_yelp.ogg'
 	sound_female				= 'sound/voice/vulp_yelp.ogg'
@@ -66,7 +73,7 @@
 	species_restricted			= null
 	species_allowed				= list("Abductor")
 
-/datum/scream/robot	//I have no mouth, but I must scream.
+/datum/scream/robot //I have speakers with which I shall scream.
 	name						= "Robot"
 	sound_male					= 'sound/goonstation/voice/robot_scream.ogg'
 	sound_female				= 'sound/goonstation/voice/robot_scream.ogg'
@@ -74,7 +81,7 @@
 	species_allowed				= list("Machine")
 
 /mob/living/carbon/human/proc/reset_scream()
-	dna.species.scream_voice = (dna.species.default_scream in GLOB.all_screams) ? GLOB.all_screams[dna.species.default_scream] : GLOB.all_screams["Default"]
+	dna.species.scream_voice = (dna.species.default_scream in GLOB.all_screams) ? dna.species.default_scream : "Default"
 	update_dna()
 
 /mob/living/carbon/human/proc/change_scream(var/new_scream, var/update_dna = TRUE)
@@ -88,17 +95,28 @@
 		reset_scream()
 	return GLOB.all_screams[dna.species.scream_voice]
 
-/datum/species/proc/get_valid_screams() //Returns a list of screams members of the species can use.
+/datum/species/proc/get_valid_screams(var/index_by_name = FALSE) //Returns a list of screams members of the species can use.
 	var/list/valid_screams = list()
-	for(var/scream/S in GLOB.all_screams)
-		if(!S.name)
+	for(var/S in GLOB.all_screams)
+		var/datum/scream/aieee = GLOB.all_screams[S]
+		if(!aieee || !aieee.name)
 			continue
-		if(LAZYLEN(S.species_restricted) && (name in species_restricted))
+		if(LAZYLEN(aieee.species_restricted) && (name in aieee.species_restricted))
 			continue
-		if(LAZYLEN(S.species_allowed) && !(name in species_allowed))
+		if(LAZYLEN(aieee.species_allowed) && !(name in aieee.species_allowed))
 			continue
-		valid_screams[S.name] += S
+
+		if(index_by_name)
+			valid_screams[aieee.name] += aieee
+		else
+			valid_screams += aieee
+
 	return valid_screams
 
-/datum/scream/proc/get_sound(var/mob/living/carbon/human/H) //Fetch the sound, considering gender.
-	return (istype(H) && H.gender == FEMALE) ? sound_female : sound_male
+/datum/scream/proc/get_sound(var/gender) //Fetch the sound, considering gender.
+	return gender == FEMALE ? sound_female : sound_male
+
+/datum/scream/proc/test(var/atom/play_to, var/gender, var/age)
+	var/sound/aaa = sound(get_sound(gender), wait = 0, channel = 0 || open_sound_channel(), volume = volume)
+	aaa.frequency = 1.0 + ((0.5 * (30 - age)) * 0.0125) // * 0.0125 is the same as dividing by 80, but we don't do that cuz wierd difference in performance.
+	SEND_SOUND(play_to, aaa) //For the individual player's ears only. Don't want everyone hearing you scream before getting on station

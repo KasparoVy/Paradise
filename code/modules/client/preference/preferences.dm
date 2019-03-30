@@ -1336,8 +1336,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 							m_styles["tail"] = "None"
 							m_colours["tail"] = "#000000"
 
-
-						scream = pick(NS.get_valid_screams()) //Randomize their scream.
+						scream = pick(NS.get_valid_screams()).name //Randomize their scream.
 
 						// Don't wear another species' underwear!
 						var/datum/sprite_accessory/SA = GLOB.underwear_list[underwear]
@@ -1403,20 +1402,20 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 						autohiss_mode = autohiss_choice[new_autohiss_pref]
 
 				if("metadata")
-					var/new_metadata = input(user, "Enter any information you'd like others to see, such as Roleplay-preferences:", "Game Preference" , metadata)  as message|null
+					var/new_metadata = input(user, "Enter any information you'd like others to see, such as Roleplay-preferences:", "Game Preference" , metadata) as message|null
 					if(new_metadata)
-						metadata = sanitize(copytext(new_metadata,1,MAX_MESSAGE_LEN))
+						metadata = sanitize(copytext(new_metadata, 1, MAX_MESSAGE_LEN))
 
 				if("scream")
-					var/list/valid_screams = S.get_valid_screams()
+					var/list/valid_screams = S.get_valid_screams(TRUE)
 					if(LAZYLEN(valid_screams) > 1)
 						var/new_scream = input(user, "Choose your character's scream:", "Character Preference") as null|anything in valid_screams
 						if(new_scream)
-							scream = valid_screams[new_scream]
-					var/test_scream = input(user, "Would you like to hear it?", "Character Preference") as null|anything in list("Yes", "No")
-					if(test_scream && test_scream == "Yes")
-						user << sound(scream, repeat = 0, wait = 0, volume = 80, channel = 2, pitch = 1.0 + 0.5*(30 - age)/80) //Play them an example of the scream sound.
-
+							scream = new_scream
+							var/test_scream = input(user, "Would you like to hear it?", "Character Preference") as null|anything in list("Yes", "No")
+							if(test_scream && test_scream == "Yes")
+								var/datum/scream/aaa = valid_screams[new_scream]
+								aaa.test(user, gender, age) //Play them an example of the scream sound.
 				if("b_type")
 					var/new_b_type = input(user, "Choose your character's blood-type:", "Character Preference") as null|anything in list( "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" )
 					if(new_b_type)

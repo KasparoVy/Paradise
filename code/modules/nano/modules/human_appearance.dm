@@ -12,7 +12,7 @@
 	var/list/valid_tail_marking_styles = list()
 	var/list/valid_body_accessories = list()
 	var/list/valid_alt_head_styles = list()
-	var/list/valid_scream_voices = list()
+	var/list/valid_screams = list()
 
 	var/check_whitelist
 	var/list/whitelist
@@ -367,4 +367,4 @@
 	if(!valid_alt_head_styles.len)
 		valid_alt_head_styles = owner.generate_valid_alt_heads()
 	if(!valid_screams.len)
-		valid_screams = owner.get_valid_screams()
+		valid_screams = owner.dna.species.get_valid_screams(TRUE)

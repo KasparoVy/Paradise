@@ -46,7 +46,7 @@
 		randomize_skin_color()
 	backbag = 2
 	age = rand(AGE_MIN, AGE_MAX)
-	scream = pick(S.get_valid_screams()) //Randomize their scream.
+	scream = pick(S.get_valid_screams()).name //Randomize their scream.
 
 /datum/preferences/proc/randomize_hair_color(var/target = "hair")
 	if(prob (75) && target == "facial") // Chance to inherit hair color

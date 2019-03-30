@@ -155,7 +155,7 @@ var/global/list/bad_blocks[0]
 	var/head_marks	= GLOB.marking_styles_list.Find(character.m_styles["head"])
 	var/body_marks	= GLOB.marking_styles_list.Find(character.m_styles["body"])
 	var/tail_marks	= GLOB.marking_styles_list.Find(character.m_styles["tail"])
-	var/screams		= GLOB.all_screams_list.Find(S.scream_voice)
+	var/screams		= GLOB.all_screams.Find(S.scream_voice)
 
 	head_traits_to_dna(H)
 	eye_color_to_dna(eyes_organ)
@@ -176,19 +176,18 @@ var/global/list/bad_blocks[0]
 	SetUIValueRange(DNA_UI_TAIL_MARK_G,	color2G(character.m_colours["tail"]),	255,	1)
 	SetUIValueRange(DNA_UI_TAIL_MARK_B,	color2B(character.m_colours["tail"]),	255,	1)
 
-	SetUIValueRange(DNA_UI_SKIN_TONE,	35-character.s_tone,	220,	1) // Value can be negative.
+	SetUIValueRange(DNA_UI_SKIN_TONE,	35 - character.s_tone,					220,	1) // Value can be negative.
 
 	if(S.has_gender)
 		SetUIState(DNA_UI_GENDER, character.gender!=MALE, 1)
 	else
-		SetUIState(DNA_UI_GENDER, pick(0,1), 1)
+		SetUIState(DNA_UI_GENDER, pick(0, 1), 1)
 
-	/*SetUIValueRange(DNA_UI_BACC_STYLE,	bodyacc,	GLOB.facial_hair_styles_list.len,	1)*/
-	SetUIValueRange(DNA_UI_HEAD_MARK_STYLE,	head_marks,		GLOB.marking_styles_list.len,		1)
-	SetUIValueRange(DNA_UI_BODY_MARK_STYLE,	body_marks,		GLOB.marking_styles_list.len,		1)
-	SetUIValueRange(DNA_UI_TAIL_MARK_STYLE,	tail_marks,		GLOB.marking_styles_list.len,		1)
+	SetUIValueRange(DNA_UI_HEAD_MARK_STYLE,	head_marks,	GLOB.marking_styles_list.len,	1)
+	SetUIValueRange(DNA_UI_BODY_MARK_STYLE,	body_marks,	GLOB.marking_styles_list.len,	1)
+	SetUIValueRange(DNA_UI_TAIL_MARK_STYLE,	tail_marks,	GLOB.marking_styles_list.len,	1)
 
-	SetUIValueRange(DNA_UI_SCREAM_VOICE,	screams,		GLOB.all_screams_list.len,			1)
+	SetUIValueRange(DNA_UI_SCREAM_VOICE,	screams,	GLOB.all_screams.len,			1)
 
 	UpdateUI()
 
